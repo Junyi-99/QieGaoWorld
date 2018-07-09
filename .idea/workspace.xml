@@ -42,7 +42,7 @@
           <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/QieGaoWorld/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="598">
+                <state relative-caret-position="684">
                   <caret line="36" column="37" selection-start-line="36" selection-start-column="37" selection-end-line="36" selection-end-column="37" />
                 </state>
               </provider>
@@ -70,7 +70,7 @@
             <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="445">
-                  <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+                  <caret line="41" selection-start-line="41" selection-end-line="41" />
                   <folding>
                     <element signature="e#0#36#0" expanded="true" />
                   </folding>
@@ -351,8 +351,8 @@
       <window_info anchor="bottom" id="Version Control" order="1" />
       <window_info anchor="bottom" id="Python Console" order="5" weight="0.32897604" />
       <window_info anchor="bottom" id="Run" order="8" weight="0.25816995" />
-      <window_info anchor="bottom" id="Terminal" order="4" visible="true" weight="0.33696836" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.1748401" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="4" visible="true" weight="0.33696836" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17643923" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="1" weight="0.32995737" />
       <window_info anchor="right" id="SciView" order="0" weight="0.32995737" />
@@ -705,16 +705,17 @@
           </nodes>
           <notes />
           <edges />
-          <settings layout="Hierarchic Group" zoom="1.0" x="135.0" y="127.5" />
+          <settings layout="Hierarchic Group" zoom="1.0" x="135.0" y="128.0" />
           <SelectedNodes />
           <Categories />
+          <SCOPE>All</SCOPE>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="445">
-          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>
@@ -723,7 +724,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
+        <state relative-caret-position="684">
           <caret line="36" column="37" selection-start-line="36" selection-start-column="37" selection-end-line="36" selection-end-column="37" />
         </state>
       </provider>
