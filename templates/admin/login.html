@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>哔哩喵 - ADMIN</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% load static %}
+
+        <link href="favicon.ico" rel="shortcut icon">
+        <link rel="stylesheet" href="{% static "assets/css/uikit.min.css" %}" />
+        <script src="{% static "assets/js/jquery-3.2.1.js" %}"></script>
+        <script src="{% static "assets/js/csrf.js" %}"></script>
+        <script src="{% static "assets/js/uikit.min.js" %}"></script>
+        <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
+
+    </head>
+
+    <body>
+    <div class="uk-container uk-container-center uk-margin-top">
+        <div class="uk-align-center uk-width-large">
+            <div class="uk-card uk-card-default" style="background: linear-gradient(135deg, #ffffff, #e2e2e2);">
+                <div class="uk-card-header">
+                    <h1>ADMIN</h1>
+                </div>
+                <div class="uk-card-body">
+                    <form id="login_form" role="form" method="post">
+                        {% csrf_token %}
+                        <div class="uk-margin">
+                            <div class="uk-inline uk-width-large\@l">
+                                <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                <input name="user_name" id="user_name" class="uk-input" type="text" placeholder="Account">
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <div class="uk-inline uk-width-large\@l">
+                                <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                <input name="pwd" id="user_pwd" class="uk-input" type="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <button type="button" id="submit" name="submit" class="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom">
+                            Login
+                        </button>
+                    </form>
+                </div>
+                <div class="uk-card-footer">
+                    ADMIN PANEL designed by <a>Junyi</a> 2017
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+    <script>
+        $(document).ready(
+            function(){
+                $("#submit").click(
+                    function () {
+                        var username = $("#user_name").val();
+                        var password = $("#user_pwd").val();
+
+                        $.post("/admin_login_verify", {'username': username, 'password': password}, function (ret) {
+                            var obj = JSON.parse(ret);
+                            if(obj.status == "ok")
+                            {
+                                $("#user_name").addClass("uk-form-success");
+                                $("#user_pwd").addClass("uk-form-success");
+
+                                UIkit.notification({message: obj.msg, status: 'success'});
+                                //setTimeout("window.location.href = \"/dashboard\"", "1000")
+                                window.location.href = "/admin/dashboard";
+                            }
+                            else
+                            {
+                                $("#user_name").addClass("uk-form-danger");
+                                $("#user_pwd").addClass("uk-form-danger");
+                                UIkit.notification({message: obj.msg, status: 'danger'});
+                            }
+
+                        })
+                    }
+                )
+            }
+        );
+    </script>
+
+
+</html>

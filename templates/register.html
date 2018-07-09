@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>切糕世界 - 注册</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load static %}
+
+    <link href="favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" href="{% static "assets/css/uikit.min.css" %}"/>
+    <script src="{% static "assets/js/uikit.min.js" %}"></script>
+    <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
+    <script src="{% static "assets/js/jquery-3.2.1.js" %}"></script>
+</head>
+
+<body>
+<div class="uk-container uk-container-center uk-margin-top">
+    <div class="uk-align-center uk-width-large">
+
+        <div class="uk-card uk-card-default" style="background-image:url({% static "assets/images/bkg3.png" %});">
+            <div class="uk-card-header">
+                <h1>注册账号</h1>
+            </div>
+            <div class="uk-card-body">
+                <form id="login_form" role="form" action="login_verify" , method="post">
+                    {% csrf_token %}
+                    {% comment %}<div class="uk-alert-warning" uk-alert>
+                                <p>对不起，目前还未开放注册</p>
+                            </div>{% endcomment %}
+
+                    <p>标有 * 的为必填项</p>
+                    <div class="uk-margin">
+                        <div class="uk-inline uk-width-large\@l">
+                            <span class="uk-form-icon" uk-icon="icon: user"></span>
+                            <input name="username" id="username" class="uk-input" type="text"
+                                   placeholder="账号 * (仅限字母数字下划线)" onblur="onblur_username_check()">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-inline uk-width-large\@l">
+                            <span class="uk-form-icon" uk-icon="icon: user"></span>
+                            <input name="nickname" id="nickname" class="uk-input" type="text" placeholder="昵称 *">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-inline uk-width-large\@l">
+                            <span class="uk-form-icon" uk-icon="icon: unlock"></span>
+                            <input name="password" id="password" class="uk-input" type="password" placeholder="密码 *"
+                                   onblur="onblur_password_check()">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-inline uk-width-large\@l">
+                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            <input name="password_again" id="password_again" class="uk-input" type="password"
+                                   placeholder="再次输入密码 *" onblur="onblur_password_check()">
+                        </div>
+                    </div>
+                    <div class="uk-margin uk-grid-small uk-child-width-auto" uk-grid>
+                        <label class="uk-text-muted"><input id="read" class="uk-checkbox" type="checkbox"> 我已阅读并同意<a
+                                href="agreement.html">使用协议</a></label>
+                    </div>
+                    <button type="button" id="submit"
+                            class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">
+                        注册
+                    </button>
+                    <a href="/login">返回登录页</a>
+                </form>
+            </div>
+            <div class="uk-card-footer">
+                Version: {{ PROJECT_VERSION }}
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+
+<script>
+    function onblur_username_check() {
+        var str = $("#username").val();
+        var n = str.search(/[^\w]/i);
+        if (n === -1) {
+            $('#username').removeClass("uk-form-danger");
+            return true;
+        }
+        else {
+            $('#username').addClass("uk-form-danger");
+            return false;
+        }
+        return false;
+    }
+
+    function onblur_password_check() {
+        var password = $("#password").val();
+        var password_again = $("#password_again").val();
+        if (password !== password_again) {
+            $('#password_again').addClass("uk-form-danger");
+            return false;
+        }
+        else {
+            $('#password_again').removeClass("uk-form-danger");
+            return true;
+        }
+        return false;
+    }
+
+    $(document).ready(
+        function () {
+            $("#submit").click(
+                function () {
+                    var username = $("#username").val();
+                    var password = $("#password").val();
+                    var nickname = $("#nickname").val();
+
+                    var flag = false;
+
+                    if (onblur_username_check() === false)
+                        flag = true;
+                    if (onblur_password_check() === false)
+                        flag = true;
+
+                    if (flag) {
+                        UIkit.notification({message: "emmmmm<\/br>你是不是有些项目没写？<\/br>是不是有些项目写错了？", status: 'warning'});
+                        return;
+                    }
+
+                    var obj = document.getElementById("read");
+                    if (obj.checked === false) {
+                        UIkit.notification({message: "如果不同意协议内容，请不要注册", status: 'warning'});
+                        return;
+                    }
+
+
+                    $.post("/register_verify", {
+                        'username': username,
+                        'password': password,
+                        'nickname': nickname
+                    }, function (ret) {
+                        var obj = JSON.parse(ret);
+                        if (obj.status === "ok") {
+                            UIkit.notification({message: obj.msg + "</br>3 秒后自动跳转到首页", status: 'success'});
+                            setTimeout("window.location.href = \"/login\"", "3000")
+                        }
+                        else
+                            UIkit.notification({message: obj.msg, status: 'danger'})
+                    })
+                }
+            )
+        }
+    );
+    $(function () {
+            $.ajaxSetup(
+                {
+                    headers: {"X-CSRFToken": getCookie("csrftoken")}
+                }
+            );
+        }
+    );
+
+    function getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+</script>
+
+
+</html>

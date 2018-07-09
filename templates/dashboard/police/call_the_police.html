@@ -1,0 +1,220 @@
+{% load static %}
+<h2>我要报警
+    <small style="color: #666666; font-size: medium">Wo tm call 110</small>
+</h2>
+<hr class="uk-margin">
+<img src="{% static "assets/images/110.jpg" %}" width="200px">
+<div uk-grid>
+    <form class="uk-form-horizontal">
+        {% csrf_token %}
+        <div class="uk-margin">
+            <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-5@s">
+                    <label class="uk-form-label" for="form-horizontal-text">案发地点（大致位置）</label>
+                </div>
+                <div class="uk-width-4-5@s">
+                    <input class="uk-input" id="position" type="text" placeholder="如大河镇峭壁区西，沙东新13号">
+                </div>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-5@s">
+                    <label class="uk-form-label" for="form-horizontal-text">精确坐标（填入整数）</label>
+                </div>
+                <div class="uk-width-4-5@s uk-grid-small" uk-grid>
+                    <div class="uk-width-1-3@s">
+                        <input class="uk-input" id="coordinate_x" type="text" placeholder="x">
+                    </div>
+                    <div class="uk-width-1-3@s">
+                        <input class="uk-input" id="coordinate_y" type="text" placeholder="y">
+                    </div>
+                    <div class="uk-width-1-3@s">
+                        <input class="uk-input" id="coordinate_z" type="text" placeholder="z">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-5@s">
+                    <label class="uk-form-label" for="form-horizontal-text">案件简述</label>
+                </div>
+                <div class="uk-width-4-5@s">
+                    <input class="uk-input" id="summary" type="text" placeholder="如东西被偷">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="uk-margin">
+            <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-5@s">
+                    <label class="uk-form-label" for="form-horizontal-text">案件详细信息</label>
+                </div>
+                <div class="uk-width-4-5@s">
+                    <textarea class="uk-textarea" id="detail" rows="5"
+                              placeholder="如在一个月黑风高的夜晚，我的东西本来放在XXX，结果不见了，也不知道是被人拿走了还是被拆掉了……"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-margin">
+            <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-5@s">
+
+                </div>
+                <div class="uk-width-4-5@s">
+                    <button type="button" class="uk-button uk-button-primary" id="report">立即报警</button>
+
+                    <span class="uk-label" id="status"></span>
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(
+        $(function () {
+            $("#report").click(
+                function () {
+                    var position = $("#position").val();
+                    var coordinate_x = $("#coordinate_x").val();
+                    var coordinate_y = $("#coordinate_y").val();
+                    var coordinate_z = $("#coordinate_z").val();
+                    var summary = $("#summary").val();
+                    var detail = $("#detail").val();
+
+                    var flag = false;
+
+                    if (position.length === 0) {
+                        $('#position').addClass("uk-form-danger");
+                        flag = true;
+                    }
+                    else {
+                        $('#position').removeClass("uk-form-danger");
+                    }
+
+                    if (coordinate_x.length === 0) {
+                        $('#coordinate_x').addClass("uk-form-danger");
+                        flag = true;
+                    }
+                    else {
+                        $('#coordinate_x').removeClass("uk-form-danger");
+                    }
+
+                    if (coordinate_y.length === 0) {
+                        $('#coordinate_y').addClass("uk-form-danger");
+                        flag = true;
+                    }
+                    else {
+                        $('#coordinate_y').removeClass("uk-form-danger");
+                    }
+
+                    if (coordinate_z.length === 0) {
+                        $('#coordinate_z').addClass("uk-form-danger");
+                        flag = true;
+                    }
+                    else {
+                        $('#coordinate_z').removeClass("uk-form-danger");
+                    }
+
+                    if (summary.length === 0) {
+                        $('#summary').addClass("uk-form-danger");
+                        flag = true;
+                    }
+                    else {
+                        $('#summary').removeClass("uk-form-danger");
+                    }
+
+                    if (detail.length === 0) {
+                        $('#detail').addClass("uk-form-danger");
+                        flag = true;
+                    }
+                    else {
+                        $('#detail').removeClass("uk-form-danger");
+                    }
+
+                    if (flag) {
+                        return false;
+                    }
+
+                    $.post("/police_report", {
+                        "position": position,
+                        "coordinate_x": coordinate_x,
+                        "coordinate_y": coordinate_y,
+                        "coordinate_z": coordinate_z,
+                        "summary": summary,
+                        "detail": detail
+                    }, function (ret) {
+                        var obj = JSON.parse(ret);
+
+                        $("#status").removeClass("uk-label-success uk-label-danger uk-animation-fade uk-animation-reverse");
+
+                        if (obj.status === "ok") {
+                            $("#status").addClass("uk-label-success uk-animation-fade");
+                            $("#status").html(obj.msg);
+                            setTimeout(
+                                function () {
+                                    $("#status").addClass("uk-animation-reverse");
+                                    $("#status").html('');
+                                }
+                            , 2000);
+
+                            $("#position").val();
+
+                            //clear the context
+                            $("#position").val('');
+                            $("#coordinate_x").val('');
+                            $("#coordinate_y").val('');
+                            $("#coordinate_z").val('');
+                            $("#summary").val('');
+                            $("#detail").val('');
+                        }
+                        else {
+                            $("#status").addClass("uk-label-danger uk-animation-fade");
+                            $("#status").html(obj.msg);
+                            setTimeout(
+                                function () {
+                                    $("#status").addClass("uk-animation-reverse");
+                                    $("#status").html('');
+                                }
+                            , 2000);
+                        }
+
+                    })
+                }
+            )
+        })
+    );
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+            }
+        }
+    });
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>

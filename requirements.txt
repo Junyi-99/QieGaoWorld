@@ -1,0 +1,14 @@
+certifi==2018.4.16
+chardet==3.0.4
+click==6.7
+Django==2.0.7
+dnspython==1.15.0
+dnspython3==1.15.0
+idna==2.7
+image==1.5.24
+mcstatus==2.2
+Pillow==5.2.0
+pytz==2018.5
+requests==2.19.1
+six==1.11.0
+urllib3==1.23

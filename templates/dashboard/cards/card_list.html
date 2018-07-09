@@ -1,0 +1,391 @@
+    {% load static %}
+    <h1 class="uk-margin-small-top">卡片列表</h1>
+    <hr class="uk-margin">
+    <style>
+        .progress-green {
+            background-color: #25ca86;
+        }
+        .progress-green::-webkit-progress-bar {
+            background-color: #25ca86;
+        }
+        .progress-blue {
+            background-color: #57acca;
+        }
+        .progress-blue::-webkit-progress-bar {
+            background-color: #57acca;
+        }
+        .progress-gold {
+            background-color: #deb61f;
+        }
+        .progress-gold::-webkit-progress-bar {
+            background-color: #deb61f;
+        }
+        .progress-red {
+            background-color: #df3f4e;
+        }
+        .progress-red::-webkit-progress-bar {
+            background-color: #df3f4e;
+        }
+        .progress-bar {
+            margin: 4px 0 6px;
+            height: 4px;
+            border-radius: 4px;
+        }
+        .progress-bar::-webkit-progress-bar {
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar::-webkit-progress-value {
+            background: #dcdcdc;
+        }
+        .progress-bar::-moz-progress-bar {
+            background: #dcdcdc;
+        }
+        .progress-bar::-ms-fill {
+            background-color: #dcdcdc;
+            border: 0;
+        }
+        .card-icon {
+            margin-left: 10px;
+            color: white;
+        }
+        .card-title {
+            margin-top: 7px;
+            color: #f0f0f0;
+            font-family: 微软雅黑, Tahoma, Geneva, sans-serif;
+            font-size: 12px;
+        }
+
+        .card .key-green {
+            background-color: #0fad67;
+        }
+        .card .key-blue {
+            background-color: #1d82bf;
+        }
+        .card .key-gold {
+            background-color: #deb61f;
+        }
+        .card .key-red {
+            background-color: #cc3947;
+        }
+        .card .card-key {
+            color: #f0f0f0;
+            text-align: center;
+            font-family: Monaco,Courier,monospace;
+            font-size: 13px;
+            margin-left: 3em;
+            margin-right: 3em;
+            border-radius: 0.3em;
+        }
+        .card-body {
+            padding: 5px 5px 7px;
+        }
+        .card .card-bottom {
+            background: #CCC;
+            background: rgba(0,0,0,0.05);
+            padding: 10px 15px;
+            border-radius: 0.3em;
+        }
+        .card-green {
+            background: linear-gradient(135deg, #32d296, #0fad67);
+            border:1px solid #0fa05e;
+        }
+        .card-blue {
+            background: linear-gradient(135deg, #28a5f5, #279deb);
+            border:1px solid #2486cc;
+        }
+        .card-gold {
+            background: linear-gradient(135deg, #f5e04a, #f2c722);
+            border:1px solid #d5af1e;
+        }
+        .card-red {
+            background: linear-gradient(135deg, #ed4253, #e53f50);
+            border:1px solid #bb3542;
+        }
+        .card {
+            margin-bottom: 20px;
+            border-radius: 0.3em;
+            opacity: 0.8;
+            box-shadow:0px 0px 0px #ffffff;
+            transition: box-shadow 0.3s, opacity 0.3s;
+        }
+        .card:hover {
+{#            ackground: linear-gradient(45deg, #2ecf47, #1def6b);b#}
+            opacity: 1;
+            box-shadow:4px 3px 20px #A8A8A8;
+        }
+    </style>
+    <div uk-grid>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-green card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-green">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-green" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-blue card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-blue">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-blue" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-gold card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-gold">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-gold" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-red card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-red">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-red" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-green card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-green">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-green" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-blue card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-blue">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-blue" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-gold card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-gold">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-gold" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-red card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-red">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-red" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-green card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-green">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-green" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-blue card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-blue">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-blue" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-gold card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-gold">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-gold" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-red card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-red">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-red" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-green card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-green">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-green" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-blue card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-blue">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-blue" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-gold card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-gold">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-gold" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-1-3@m uk-width-1-2@s">
+            <div class="card card-red card-body">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-auto">
+                        <span uk-icon="icon: users; ratio: 0.8" class="card-icon"></span>
+                    </div>
+                    <div class="uk-width-expand">
+                        <p class="card-title uk-margin-small-bottom">BilibiliLiveGift 单用户</p>
+                    </div>
+                </div>
+                <p class="card-key key-red">012GR-CJF2R-FI3LP-VKCHS-AZ7BT</p>
+                <div class="card-bottom">
+                    <progress class="uk-progress progress-bar progress-red" value="26" max="100" ></progress>
+                    <p class="card-title">2017-11-01 - 2018-01-01 (46天可用)</p>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>切糕世界 - 忘记密码</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% load static %}
+
+        <link href="favicon.ico" rel="shortcut icon">
+        <link rel="stylesheet" href="{% static "assets/css/uikit.min.css" %}" />
+        <script src="{% static "assets/js/uikit.min.js" %}"></script>
+        <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
+        <script src="{% static "assets/js/jquery-3.2.1.js" %}"></script>
+    </head>
+
+    <body>
+        <div class="uk-container uk-container-center uk-margin-top">
+            <div class="uk-align-center uk-width-large">
+
+                <div class="uk-card uk-card-default" style="background-image:url({% static "assets/images/bkg3.png" %});">
+                    <div class="uk-card-header">
+                        <h1>忘记密码</h1>
+                    </div>
+                    <div class="uk-card-body">
+                        <form id="login_form" role="form" action="login_verify", method="post">
+                            {% csrf_token %}
+                            <div class="uk-alert-danger" uk-alert>
+                                <p>抱歉，请联系管理员进行密码找回！</p>
+                            </div>
+
+                            {% comment %}<p>标有 * 的为必填项</p>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-large\@l">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                    <input name="user_name" id="user_name" class="uk-input" type="text" placeholder="账号 * 仅限字母数字下划线" onblur="onblurs_username_check()" >
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-large\@l">
+                                    <span class="uk-form-icon" uk-icon="icon: unlock"></span>
+                                    <input name="user_pwd" id="user_pwd" class="uk-input" type="password" placeholder="密码 *" onblur="onblurs_password_check()">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-large\@l">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input name="user_pwd_again" id="user_pwd_again" class="uk-input" type="password" placeholder="再次输入密码 *" onblur="onblurs_password_check()">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-large\@l">
+                                    <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                                    <input name="user_email" id="user_email" class="uk-input" type="email" placeholder="邮箱 *" onblur="onblurs_email_check()">
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-large\@l">
+                                    <span class="uk-form-icon" uk-icon="icon: commenting"></span>
+                                    <input name="user_qq" id="user_qq" class="uk-input" type="email" placeholder="QQ号">
+                                </div>
+                            </div>
+                            <div class="uk-margin uk-grid-small uk-child-width-auto" uk-grid>
+
+                                <label class="uk-text-muted"><input id="read" class="uk-checkbox" type="checkbox"> 我已阅读并同意<a href="agreement.html">使用协议</a></label>
+                            </div>
+                            <button type="button" id="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">
+                                注册
+                            </button>{% endcomment %}
+                            <a href="/login">返回登录页</a>
+                        </form>
+                    </div>
+                    <div class="uk-card-footer">
+                        Version: {{ PROJECT_VERSION }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+
+
+    {% comment %}<script>
+        function onblurs_username_check() {
+            var str = $("#user_name").val();
+            var n = str.search(/[^\w]/i);
+            if(n == -1)
+            {
+                $('#user_name').removeClass("uk-form-danger");
+                return true;
+            }
+            else
+            {
+                $('#user_name').addClass("uk-form-danger");
+                return false;
+            }
+            return false;
+        }
+        function onblurs_email_check() {
+            var str = $("#user_email").val();
+
+            if($.trim(str) == '')
+                return false;
+
+            var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+            if(reg.test(str))
+            {
+                $('#user_email').removeClass("uk-form-danger");
+                return true;
+            }
+            else
+            {
+                $('#user_email').addClass("uk-form-danger");
+                return false;
+            }
+            return false;
+        }
+        function onblurs_password_check() {
+            var password = $("#user_pwd").val();
+            var password_again = $("#user_pwd_again").val();
+            if(password != password_again)
+            {
+                $('#user_pwd_again').addClass("uk-form-danger");
+                return false;
+            }
+            else
+            {
+                $('#user_pwd_again').removeClass("uk-form-danger");
+                return true;
+            }
+            return false;
+        }
+        $(document).ready(
+
+            function(){
+                $("#submit").click(
+                    function () {
+                        var username = $("#user_name").val();
+                        var password = $("#user_pwd").val();
+                        var email = $("#user_email").val();
+                        var qq = $("#user_qq").val();
+
+                        var flag = false;
+
+                        if(onblurs_username_check() == false)
+                            flag = true;
+                        if(onblurs_email_check() == false)
+                            flag = true;
+                        if(onblurs_password_check() == false)
+                            flag = true;
+
+                        if(flag)
+                        {
+                            UIkit.notification({message: "emmmmm<\/br>你是不是有些项目没写？<\/br>是不是有些项目写错了？", status: 'warning'});
+                            return;
+                        }
+
+                        var obj = document.getElementById("read");
+                        if(obj.checked == false)
+                        {
+                            UIkit.notification({message: "如果不同意协议内容，请不要注册", status: 'warning'});
+                            return;
+                        }
+
+
+
+                        $.post("/register_verify", {'username': username, 'password': password, 'email': email, 'qq': qq}, function (ret) {
+                            var obj = JSON.parse(ret);
+                            if(obj.status == "ok")
+                            {
+                                UIkit.notification({message: obj.msg + "</br>3 秒后自动跳转到首页", status: 'success'});
+                                setTimeout("window.location.href = \"/login\"", "3000")
+                            }
+                            else
+                                UIkit.notification({message: obj.msg, status: 'danger'})
+                        })
+                    }
+                )
+            }
+        );
+        $(function () {
+                $.ajaxSetup(
+                    {
+                    headers: { "X-CSRFToken": getCookie("csrftoken") }
+                    }
+                );
+            }
+        );
+        function getCookie(name)
+        {
+            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+            if(arr=document.cookie.match(reg))
+                return unescape(arr[2]);
+            else
+                return null;
+        }
+    </script>{% endcomment %}
+
+
+</html>

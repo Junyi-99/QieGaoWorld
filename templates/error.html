@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>哔哩喵 - 错误页面</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% load static %}
+
+        <link href="favicon.ico" rel="shortcut icon">
+        <link rel="stylesheet" href="{% static "assets/css/uikit.min.css" %}" />
+        <script src="{% static "assets/js/uikit.min.js" %}"></script>
+        <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
+        <script src="{% static "assets/js/jquery-3.2.1.js" %}"></script>
+
+    </head>
+
+    <body>
+    <div class="uk-container uk-container-center uk-margin-top">
+        <div class="uk-align-center uk-width-large">
+            <div class="uk-card uk-card-default">
+                <div class="uk-card-header">
+                    <h1>{{ error_message }}</h1>
+                </div>
+                <div class="uk-card-footer">
+                    ( •̀ ω •́ )y
+                    <a href="login">点此跳转到登录页</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    </body>
+</html>

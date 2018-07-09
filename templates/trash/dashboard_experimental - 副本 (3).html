@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>哔哩喵 - Dashboard</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% load static %}
+
+        <link href="favicon.ico" rel="shortcut icon">
+        <link rel="stylesheet" href="{% static "assets/css/uikit.min.css" %}" />
+        <script src="{% static "assets/js/uikit.min.js" %}"></script>
+        <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
+        <script src="{% static "assets/js/jquery-3.2.1.js" %}"></script>
+        <script src="{% static "assets/js/chart.js/Chart.bundle.min.js" %}"></script>
+        <script src="{% static "assets/js/chart.js/utils.js" %}"></script>
+
+    </head>
+        
+    <body onresize="resize()">
+
+
+        <div class="uk-offcanvas-content">
+            <div class="uk-navbar-container uk-sticky" uk-sticky="bottom: #offset">
+                <div class="uk-navbar-left">
+                    <a class="uk-navbar-item uk-logo" href="#">
+                        <span uk-icon="icon: uikit; ratio: 1.7" class="uk-margin-small-right"></span>
+                        <p class="uk-visible@s">BiliMeo~</p>
+                    </a>
+                    <div class="uk-navbar-left uk-hidden@m">
+                        <a class="uk-navbar-toggle" uk-navbar-toggle-icon href="#" uk-toggle="target: #offcanvas-push" style="color: dodgerblue"></a>
+                    </div>
+                    <div class="uk-navbar-item uk-navbar-right uk-visible@m">
+                        <div>_(:3」∠)_ 又见面了啊 Junyi~</div>
+                    </div>
+                    <div class="uk-navbar-item uk-navbar-right">
+                        <div class="uk-inline-clip">
+                            <a uk-icon="icon: chevron-down" href="#"><img class="uk-border-circle" width="40" height="40" src="{% static "assets/images/avatar.png" %}"></a>
+                        </div>
+                        <div uk-drop="mode: click">
+                            <div class="uk-card uk-card-default uk-card-body uk-width-1-1@m">
+                                <ul class="uk-nav-default" uk-nav>
+                                    <li class="uk-nav-header">更多选项</li>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: file-edit"></span>用户资料</a></li>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>设置</a></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span> 退出登录</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-grid-divider" uk-grid>
+                <div class="uk-visible@m uk-width-1-5@m">
+                    <div uk-sticky="offset:100; bottom: #top">
+                        <div id="left_panel" class="uk-margin-medium-left uk-margin-small-top" style="overflow-y: auto; width: 100%">
+                            <h3 class="uk-margin-medium-bottom">Junyi Hou</h3>
+
+                            <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
+
+                                <li class="uk-nav-header" style="font-size: 12px">DASHBOARD</li>
+                                <hr class="uk-margin-remove">
+
+                                <li class="uk-active"><a href="#">控制面板</a></li>
+                                <li class="uk-parent">
+                                    <a href="#">用户管理</a>
+                                    <ul class="uk-nav-sub">
+                                        <li class="nav" id="user_list" data-page="user_list" data-url="/dashboard#user_list"><a href="#">用户列表</a></li>
+                                        <li class="nav" id="add_user" data-page="add_user" data-url="/dashboard#add_user" ><a href="#">添加用户</a></li>
+                                        <li class="nav" id="del_user" data-page="del_user" data-url="/dashboard#del_user" ><a href="#">删除用户</a></li>
+                                    </ul>
+                                </li>
+                                <li class="uk-parent">
+                                    <a href="#">统计信息</a>
+                                    <ul class="uk-nav-sub" >
+                                        <li><a href="#">经验</a></li>
+                                        <li><a href="#">在线礼物</a></li>
+                                        <li><a href="#">小电视</a></li>
+                                        <li><a href="#">签到</a></li>
+                                    </ul>
+                                </li>
+                                <li class="uk-parent">
+                                    <a href="#">授权卡片管理</a>
+                                    <ul class="uk-nav-sub">
+                                        <li><a href="#">卡片列表</a></li>
+                                        <li><a href="#">添加卡片</a></li>
+                                    </ul>
+                                </li>
+                                <li class="uk-parent">
+                                    <a href="#">设置</a>
+                                    <ul class="uk-nav-sub">
+                                        <li><a href="#">Meo账号设置</a></li>
+                                        <li><a href="#">高级功能</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="uk-width-expand@m uk-margin-medium-left uk-margin-medium-right uk-margin-small-top" id="main_content">
+                    <h1 class="uk-margin-small-top">控制面板</h1>
+                    <hr class="uk-margin">
+
+                    <div uk-grid>
+                        <div class="uk-width-1-4@m uk-width-1-2@s">
+                            <div class="uk-card uk-card-hover uk-card-default">
+                                <div class="uk-card-header">
+                                    <div class="uk-grid-small" uk-grid>
+                                        <div class="uk-width-auto">
+                                            <span uk-icon="icon: users; ratio: 1.7" class="uk-margin-small-right"></span>
+                                        </div>
+                                        <div class="uk-width-expand">
+                                            <h3>在线用户</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="uk-card-body">
+
+                                    <canvas id="chart-0" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-width-1-4@m uk-width-1-2@s">
+                            <div class="uk-card uk-card-hover uk-card-default">
+                                <div class="uk-card-header">
+                                    <div class="uk-grid-small" uk-grid>
+                                        <div class="uk-width-auto">
+                                            <span uk-icon="icon: desktop; ratio: 1.7" class="uk-margin-small-right"></span>
+                                        </div>
+                                        <div class="uk-width-expand">
+                                            <h3>小电视</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="uk-card-body">
+                                    <canvas id="chart-1" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-width-1-4@m uk-width-1-2@s">
+                            <div class="uk-card uk-card-hover uk-card-default">
+                                <div class="uk-card-header">
+                                    <div class="uk-grid-small" uk-grid>
+                                        <div class="uk-width-auto">
+                                            <span uk-icon="icon: credit-card; ratio: 1.7" class="uk-margin-small-right"></span>
+                                        </div>
+                                        <div class="uk-width-expand">
+                                            <h3>授权卡片</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="uk-card-body">
+                                    <canvas id="chart-2" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-width-1-4@m uk-width-1-2@s">
+                            <div class="uk-card uk-card-hover uk-card-default">
+                                <div class="uk-card-header">
+                                    <div class="uk-grid-small" uk-grid>
+                                        <div class="uk-width-auto">
+                                            <span uk-icon="icon: happy; ratio: 1.7" class="uk-margin-small-right"></span>
+                                        </div>
+                                        <div class="uk-width-expand">
+                                            <h3>礼物统计</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="uk-card-body">
+                                    <canvas id="chart-3" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true">
+                <div class="uk-offcanvas-bar">
+                    <button class="uk-offcanvas-close" type="button" uk-close></button>
+                    <h3>Title</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <div class="tm-sidebar-left">
+                        <h3>Documentation</h3>
+                        <ul class="uk-nav uk-nav-default tm-nav">
+                            <li class="uk-nav-header">Getting started</li>
+                            <li class=""><a href="/docs/introduction">Introduction</a></li>
+                            <li class=""><a href="/docs/installation">Installation</a></li>
+                            <li class=""><a href="/docs/less">Less</a></li>
+                            <li class=""><a href="/docs/sass">Sass</a></li>
+                            <li class=""><a href="/docs/javascript">JavaScript</a></li>
+                            <li class=""><a href="/docs/webpack">Webpack</a></li>
+                            <li class=""><a href="/docs/custom-icons">Custom icons</a></li>
+                            <li class=""><a href="/docs/avoiding-conflicts">Avoiding conflicts</a></li>
+                            <li class=""><a href="/docs/rtl">RTL support</a></li>
+                            <li class=""><a href="/docs/migration">Migration</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </body>
+
+    <script>
+        function resize() {
+            document.getElementById("left_panel").style.height = window.innerHeight - 150 + "px";
+        }
+        $(document).ready(
+            function(){
+                resize();
+                $("#submit").click(
+                    function () {
+                        var username = $("#user_name").val();
+                        var password = $("#user_pwd").val();
+
+                        $.post("/login_verify", {'username': username, 'password': password}, function (ret) {
+                            var obj = JSON.parse(ret);
+
+                        })
+                    }
+                );
+            }
+
+
+        );
+        $(function () {
+            var ajax, currentState;
+            $(".nav").on("click", function (e) {
+                if(!!(window.history && history.pushState)){
+                    e.preventDefault();
+                    if(ajax == undefined)
+                    {
+                        currentState = {
+                            url: document.location.href,
+                            page: "dashboard",
+                            html: $("#main_content").html()
+                        }
+                    }
+                    var url_to = $(this).data("url");
+                    var page_to = $(this).data("page");
+
+                    ajax = $.ajax(
+                        {
+                            url: "/dashboard/page",
+                            type: "post",
+                            data: {page:page_to},
+                            success: function (res) {
+                                $("#main_content").html(res);
+                                var state = {
+                                    url: url_to,
+                                    page: page_to,
+                                    html: res
+                                };
+
+                                history.pushState(state, null, url_to);
+                            }
+                        }
+                    )
+                }
+                else
+                {
+                    alert("您的浏览器无法正常访问本网页！");
+                }
+            });
+            window.addEventListener('popstate', function(event) {
+                if(ajax == null)
+                {
+                    return;
+                }
+                else if(event && event.state)
+                {
+                    $("#main_content").html(event.state.html);
+                }
+                else
+                {
+                    $("#main_content").html(currentState.html);
+                }
+            });
+            $.ajaxSetup(
+                {
+                headers: { "X-CSRFToken": getCookie("csrftoken") }
+                }
+            );
+        });
+        function getCookie(name)
+        {
+            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+            if(arr=document.cookie.match(reg))
+                return unescape(arr[2]);
+            else
+                return null;
+        }
+    </script>
+    <script>
+        function abs(number){
+            return number < 0 ? -number : number;
+        }
+        var barChartData = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [{
+                label: 'Dataset 1',
+                backgroundColor: [
+                    window.chartColors.red,
+                    window.chartColors.orange,
+                    window.chartColors.yellow,
+                    window.chartColors.green,
+                    window.chartColors.blue,
+                    window.chartColors.purple,
+                    window.chartColors.red
+                ],
+                data: [
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor()
+                ]
+            }]
+
+        };
+        var ctx0 = document.getElementById("chart-0");
+        var ctx1 = document.getElementById("chart-1");
+        var ctx2 = document.getElementById("chart-2");
+        var ctx3 = document.getElementById("chart-3");
+        var config0 = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [
+                        abs(randomScalingFactor()%5),
+                        abs(randomScalingFactor())
+                    ],
+                    backgroundColor: [
+                        window.chartColors.red,
+                        window.chartColors.green
+                    ],
+                    label: 'Online Users'
+                }],
+                labels: [
+                    "离线用户",
+                    "在线用户"
+                ]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: false
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            },
+            plugins: [{
+                beforeDraw: function(chart) {
+                    return;
+                    var width = chart.chart.width,
+                        height = chart.chart.height,
+                        ctx = chart.chart.ctx;
+
+                    ctx.restore();
+                    var fontSize = (height / 114).toFixed(2);
+                    ctx.font = fontSize + "em Verdana";
+
+                    ctx.textBaseline = "middle";
+
+                    var text = "99%",
+                        textX = Math.round((width - ctx.measureText(text).width) / 2),
+                        textY = height / 2;
+
+                    var gradient=ctx.createLinearGradient(0,0,chart.width,0);
+                    gradient.addColorStop("0","green");
+                    gradient.addColorStop("1.0", "#32d296");
+                    ctx.fillStyle = gradient;
+                    ctx.fillText(text, textX, textY);
+                    ctx.save();
+                  }
+            }]
+        };
+        var config1 = {
+            type: 'line',
+            data: {
+                labels: ["大大前天", "大前天", "前天", "昨天", "今天"],
+                datasets: [{
+                    label: "小电视数量：",
+                    backgroundColor: window.chartColors.red,
+                    borderColor: window.chartColors.red,
+                    data: [
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor())
+                    ],
+                    fill: false,
+                },{
+                    label: "领取量",
+                    backgroundColor: window.chartColors.blue,
+                    borderColor: window.chartColors.blue,
+                    data: [
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor())
+                    ],
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: false
+                    }],
+                    yAxes: [{
+                        display: false
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10
+                    }
+                }
+            }
+        };
+        var config2 = {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                responsive: true,
+                title:{
+                    display:false,
+                    text:"Chart.js Bar Chart - Multi Axis"
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    display: false,
+                    mode: 'index',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: false
+                    }],
+                    yAxes: [{
+                        display: false
+                    }]
+                }
+            }
+        };
+        var config3 = {
+            type: 'line',
+            data: {
+                labels: ["大大前天", "大前天", "前天", "昨天", "今天"],
+                datasets: [{
+                    label: "领取辣条",
+                    backgroundColor: window.chartColors.green,
+                    borderColor: window.chartColors.green,
+                    data: [
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor())
+                    ],
+                    fill: false,
+                },{
+                    label: "领取活动礼物",
+                    backgroundColor: window.chartColors.purple,
+                    borderColor: window.chartColors.purple,
+                    data: [
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor()),
+                        abs(randomScalingFactor())
+                    ],
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: false
+                    }],
+                    yAxes: [{
+                        display: false
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10
+                    }
+                }
+            }
+        };
+        var myChart0 = new Chart(ctx0, config0);
+        var myChart1 = new Chart(ctx1, config1);
+        var myChart2 = new Chart(ctx2, config2);
+        var myChart3 = new Chart(ctx3, config3);
+    </script>
+
+</html>

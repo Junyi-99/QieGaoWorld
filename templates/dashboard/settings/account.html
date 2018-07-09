@@ -1,0 +1,252 @@
+    {% load static %}
+    <h1 class="uk-margin-small-top">账号设置</h1>
+    <hr class="uk-margin">
+    <div uk-grid>
+        <form class="uk-form-horizontal uk-margin-large uk-width-1-1">
+            {% csrf_token %}
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text">用户名</label>
+                <div class="uk-form-controls">
+                    <input style="background-color: #F9F9F9" class="uk-input" id="form-horizontal-text" type="text" placeholder="{{ username }}" disabled>
+                </div>
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text">注册时间</label>
+                <div class="uk-form-controls">
+                    <input style="background-color: #F9F9F9" class="uk-input" id="form-horizontal-text" type="text" placeholder="{{ register_time }}" disabled>
+                </div>
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text">昵称</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" id="form-horizontal-text nickname" name="nickname" type="text" value="{{ nickname }}">
+                </div>
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text">QQ号</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" id="form-horizontal-text qqnumber" type="text" value="{{ qqnumber }}">
+                </div>
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-select">性别</label>
+                <div class="uk-form-controls uk-form-controls-text">
+                    <label><input id="radio_boy" class="uk-radio" type="radio" name="radio1" {{ check_boy }}> 男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <label><input id="radio_girl" class="uk-radio" type="radio" name="radio1" {{ check_girl }}> 女&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <label><input id="radio_bisexual" class="uk-radio" type="radio" name="radio1" {{ check_bisexual }}> 双性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                </div>
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text">密码</label>
+                <div class="uk-form-controls">
+                    <button class="uk-button uk-button-default uk-button-small" uk-toggle="target: #modal-change-password">点此修改密码</button>
+                </div>
+            </div>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-horizontal-text">头像</label>
+                <div class="uk-form-controls">
+                    <button class="uk-button uk-button-default uk-button-small" uk-toggle="target: #modal-change-face">点此修改头像</button>
+                </div>
+            </div>
+            <div class="uk-margin">
+                <div class="uk-form-controls">
+                    <button type="button" class="uk-button uk-button-primary" id="save">保存修改</button>
+                </div>
+            </div>
+        </form>
+        <div id="modal-change-face" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body uk-form-horizontal">
+                <h2 class="uk-modal-title">修改头像</h2>
+                <div class="uk-margin uk-width-auto" uk-grid>
+                    <div class="uk-width-auto">
+                        <img class="uk-border-circle" src="{{ avatar }}" width="100" height="100" alt="Border circle">
+                    </div>
+                    <div class="uk-width-expand">
+                        <p>推荐大小： 128x128 px</p>
+                        <p>格式：jpg, jpeg, png, gif</p>
+                        <p>最大文件大小：256KB</p>
+                    </div>
+                </div>
+
+                <div class="uk-margin uk-margin-auto">
+                    <div class="js-upload uk-placeholder uk-text-center">
+                        <span uk-icon="icon: cloud-upload"></span>
+                        <span class="uk-text-middle">将文件拖放于此 或 </span>
+                        <div uk-form-custom>
+                            {% csrf_token %}
+                            <input type="file">
+                            <span class="uk-link">选择一个文件</span>
+                        </div>
+                    </div>
+
+                    <progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
+                    <p class="uk-text-center" id="msg"></p>
+                    <script>
+                        $(function(){
+                            $("#save").click(
+                                function () {
+                                    var nickname = document.getElementById("form-horizontal-text nickname").value;
+                                    var qqnumber = document.getElementById("form-horizontal-text qqnumber").value;
+                                    var email    = document.getElementById("form-horizontal-text email").value;
+
+                                    var radio_boy = document.getElementById("radio_boy").checked;
+                                    var radio_girl = document.getElementById("radio_girl").checked;
+                                    var radio_bisexual = document.getElementById("radio_bisexual").checked;
+
+                                    var sex = 0;
+
+                                    if(radio_boy) {
+                                        sex = 0;
+                                    }
+                                    else if(radio_girl) {
+                                        sex = 1;
+                                    }
+                                    else if(radio_bisexual) {
+                                        sex = 2;
+                                    }
+                                    else {
+                                        sex = 3;
+                                    }
+
+                                    $.post("/save_changes", {'type': "settings_meo", "nickname": nickname, "qqnumber": qqnumber, "email": email, "sex": sex}, function (ret) {
+                                        var obj = JSON.parse(ret);
+                                        if(obj.status == "ok")
+                                        {
+                                            UIkit.notification({message: obj.msg, status: 'success'});
+                                        }
+                                        else
+                                        {
+                                            UIkit.notification({message: obj.msg, status: 'danger'});
+                                        }
+
+                                    })
+                                }
+                            )
+                        });
+                        var bar = document.getElementById('js-progressbar');
+
+                        UIkit.upload('.js-upload', {
+
+                            url: '/upload_face',
+                            multiple: true,
+                            allow : '*.(jpg|jpeg|gif|png)',
+
+
+                            beforeSend: function (env) {
+                                env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+                                //草泥马！
+                                //你大爷的！
+                                //开发文档里不写怎么用
+                                //还他妈让老子看你底层代码
+                                //是不是傻逼
+                                //cao
+                                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                //FFFFFFFFFFFFFFFFFFFFFFUUUUUUUU     UUUUUUUU       CCCCCCCCCCCCCKKKKKKKKK    KKKKKKK !!!
+                                //F::::::::::::::::::::FU::::::U     U::::::U    CCC::::::::::::CK:::::::K    K:::::K!!:!!
+                                //F::::::::::::::::::::FU::::::U     U::::::U  CC:::::::::::::::CK:::::::K    K:::::K!:::!
+                                //FF::::::FFFFFFFFF::::FUU:::::U     U:::::UU C:::::CCCCCCCC::::CK:::::::K   K::::::K!:::!
+                                //  F:::::F       FFFFFF U:::::U     U:::::U C:::::C       CCCCCCKK::::::K  K:::::KKK!:::!
+                                //  F:::::F              U:::::D     D:::::UC:::::C                K:::::K K:::::K   !:::!
+                                //  F::::::FFFFFFFFFF    U:::::D     D:::::UC:::::C                K::::::K:::::K    !:::!
+                                //  F:::::::::::::::F    U:::::D     D:::::UC:::::C                K:::::::::::K     !:::!
+                                //  F:::::::::::::::F    U:::::D     D:::::UC:::::C                K:::::::::::K     !:::!
+                                //  F::::::FFFFFFFFFF    U:::::D     D:::::UC:::::C                K::::::K:::::K    !:::!
+                                //  F:::::F              U:::::D     D:::::UC:::::C                K:::::K K:::::K   !!:!!
+                                //  F:::::F              U::::::U   U::::::U C:::::C       CCCCCCKK::::::K  K:::::KKK !!!
+                                //FF:::::::FF            U:::::::UUU:::::::U  C:::::CCCCCCCC::::CK:::::::K   K::::::K
+                                //F::::::::FF             UU:::::::::::::UU    CC:::::::::::::::CK:::::::K    K:::::K !!!
+                                //F::::::::FF               UU:::::::::UU        CCC::::::::::::CK:::::::K    K:::::K!!:!!
+                                //FFFFFFFFFFF                 UUUUUUUUU             CCCCCCCCCCCCCKKKKKKKKK    KKKKKKK !!!
+                                console.log('beforeSend', arguments);
+                            },
+                            beforeAll: function () {
+
+                                console.log('beforeAll', arguments);
+                            },
+                            load: function () {
+                                console.log('load', arguments);
+                            },
+                            error: function () {
+                                console.log('error', arguments);
+                            },
+                            complete: function () {
+                                console.log('complete', arguments);
+                            },
+
+                            loadStart: function (e) {
+                                console.log('loadStart', arguments);
+
+                                bar.removeAttribute('hidden');
+                                bar.max = e.total;
+                                bar.value = e.loaded;
+                            },
+
+                            progress: function (e) {
+                                console.log('progress', arguments);
+
+                                bar.max = e.total;
+                                bar.value = e.loaded;
+                            },
+
+                            loadEnd: function (e) {
+                                console.log('loadEnd', arguments);
+
+                                bar.max = e.total;
+                                bar.value = e.loaded;
+                            },
+
+                            completeAll: function (xhr) {
+                                obj = JSON.parse(xhr.responseText);
+
+                                if(obj.status == "ok")
+                                {
+                                    $("#msg").text("修改成功，刷新页面后生效");
+                                    UIkit.notification({message: obj.msg, status: 'success'});
+                                }
+                                else
+                                {
+                                    $("#msg").text("修改失败");
+                                    UIkit.notification({message: obj.msg, status: 'danger'});
+                                }
+
+                                setTimeout(function () {
+                                    bar.setAttribute('hidden', 'hidden');
+                                }, 1000);
+
+                                //alert('Upload Completed');
+                            }
+
+                        });
+
+                    </script>
+                </div>
+
+            </div>
+        </div>
+        <div id="modal-change-password" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">修改密码</h2>
+                <div class="uk-margin-small uk-width-1-1">
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-horizontal-select">原密码</label>
+                        <div class="uk-form-controls uk-form-controls-text">
+                            <input class="uk-input" id="form-horizontal-text" type="password" value="">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-horizontal-text">新密码</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="form-horizontal-text" type="password" value="">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-horizontal-text">确认新密码</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="form-horizontal-text" type="password" value="">
+                        </div>
+                    </div>
+                    <button class="uk-button uk-button-primary">确定修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
