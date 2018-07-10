@@ -5,6 +5,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
+from QieGaoWorld.views.police import username_get_avatar
+from QieGaoWorld.views.police import username_get_nickname
 import time
 
 @check_login
@@ -14,6 +16,11 @@ def animals_list(request):
     animals=DeclareAnimals.objects.all()
     for i in range(0,len(animals)):
         animals[i].declare_time= time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(animals[i].declare_time))
+        if(animals[i].username==animals[i].binding):
+            animals[i].binding=username_get_nickname(animals[i].binding)
+
+
+        animals[i].username=username_get_nickname(animals[i].username)
         if animals[i].status == 0:
             animals[i].status_label = ''
             animals[i].status_text = '未知'
@@ -26,7 +33,7 @@ def animals_list(request):
         elif animals[i].status == 3:
             animals[i].status_label = 'uk-label-danger'
             animals[i].status_text = '已死亡'
-    print(animals)
+
     return {"list":animals}
 
 @ensure_csrf_cookie
@@ -37,7 +44,7 @@ def animals_edit(request):
         if(str(request.POST.get('type', None)).strip()=="个人"):
             binding=request.session.get("username")
         else:
-            binding=str(request.POST.get('license', None)).strip()
+            binding=str(request.POST.get('binding', None)).strip()
         obj=DeclareAnimals(
             declare_time=int(time.time()),
             username=request.session.get("username"),

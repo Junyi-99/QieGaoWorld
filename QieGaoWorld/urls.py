@@ -21,6 +21,7 @@ from .views import login
 from .views import logout
 from .views import avatar
 from .views import police
+from .views import declare
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
