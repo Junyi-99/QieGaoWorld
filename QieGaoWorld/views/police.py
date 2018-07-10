@@ -26,6 +26,16 @@ def report(request):
         summary = str(request.POST.get('summary', None)).strip()
         detail = str(request.POST.get('detail', None)).strip()
 
+        flag = False
+        if len(position) == 0:
+            flag = True
+        if len(summary) == 0:
+            flag = True
+        if len(detail) == 0:
+            flag = True
+        if flag:
+            return HttpResponse(r'{"status": "failed", "msg": "请确认没有留空项目！"}')
+
         obj = Cases(
             report_time=int(time.time()),
             position=position,
@@ -75,8 +85,7 @@ def username_get_nickname(username):
 
 
 def police_hall(request):
-    cases = []
-
+    my_cases = []
     cases = Cases.objects.all()
     for i in range(0, len(cases)):
         cases[i].avatar = username_get_avatar(cases[i].username)
@@ -94,9 +103,16 @@ def police_hall(request):
         elif cases[i].status == 3:
             cases[i].status_label = 'uk-label-danger'
             cases[i].status_text = '处理失败'
+        else:
+            cases[i].status_label = ''
+            cases[i].status_text = '未知状态'
+
+        if cases[i].username == request.session['username']:
+            my_cases.append(cases[i])
 
     content = {
-        'cases': cases
+        'cases': cases,
+        'my_cases': my_cases
     }
 
     return render(request, "dashboard/police/police_hall.html", content)

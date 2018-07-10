@@ -1,0 +1,48 @@
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">发布新公告</h2>
+                    </div>
+                    <div class="uk-modal-body">
+                        <form class="uk-form-horizontal">
+                            {% csrf_token %}
+                            <div class="uk-margin">
+                                <div class="uk-grid-small" uk-grid>
+                                    <div class="uk-width-1-5@s">
+                                        <label class="uk-form-label" for="form-horizontal-text">公告标题</label>
+                                    </div>
+                                    <div class="uk-width-4-5@s">
+                                        <input class="uk-input" id="position" type="text" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="uk-margin">
+                                <div class="uk-grid-small" uk-grid>
+                                    <div class="uk-width-1-5@s">
+                                        <label class="uk-form-label" for="form-horizontal-text">严重程度</label>
+                                    </div>
+                                    <div class="uk-width-4-5@s">
+                                        <select class="uk-select">
+                                            <option>通知</option>
+                                            <option>警告</option>
+                                            <option>严重</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uk-margin">
+                                <div class="uk-grid-small" uk-grid>
+                                    <div class="uk-width-1-5@s">
+                                        <label class="uk-form-label" for="form-horizontal-text">公告内容</label>
+                                    </div>
+                                    <div class="uk-width-4-5@s">
+                                        <textarea class="uk-textarea" id="detail" rows="5"
+                                                  placeholder=""></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+                        <button class="uk-button uk-button-primary" type="button">发布</button>
+                    </div>

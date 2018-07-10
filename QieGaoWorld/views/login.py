@@ -39,5 +39,6 @@ def login_verify(request):
     request.session['usrgroup'] = user[0].usrgroup
     request.session['register_time'] = user[0].register_time
     request.session['avatar'] = user[0].avatar
+    request.session['permissions'] = user[0].permissions
     request.session.set_expiry(3600)  # 1小时有效期
     return HttpResponse(r'{"status": "ok", "msg": "登录成功"}')
