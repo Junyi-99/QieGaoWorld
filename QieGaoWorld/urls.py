@@ -35,7 +35,8 @@ urlpatterns = [
     url(r"^dashboard$", view.dashboard),
     url(r"^upload_face$", avatar.avatar_upload),
     url(r"^dashboard\/page$", view.dashboard_page),
-    url(r"^save_changes$", view.save_changes),
+    # TODO: 完善 Save Changes
+    # url(r"^save_changes$", view.save_changes),
     url(r"^police_report$", police.report),
     url(r"^admin$", view.admin),
     url(r"^admin_login_verify$", view.admin_login_verify),

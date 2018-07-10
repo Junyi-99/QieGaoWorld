@@ -7,7 +7,8 @@ from django.conf import settings
 import json
 import time
 from .views.decorator import check_login, check_post
-
+from .views.police import police_hall
+from .views.settings import page_settings
 
 def global_settings(request):
     return {"PROJECT_VERSION": settings.PROJECT_VERSION,
@@ -40,48 +41,6 @@ def admin(request):
     return render(request, "admin/login.html", context)
 
 
-@check_post
-@check_login
-def save_changes(request):
-    pass
-
-    type = str(request.POST.get("type", None))
-
-    if ("settings_meo" in type):
-
-        nickname = str(request.POST.get("nickname", "N/A"))
-        qqnumber = str(request.POST.get("qqnumber", "N/A"))
-        email = str(request.POST.get("email", "N/A"))
-        sex = str(request.POST.get("sex", "N/A"))
-
-        flag = False
-
-        if "N/A" in nickname:
-            flag = True
-        if "N/A" in qqnumber:
-            flag = True
-        if "N/A" in email:
-            flag = True
-        if "N/A" in sex:
-            flag = True
-
-        if flag:
-            return HttpResponse(r'{"status": "failed", "msg": "项目出错 或 包含非法字符：“N/A” "}')
-
-        decode = json.loads(get_userdata_json(request))
-        decode["nickname"] = nickname
-        decode["qqnumber"] = qqnumber
-        decode["email"] = email
-        decode["sex"] = sex
-        print(decode)
-        if set_userdata_json(request, json.dumps(decode)):
-            return HttpResponse(r'{"status": "ok", "msg": "保存成功"}')
-        else:
-            return HttpResponse(r'{"status": "failed", "msg": "保存失败"}')
-
-    return HttpResponse(r'{"status": "failed", "msg": "未经处理的保存"}')
-
-
 def handle_uploaded_file(f):
     print("Name")
     print(f.name)
@@ -99,23 +58,6 @@ def dashboard_page_cards_list(request):
     context = {}
     return context
 
-
-def dashboard_page_settings_meo(request):
-    username = request.session.get('username', 'N/A')
-    nickname = request.session.get('nickname', 'N/A')
-    qqnumber = request.session.get('qqnumber', 'N/A')
-    avatar = request.session.get('avatar', 'static\\face\\default.jpg')
-    register_time = request.session.get('register_time', 0)
-    register_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(register_time))
-
-    context = {
-        'username': username,
-        'nickname': nickname,
-        'qqnumber': qqnumber,
-        'register_time': register_time,
-        'avatar': avatar
-    }
-    return context
 
 
 def user_center(request):
@@ -188,7 +130,6 @@ def page_call_the_police(request):
     return render(request, "dashboard/police/call_the_police.html", {})
 
 
-
 @ensure_csrf_cookie
 @check_login
 @check_post
@@ -202,7 +143,7 @@ def dashboard_page(request):
         return page_announcement(request)
 
     if request.POST.get("page", None) == "news":
-        return render(request, "dashboard/settings/account.html", dashboard_page_settings_meo(request))
+        return render(request, "dashboard/settings/account.html", {})
 
     if request.POST.get("page", None) == "papers":
         return render(request, "dashboard/cards/card_list.html", dashboard_page_cards_list(request))
@@ -211,7 +152,7 @@ def dashboard_page(request):
         return render(request, "dashboard/cards/card_add.html", dashboard_page_cards_add(request))
 
     if request.POST.get("page", None) == "community":
-        return render(request, "dashboard/settings/account.html", dashboard_page_settings_meo(request))
+        return render(request, "dashboard/settings/account.html", {})
 
     if request.POST.get("page", None) == "declaration_center":
         return page_declaration_center(request)
@@ -223,7 +164,7 @@ def dashboard_page(request):
         return render(request, "dashboard/declaration/animals.html", {})
 
     if request.POST.get("page", None) == "police_hall":
-        return render(request, "dashboard/police/police_hall.html", {})
+        return police_hall(request)
 
     if request.POST.get("page", None) == "call_the_police":
         return render(request, "dashboard/police/call_the_police.html", {})
@@ -232,10 +173,10 @@ def dashboard_page(request):
         return render(request, "dashboard/world_map/map.html", {})
 
     if request.POST.get("page", None) == "rookies":
-        return render(request, "dashboard/cards/card_list.html", dashboard_page_cards_list(request))
+        return render(request, "dashboard/cards/card_list.html", {})
 
     if request.POST.get("page", None) == "settings":
-        return render(request, "dashboard/cards/card_add.html", dashboard_page_cards_add(request))
+        return page_settings(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))
 
@@ -250,9 +191,11 @@ def dashboard(request):
     return render(request, "dashboard/dashboard.html", context)
 
 
+# 使用协议
 def agreement(request):
     return render(request, "agreement.html", {})
 
 
+# 忘记密码
 def forgotten(request):
     return render(request, "forgotten.html", {})

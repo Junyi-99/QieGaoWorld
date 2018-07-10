@@ -49,3 +49,12 @@ class DeclareAnimals(models.Model):
     license = models.CharField(max_length=64)  # 牌照号码
     feature = models.CharField(max_length=64)  # 特征
     status = models.IntegerField(default=0)  # 状态（0:未知, 1:存活, 2:丢失, 3:已死亡）
+
+
+# 公告
+class Announcement(models.Model):
+    publish_time = models.IntegerField(default=0)  # 公告发布时间
+    username = models.CharField(max_length=100)  # 公告发布者
+    title = models.CharField(max_length=100)  # 公告标题
+    content = models.CharField(max_length=512)  # 公告内容
+    type = models.IntegerField(default=0)  # 公告类型（0:通知, 1:警告, 2:严重）
