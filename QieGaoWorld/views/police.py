@@ -26,6 +26,16 @@ def report(request):
         summary = str(request.POST.get('summary', None)).strip()
         detail = str(request.POST.get('detail', None)).strip()
 
+        flag = False
+        if len(position) == 0:
+            flag = True
+        if len(summary) == 0:
+            flag = True
+        if len(detail) == 0:
+            flag = True
+        if flag:
+            return HttpResponse(r'{"status": "failed", "msg": "请确认没有留空项目！"}')
+
         obj = Cases(
             report_time=int(time.time()),
             position=position,
