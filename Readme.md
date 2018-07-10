@@ -6,3 +6,10 @@
 
 安装依赖：
 `pip install -r requirements.txt`
+
+运行服务端：
+python manage.py runserver 0.0.0.0:8000
+
+更新Models：
+python manage.py makemigrations
+python manage.py migrate

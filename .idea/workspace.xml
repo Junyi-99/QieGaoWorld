@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fee87d6c-b810-4032-a46d-90d4e0fb0643" name="Default" comment="一直忘了传到github上" />
+    <list default="true" id="fee87d6c-b810-4032-a46d-90d4e0fb0643" name="Default" comment="一直忘了传到github上">
+      <change beforePath="$PROJECT_DIR$/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +29,7 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.2643456">
+    <splitter split-orientation="horizontal" split-proportion="0.5162127">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="menu.html" pinned="false" current-in-tab="false">
@@ -39,16 +41,16 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/QieGaoWorld/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="684">
-                  <caret line="36" column="37" selection-start-line="36" selection-start-column="37" selection-end-line="36" selection-end-column="37" />
+                <state relative-caret-position="247">
+                  <caret line="13" column="6" lean-forward="true" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+          <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/.gitignore">
               <provider selected="true" editor-type-id="text-editor" />
             </entry>
@@ -66,14 +68,23 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="police.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="police.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="445">
-                  <caret line="41" selection-start-line="41" selection-end-line="41" />
+                <state relative-caret-position="303">
+                  <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
                   <folding>
                     <element signature="e#0#36#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Readme.md" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Readme.md">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="266">
+                  <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
                 </state>
               </provider>
             </entry>
@@ -168,6 +179,7 @@
         <option value="$PROJECT_DIR$/templates/dashboard/police/call_the_police.html" />
         <option value="$PROJECT_DIR$/QieGaoWorld/models.py" />
         <option value="$PROJECT_DIR$/QieGaoWorld/views/police.py" />
+        <option value="$PROJECT_DIR$/Readme.md" />
       </list>
     </option>
   </component>
@@ -178,14 +190,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="NodePackageJsonFileManager">
-    <packageJsonPaths>
-      <path value="$PROJECT_DIR$/static/assets/js/t/node_modules/chart.js/package.json" />
-      <path value="$PROJECT_DIR$/static/assets/js/t/node_modules/chartjs-color-string/package.json" />
-      <path value="$PROJECT_DIR$/static/assets/js/t/node_modules/chartjs-color/package.json" />
-      <path value="$PROJECT_DIR$/static/assets/js/t/node_modules/color-convert/package.json" />
-      <path value="$PROJECT_DIR$/static/assets/js/t/node_modules/color-name/package.json" />
-      <path value="$PROJECT_DIR$/static/assets/js/t/node_modules/moment/package.json" />
-    </packageJsonPaths>
+    <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
@@ -210,63 +215,6 @@
               <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
               <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
               <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="announcement" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="declaration" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="police" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="settings" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
-              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="world_map" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -344,6 +292,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="12" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" weight="0.32897604" />
@@ -351,8 +300,8 @@
       <window_info anchor="bottom" id="Version Control" order="1" />
       <window_info anchor="bottom" id="Python Console" order="5" weight="0.32897604" />
       <window_info anchor="bottom" id="Run" order="8" weight="0.25816995" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="4" visible="true" weight="0.33696836" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17643923" />
+      <window_info anchor="bottom" id="Terminal" order="4" visible="true" weight="0.05561614" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.17803837" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="1" weight="0.32995737" />
       <window_info anchor="right" id="SciView" order="0" weight="0.32995737" />
@@ -380,13 +329,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/call_the_police.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1273">
-          <caret line="67" column="94" selection-start-line="67" selection-start-column="94" selection-end-line="67" selection-end-column="94" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/login.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="456">
@@ -712,25 +654,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" column="6" lean-forward="true" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="445">
-          <caret line="41" selection-start-line="41" selection-end-line="41" />
+        <state relative-caret-position="303">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/models.py">
+    <entry file="file://$PROJECT_DIR$/Readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="36" column="37" selection-start-line="36" selection-start-column="37" selection-end-line="36" selection-end-column="37" />
+        <state relative-caret-position="266">
+          <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
