@@ -1,3 +1,131 @@
 <h2>动物申报
-<small style="color: #666666; font-size: medium">Animal Declaration</small></h2>
+    <small style="color: #666666; font-size: medium">Animal Declaration</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></h2>
 <hr class="uk-margin" />
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <caption></caption>
+    <thead>
+        <tr>
+            <th>牌照号</th>
+            <th>隶属</th>
+            <th>特征</th>
+            <th>状态</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in list %}
+        <tr>
+            <td>{{ a.license }}</td>
+            <td>{{ a.binding }}</td>
+            <td>{{ a.feature }}</td>
+            <td><span class="{{ a.status.label }}">{{ a.status_text }}</span> </td>
+            <td>{{ a.declare_time }}</td>
+            <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
+            <td></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div id="edit-box" uk-modal class="uk-flex-top">
+    <div class="uk-modal-dialog">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header  ">
+            <h2 class="uk-modal-title">自助上牌</h2>
+        </div>
+        <div class=" uk-modal-body  ">
+            <form class="uk-form-horizontal" method="post" name="info" action="/animals_edit">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <label class="uk-width-1-5 uk-form-label ">牌照号</label>
+                    <div class="uk-form-controls uk-width-auto">
+                        <input class="uk-input" id="form-horizontal-text" name="license" type="text" placeholder="糕A001 测试">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label uk-width-1-5">隶属</label>
+                    <div class="uk-form-controls">
+                        <select name="type" id="" class="uk-select uk-width-1-5">
+                            <option value="个人">个人</option>
+                            <option value="社团">社团</option>
+                            <option value="公共">公共</option>
+                        </select>
+
+                        <select select="社团" name="" class=" uk-select uk-width-3-5" style="display: none;">
+                            <option value="糕达">糕达</option>
+                        </select>
+                        <input select="公共" class="uk-input " id="form-horizontal-text" type="hidden" value="公共" style="display: none;">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-width-1-5 uk-form-label ">特征</label>
+                    <div class="uk-form-controls uk-width-auto">
+                        <input class="uk-input" id="form-horizontal-text" name="feature" type="text" placeholder="例如：白底黑色斑点">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label uk-width-auto">状态</label>
+                    <div class="uk-form-controls">
+                        <select name="status" id="" class="uk-select ">
+                            <option value="0">未知</option>
+                            <option value="1">存活</option>
+                            <option value="2">丢失</option>
+                            <option value="3">死亡</option>
+                        </select>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(function() {});
+    $('[name=type]').change(function() {
+        $('[select]').hide();
+        $('[select]').attr("name", "");
+        $('[select="' + $(this).val() + '"]').show();
+        $('[select="' + $(this).val() + '"]').attr("name", "binding");
+    });
+    $("#save").click(function() {
+        $.post("/animals_edit", $("[name=info]").serialize(), function(obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                })
+                UIkit.modal("#edit-box").hide();
+
+            } else {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+        }, "json")
+    });
+
+    function tips(text) {
+        $("#tips").show();
+        $("#tips p").html(obj.msg);
+        setTimeout(
+            function() {
+                $("#tips").hide();
+            }, 2000);
+
+    }
+</script>

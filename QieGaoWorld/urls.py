@@ -21,7 +21,7 @@ from .views import login
 from .views import logout
 from .views import avatar
 from .views import police
-
+from .views import declare
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^$', login.login),
@@ -41,4 +41,5 @@ urlpatterns = [
     url(r"^admin$", view.admin),
     url(r"^admin_login_verify$", view.admin_login_verify),
     url(r"^admin\/dashboard$", view.admin_dashboard),
+    url(r"^animals_edit$",declare.animals_edit),
 ]
