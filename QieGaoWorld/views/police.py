@@ -84,7 +84,7 @@ def username_get_nickname(username):
         return 'Internal Error'
 
 
-def police_hall(request):
+def page_police_hall(request):
     my_cases = []
     cases = Cases.objects.all()
     for i in range(0, len(cases)):

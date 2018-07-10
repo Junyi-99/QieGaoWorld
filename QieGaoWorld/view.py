@@ -7,57 +7,29 @@ from django.conf import settings
 import json
 import time
 from .views.decorator import check_login, check_post
-from .views.police import police_hall
+from .views.police import page_police_hall
 from .views.settings import page_settings
+
+
+# 使用协议
+def agreement(request):
+    return render(request, "agreement.html", {})
+
+
+# 忘记密码
+def forgotten(request):
+    return render(request, "forgotten.html", {})
 
 
 def global_settings(request):
     return {"PROJECT_VERSION": settings.PROJECT_VERSION,
-            'PROJECTVERSION': settings.PROJECT_VERSION}
-
-
-def admin_dashboard(request):
-    pass
-    context = {}
-    return render(request, "admin/login.html", context)
-
-
-@check_post
-def admin_login_verify(request):
-    username = str(request.POST.get("username", None)).encode("utf-8")
-    password = str(request.POST.get("password", None)).encode("utf-8")
-
-    if username != b"root":
-        return HttpResponse(r'{"status": "failed", "msg": "Access denied.1"}')
-    if password != b"admin":
-        return HttpResponse(r'{"status": "failed", "msg": "Access denied.2"}')
-
-    request.session["admin_is_login"] = True
-    request.session.set_expiry(3600)  # 1小时有效期
-    return HttpResponse(r'{"status": "ok", "msg": "Login Successfully."}')
-
-
-def admin(request):
-    context = {}
-    return render(request, "admin/login.html", context)
+            'AUTHOR': settings.PROJECT_VERSION}
 
 
 def handle_uploaded_file(f):
-    print("Name")
-    print(f.name)
     with open(f.name, "wb+") as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-
-
-def dashboard_page_cards_add(request):
-    context = {}
-    return context
-
-
-def dashboard_page_cards_list(request):
-    context = {}
-    return context
 
 
 @check_login
@@ -98,31 +70,16 @@ def user_center(request):
             'ping': latency,
         }
         print(context)
-    except Exception:
+    except Exception as e:
+        print(e)
         context = {}
 
     context['permissions'] = request.session['permissions']
-    # context['permissions'] = '%publish_announcement% %call_the_police%'
     return render(request, "dashboard/user_center.html", context)
 
 
 @check_login
 def page_announcement(request):
-    pass
-
-    import requests
-
-    # data = {
-    #     'j_username': request.session["username"],
-    #     'j_password': request.session["password"]
-    # }
-    # ret = requests.post('http://map.qiegaoshijie.club/up/login', data)
-    # print(ret.text)
-    # print(ret.cookies['JSESSIONID'])
-    # response = render_to_response("dashboard/map.html", {})
-    # #P3P Header
-    # response["P3P"] = 'CP="CAO PSA OUR"'
-    # response.set_cookie(key='JSESSIONID', value=ret.cookies['JSESSIONID'], domain='map.qiegaoshijie.club', path='/')
     return render(request, "dashboard/announcement/announcement.html", {})
 
 
@@ -134,6 +91,46 @@ def page_declaration_center(request):
 @check_login
 def page_call_the_police(request):
     return render(request, "dashboard/police/call_the_police.html", {})
+
+
+@check_login
+def page_papers(request):
+    return render(request, "dashboard/papers/papers.html", {})
+
+
+@check_login
+def page_community(request):
+    return render(request, "dashboard/papers/community.html", {})
+
+
+@check_login
+def page_project_plan(request):
+    return render(request, "dashboard/papers/plans.html", {})
+
+
+@check_login
+def page_call_the_police(request):
+    return render(request, "dashboard/police/call_the_police.html", {})
+
+
+@check_login
+def page_world_map(request):
+    return render(request, "dashboard/world_map/map.html", {})
+
+
+@check_login
+def page_rookies(request):
+    return render(request, "dashboard/rookies/rookies.html", {})
+
+
+@check_login
+def dashboard(request):
+    context = {
+        'avatar': request.session['avatar'],
+        'nickname': request.session['nickname']
+    }
+
+    return render(request, "dashboard/dashboard.html", context)
 
 
 @ensure_csrf_cookie
@@ -153,13 +150,13 @@ def dashboard_page(request):
         return render(request, "dashboard/settings/account.html", {})
 
     if request.POST.get("page", None) == "papers":
-        return render(request, "dashboard/cards/card_list.html", dashboard_page_cards_list(request))
+        return page_papers(request)
 
     if request.POST.get("page", None) == "project_plan":
-        return render(request, "dashboard/cards/card_add.html", dashboard_page_cards_add(request))
+        return page_project_plan(request)
 
     if request.POST.get("page", None) == "community":
-        return render(request, "dashboard/settings/account.html", {})
+        return page_community(request)
 
     if request.POST.get("page", None) == "declaration_center":
         return page_declaration_center(request)
@@ -171,38 +168,18 @@ def dashboard_page(request):
         return render(request, "dashboard/declaration/animals.html", {})
 
     if request.POST.get("page", None) == "police_hall":
-        return police_hall(request)
+        return page_police_hall(request)
 
     if request.POST.get("page", None) == "call_the_police":
-        return render(request, "dashboard/police/call_the_police.html", {})
+        return page_call_the_police(request)
 
     if request.POST.get("page", None) == "world_map":
-        return render(request, "dashboard/world_map/map.html", {})
+        return page_world_map(request)
 
     if request.POST.get("page", None) == "rookies":
-        return render(request, "dashboard/cards/card_list.html", {})
+        return page_rookies(request)
 
     if request.POST.get("page", None) == "settings":
         return page_settings(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))
-
-
-@check_login
-def dashboard(request):
-    context = {
-        'avatar': request.session['avatar'],
-        'nickname': request.session['nickname']
-    }
-
-    return render(request, "dashboard/dashboard.html", context)
-
-
-# 使用协议
-def agreement(request):
-    return render(request, "agreement.html", {})
-
-
-# 忘记密码
-def forgotten(request):
-    return render(request, "forgotten.html", {})
