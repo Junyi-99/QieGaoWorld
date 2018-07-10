@@ -9,6 +9,7 @@ import time
 from .views.decorator import check_login, check_post
 from .views.police import page_police_hall
 from .views.settings import page_settings
+from .views.declare import animals_list
 
 
 # 使用协议
@@ -92,6 +93,8 @@ def page_declaration_center(request):
 def page_call_the_police(request):
     return render(request, "dashboard/police/call_the_police.html", {})
 
+def declare_animals(request):
+    return animals_list(request)
 
 @check_login
 def page_papers(request):
@@ -165,7 +168,7 @@ def dashboard_page(request):
         return render(request, "dashboard/declaration/buildings.html", {})
 
     if request.POST.get("page", None) == "declare_animals":
-        return render(request, "dashboard/declaration/animals.html", {})
+        return render(request, "dashboard/declaration/animals.html", declare_animals(request))
 
     if request.POST.get("page", None) == "police_hall":
         return page_police_hall(request)
