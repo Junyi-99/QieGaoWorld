@@ -12,14 +12,15 @@
 <table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
     <caption></caption>
     <thead>
-    <tr>
-        <th>牌照号</th>
-        <th>隶属</th>
-        <th>特征</th>
-        <th>状态</th>
-        <th>更新时间</th>
-        <th>操作</th>
-    </tr>
+        <tr>
+            <th>牌照号</th>
+            <th>隶属</th>
+            <th>特征</th>
+            <th>状态</th>
+            <th>申请人</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
     </thead>
     <tbody>
     {% for a in my_animals %}
@@ -28,6 +29,7 @@
             <td>{{ a.binding }}</td>
             <td>{{ a.feature }}</td>
             <td><span class="uk-label {{ a.status_label }}">{{ a.status_text }}</span></td>
+            <td>{{ a.username }}</td>
             <td>{{ a.declare_time }}</td>
             <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
             <td></td>
@@ -102,6 +104,7 @@
             <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
         </div>
     </div>
+
 </div>
 <script>
     $(document).ready(
