@@ -1,10 +1,26 @@
     {% load static %}
 
     <div class="uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid>
-        <div>
+        <div class="uk-inline">
             <h2 class="uk-margin-small-top">公告
                 <small style="color: #666666; font-size: medium">Announcement</small>
+
             </h2>
+            <div class="uk-position-top-right">
+                <a href="#modal-center" class="uk-icon-link uk-margin-top" uk-icon="icon: plus; ratio: 1.5" uk-toggle></a>
+            </div>
+
+            <div id="modal-center" class="uk-flex-top" uk-modal>
+                <div class="uk-modal-dialog uk-margin-auto-vertical">
+                    <button class="uk-modal-close-default" type="button" uk-close></button>
+                    {% if '%publish_announcement%' in permissions %}
+                        {% include "dashboard/announcement/new_announcement.html" %}
+                    {% else %}
+                        {% include "dashboard/announcement/permission_denied.html" %}
+                    {% endif %}
+                </div>
+            </div>
+
             <hr class="uk-margin" />
             <div class="uk-grid-match" uk-grid>
                 <div>

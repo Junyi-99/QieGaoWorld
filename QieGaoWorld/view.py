@@ -10,6 +10,7 @@ from .views.decorator import check_login, check_post
 from .views.police import police_hall
 from .views.settings import page_settings
 
+
 def global_settings(request):
     return {"PROJECT_VERSION": settings.PROJECT_VERSION,
             'PROJECTVERSION': settings.PROJECT_VERSION}
@@ -26,9 +27,9 @@ def admin_login_verify(request):
     username = str(request.POST.get("username", None)).encode("utf-8")
     password = str(request.POST.get("password", None)).encode("utf-8")
 
-    if username != b"Junyi":
+    if username != b"root":
         return HttpResponse(r'{"status": "failed", "msg": "Access denied.1"}')
-    if password != b"houjunyi12797848":
+    if password != b"admin":
         return HttpResponse(r'{"status": "failed", "msg": "Access denied.2"}')
 
     request.session["admin_is_login"] = True
@@ -59,7 +60,7 @@ def dashboard_page_cards_list(request):
     return context
 
 
-
+@check_login
 def user_center(request):
     try:
         from mcstatus import MinecraftServer
@@ -100,9 +101,12 @@ def user_center(request):
     except Exception:
         context = {}
 
+    context['permissions'] = request.session['permissions']
+    # context['permissions'] = '%publish_announcement% %call_the_police%'
     return render(request, "dashboard/user_center.html", context)
 
 
+@check_login
 def page_announcement(request):
     pass
 
@@ -122,10 +126,12 @@ def page_announcement(request):
     return render(request, "dashboard/announcement/announcement.html", {})
 
 
+@check_login
 def page_declaration_center(request):
     return render(request, "dashboard/declaration/center.html", {})
 
 
+@check_login
 def page_call_the_police(request):
     return render(request, "dashboard/police/call_the_police.html", {})
 
@@ -135,6 +141,7 @@ def page_call_the_police(request):
 @check_post
 def dashboard_page(request):
     ensure_csrf_cookie(request)
+    print(request.POST.get("page", None))
 
     if request.POST.get("page", None) == "user_center":
         return user_center(request)
