@@ -42,7 +42,7 @@ def report(request):
             coordinate='%d, %d, %d' % (coordinate_x, coordinate_y, coordinate_z),
             summary=summary,
             detail=detail,
-            username=request.session['username'],
+            username=request.session.get('username', None),
             progress='等待受理',
             status=0,
             picture=''
@@ -87,10 +87,13 @@ def username_get_nickname(username):
 def page_police_hall(request):
     my_cases = []
     cases = Cases.objects.all()
+
     for i in range(0, len(cases)):
+
         cases[i].avatar = username_get_avatar(cases[i].username)
         cases[i].nickname = username_get_nickname(cases[i].username)
         cases[i].report_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cases[i].report_time))
+
         if cases[i].status == 0:
             cases[i].status_label = ''
             cases[i].status_text = '等待调查'
@@ -107,7 +110,7 @@ def page_police_hall(request):
             cases[i].status_label = ''
             cases[i].status_text = '未知状态'
 
-        if cases[i].username == request.session['username']:
+        if cases[i].username == request.session.get('username', None):
             my_cases.append(cases[i])
 
     content = {

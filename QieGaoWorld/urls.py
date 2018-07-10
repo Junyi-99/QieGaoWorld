@@ -21,6 +21,7 @@ from .views import login
 from .views import logout
 from .views import avatar
 from .views import police
+from .views import declare
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
@@ -38,8 +39,8 @@ urlpatterns = [
     # TODO: 完善 Save Changes
     # url(r"^save_changes$", view.save_changes),
     url(r"^police_report$", police.report),
-    #url(r"^admin$", view.admin),
-    #url(r"^admin_login_verify$", view.admin_login_verify),
+    # url(r"^admin$", view.admin),
+    # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),
-    url(r"^animals_edit$",declare.animals_edit),
+    url(r"^animals_add$", declare.animals_add),
 ]

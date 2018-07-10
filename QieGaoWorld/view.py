@@ -76,6 +76,7 @@ def user_center(request):
         context = {}
 
     context['permissions'] = request.session['permissions']
+    print(context['permissions'])
     return render(request, "dashboard/user_center.html", context)
 
 
@@ -93,8 +94,15 @@ def page_declaration_center(request):
 def page_call_the_police(request):
     return render(request, "dashboard/police/call_the_police.html", {})
 
-def declare_animals(request):
-    return animals_list(request)
+
+@check_login
+def page_declare_animals(request):
+    my_animals = animals_list(request)
+    content = {
+        'my_animals': my_animals
+    }
+    return render(request, "dashboard/declaration/animals.html", content)
+
 
 @check_login
 def page_papers(request):
@@ -168,7 +176,7 @@ def dashboard_page(request):
         return render(request, "dashboard/declaration/buildings.html", {})
 
     if request.POST.get("page", None) == "declare_animals":
-        return render(request, "dashboard/declaration/animals.html", declare_animals(request))
+        return page_declare_animals(request)
 
     if request.POST.get("page", None) == "police_hall":
         return page_police_hall(request)
