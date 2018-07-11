@@ -1,3 +1,4 @@
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
 from QieGaoWorld.models import DeclareAnimals
@@ -58,6 +59,9 @@ def animals_add(request):
         except ValueError:
             return HttpResponse(r'{"status": "failed", "msg": "数值错误！"}')
 
+        if animals_check_license_exist(license_):
+            return HttpResponse(r'{"status": "failed", "msg": "牌照已存在！"}')
+
         if binding == 0:
             binding = username_get_nickname(username)
         else:
@@ -81,3 +85,14 @@ def animals_add(request):
     except Exception as e:
         print(e)
         return HttpResponse(r'{"status": "failed", "msg": "内部错误"}')
+
+
+# 检查牌照是否存在，存在返回True，不存在返回False
+def animals_check_license_exist(license_):
+    try:
+        obj = DeclareAnimals.objects.get(license=license_)
+        return True
+    except MultipleObjectsReturned:
+        return True
+    except ObjectDoesNotExist:
+        return False
