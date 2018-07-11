@@ -32,14 +32,15 @@ def register_verify(request):
     if match:
         return HttpResponse(r'{"status": "failed", "msg": "password invalid"}')
 
-    l = ["SYSTEM", "N/A", "ADMIN", "管理员", "版主", "vip", ".com", ".cn", "官方", "京东", "淘宝", "SELECT", "FROM", "WHERE",
-         "INSERT", "黑社会", "性爱", "操", "肏", "你妈", "YY", "攻击", "黄网", "迷药", "匿名", "NULL", "公司", "经理", "投资商", "迅雷", "XUNLEI",
-         "百度"]
-    for eachL in l:
+    lis = ["SYSTEM", "N/A", "ADMIN", "管理员", "版主", "vip", ".com", ".cn", "官方", "京东", "淘宝", "SELECT", "FROM", "WHERE",
+           "INSERT", "黑社会", "性爱", "操", "肏", "你妈", "YY", "攻击", "黄网", "迷药", "匿名", "NULL", "公司", "经理", "投资商", "迅雷",
+           "XUNLEI",
+           "百度"]
+    for eachL in lis:
         if eachL in username.upper():
             return HttpResponse(r'{"status": "failed", "msg": "用户名包含非法字符"}')
 
-    for eachL in l:
+    for eachL in lis:
         if eachL in nickname.upper():
             return HttpResponse(r'{"status": "failed", "msg": "昵称包含非法字符"}')
 
@@ -59,12 +60,7 @@ def register_verify(request):
     # username_md5 = hashlib.md5(username.encode("utf-8")).hexdigest()
 
     # ===================================检测重复用户部分开始
-    try:
-        user = User.objects.filter(username=username)
-    except MultipleObjectsReturned:
-        return HttpResponse(r'{"status": "failed", "msg": "用户名已存在"}')
-    finally:
-        pass
+    user = User.objects.filter(username=username)
     if len(user) != 0:
         return HttpResponse(r'{"status": "failed", "msg": "用户名已存在"}')
     # ===================================检测重复用户部分结束

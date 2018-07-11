@@ -51,6 +51,7 @@ def avatar_upload(request):
         try:
             im = Image.open(tmp_file)
         except Exception as e:
+            print(e)
             return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误"}')
 
         out = im.resize((128, 128), Image.ANTIALIAS)

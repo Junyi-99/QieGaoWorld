@@ -1,3 +1,185 @@
+{% load static %}
 <h2>建筑申报
-<small style="color: #666666; font-size: medium">Construction Declaration</small></h2>
-<hr class="uk-margin" />
+    <small style="color: #666666; font-size: medium">Construction Declaration</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
+            uk-toggle="target: #edit-box">新申报
+    </button>
+</h2>
+<hr class="uk-margin"/>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <caption></caption>
+    <thead>
+        <tr>
+            <th class="uk-width-medium">建筑名</th>
+            <th class="uk-width-medium">建筑面积</th>
+            <th class="uk-width-medium">介绍</th>
+            <th class="uk-width-medium">建筑时间</th>
+            <th class="uk-width-small">申报状态</th>
+            <th class="uk-width-small">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-auto">
+                        <img class="uk-preserve-width uk-border-circle" src="{% static "buildings/times_square.jpg" %}" width="40" alt="">
+                    </div>
+                    <div class="uk-width-expand">
+
+                        <h4 class="uk-margin-remove-bottom">时代广场</h4>
+                        <p class="uk-text-meta uk-margin-remove-top">Times Square</p>
+                    </div>
+                </div>
+            </td>
+            <td class="nowrap">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h4 class="uk-margin-remove-bottom">788,910 M<sup>2</sup></h4>
+                        <p class="uk-text-meta uk-margin-remove-top">XYZ: -2273, 165, 2267</p>
+                    </div>
+                </div>
+            </td>
+            <td class="nowrap">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h4 class="uk-margin-remove-bottom">世界的十字路口</h4>
+                        <p class="uk-text-truncate uk-text-meta uk-margin-remove-top">百老汇上的剧院、大量耀眼的霓虹光管广告、以及电视式的宣传版，已经深入成为象征纽约的标志，反映曼哈顿强烈的都市特性。时报广场是市内唯一在规划法令内，要求业主“必须”悬挂亮眼宣传版的地区。</p>
+                    </div>
+                </div>
+            </td>
+            <td class="nowrap">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <p class="uk-margin-remove-bottom uk-margin-remove-top">预计开工：2018/7/12</p>
+                        <p class="uk-margin-remove-bottom uk-margin-remove-top">预计结束：2018/7/30</p>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <span class="uk-label uk-label-warning" style="vertical-align: middle">正在审核</span>
+            </td>
+            <td>
+                <select id="options" class="uk-select">
+                    <option value="0">...</option>
+                    <option value="1">标记为完工</option>
+                </select>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div id="edit-box" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">自助上牌</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">牌照号</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="糕A001 测试">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">隶属</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <select id="binding" class="uk-select">
+                                <option value="0">个人</option>
+                                <option value="1">公共</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">特征</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="feature" type="text" placeholder="例如：白底黑色斑点">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">状态</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <select id="status" class="uk-select">
+                                <option value="0">未知</option>
+                                <option value="1">存活</option>
+                                <option value="2">丢失</option>
+                                <option value="3">死亡</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+<script>
+
+
+
+    $(document).ready(
+        $(function () {
+            $("#options").change(function () {
+                console.log("23224")
+            });
+
+
+            $("#save").click(function () {
+
+                var binding = $("#binding").val();
+                var license = $("#license").val();
+                var feature = $("#feature").val();
+                var status = $("#status").val();
+
+                $.post("/animals_add", {
+                    "binding": binding,
+                    "license": license,
+                    "feature": feature,
+                    "status": status
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#edit-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+        })
+    );
+</script>

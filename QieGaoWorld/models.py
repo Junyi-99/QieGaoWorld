@@ -28,13 +28,16 @@ class Cases(models.Model):
 # 建筑申报记录
 class DeclareResidences(models.Model):
     declare_time = models.IntegerField(default=0)  # 申请时间
-    username = models.CharField(max_length=100)  # 申请人用户名
-    coordinate = models.CharField(max_length=64)  # 建筑坐标
-    area = models.CharField(max_length=64)  # 建筑面积
-    concept = models.CharField(max_length=1024)  # 概念图
-    plan = models.CharField(max_length=1024)  # 平面图
-    detail = models.CharField(max_length=2048)  # 建筑详情介绍
-    perspective = models.CharField(max_length=1024)  # 透视图
+    username = models.CharField(max_length=100, default='')  # 申请人用户名
+    coordinate = models.CharField(max_length=64, default='')  # 建筑坐标
+    area = models.CharField(max_length=64, default='')  # 建筑面积
+    concept = models.CharField(max_length=1024, default='')  # 概念图
+    plan = models.CharField(max_length=1024, default='')  # 平面图
+    name = models.CharField(max_length=64, default='')  # 建筑名
+    english_name = models.CharField(max_length=64, default='')  # 英文名
+    summary = models.CharField(max_length=128, default='')  # 建筑简介
+    detail = models.CharField(max_length=2048, default='')  # 建筑详细介绍
+    perspective = models.CharField(max_length=1024, default='')  # 透视图
     predict_start_time = models.IntegerField(default=0)  # 预计开始时间
     predict_end_time = models.IntegerField(default=0)  # 预计结束时间
     actually_end_time = models.IntegerField(default=0)  # 实际结束时间
