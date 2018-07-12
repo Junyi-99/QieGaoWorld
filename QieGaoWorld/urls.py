@@ -39,6 +39,7 @@ urlpatterns = [
     # TODO: 完善 Save Changes
     # url(r"^save_changes$", view.save_changes),
     url(r"^police_report$", police.report),
+    url(r"^police_change_status$", police.change_status),
     # url(r"^admin$", view.admin),
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),

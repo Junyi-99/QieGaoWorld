@@ -57,8 +57,9 @@ def user_center(request):
         opn = status.players.online
         user = []
 
-        for e in status.players.sample:
-            user.append({'name': e.name, 'id': e.id})
+        if status.players.sample is not None:
+            for e in status.players.sample:
+                user.append({'name': e.name, 'id': e.id})
 
         context = {
             'motd': motd,

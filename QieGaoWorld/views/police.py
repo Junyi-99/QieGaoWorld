@@ -1,4 +1,4 @@
-from django.core.exceptions import MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -8,6 +8,37 @@ from QieGaoWorld.models import Cases
 from QieGaoWorld.models import User
 
 import time
+
+
+@ensure_csrf_cookie
+@check_post
+# 更改案件状态
+def change_status(request):
+    if '%police_cases_modify%' not in request.session.get('permissions', None):
+        return HttpResponse(r'{"status": "failed", "msg": "权限不足，此操作已被记录！用户名: %s，操作时间：%s ..."}' % (
+            request.session.get('username', None), time.time()))
+    print(request.POST.get('id', None))
+    try:
+        id_ = int(request.POST.get('id', None))
+
+        new_status = int(request.POST.get('new_status', None))
+
+    except ValueError:
+        return HttpResponse(r'{"status": "failed", "msg": "参数错误！"}')
+
+    try:
+        obj = Cases.objects.get(id=id_)
+        if 0 <= new_status <= 3:
+            obj.status = new_status
+            obj.save()
+            return HttpResponse(r'{"status": "ok", "msg": "更新案件信息成功！刷新页面生效！"}')
+        else:
+            return HttpResponse(r'{"status": "failed", "msg": "状态值错误！"}')
+    except MultipleObjectsReturned as e:
+        print(e)
+        return HttpResponse(r'{"status": "failed", "msg": "内部错误！请联系管理员"}')
+    except ObjectDoesNotExist:
+        return HttpResponse(r'{"status": "failed", "msg": "报案不存在！"}')
 
 
 @ensure_csrf_cookie
@@ -93,7 +124,7 @@ def page_police_hall(request):
         cases[i].avatar = username_get_avatar(cases[i].username)
         cases[i].nickname = username_get_nickname(cases[i].username)
         cases[i].report_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cases[i].report_time))
-
+        print(cases[i].id)
         if cases[i].status == 0:
             cases[i].status_label = ''
             cases[i].status_text = '等待调查'
@@ -115,7 +146,8 @@ def page_police_hall(request):
 
     content = {
         'cases': cases,
-        'my_cases': my_cases
+        'my_cases': my_cases,
+        'permissions': request.session.get('permissions', None)
     }
 
     return render(request, "dashboard/police/police_hall.html", content)
