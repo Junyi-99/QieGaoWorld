@@ -2,6 +2,7 @@
   <dictionary name="hji20">
     <words>
       <w>makemigrations</w>
+      <w>motd</w>
       <w>qqnumber</w>
       <w>regitime</w>
       <w>usrgroup</w>
