@@ -131,8 +131,7 @@
                         <td>
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-auto">
-                                    <img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40"
-                                         alt="">
+                                    <img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40" alt="">
                                 </div>
                                 <div class="uk-width-expand">
 
@@ -220,7 +219,9 @@
                         <td class="nowrap">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-expand">
-                                    <h4 class="uk-margin-remove-bottom">{{ c.summary }}</h4>
+                                    <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                           onclick="openModal(this.id)">{{ c.summary }}</a>
+                                    </h4>
                                     <p class="uk-text-truncate uk-text-meta uk-margin-remove-top">{{ c.detail }}</p>
                                 </div>
                             </div>
