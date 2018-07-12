@@ -152,7 +152,9 @@
                         <td class="nowrap">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-expand">
-                                    <h4 class="uk-margin-remove-bottom">{{ c.summary }}</h4>
+                                    <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                           onclick="openModal(this.id)">{{ c.summary }}</a>
+                                    </h4>
                                     <p class="uk-text-truncate uk-text-meta uk-margin-remove-top">{{ c.detail }}</p>
                                 </div>
                             </div>
@@ -248,11 +250,20 @@
     </li>
 </ul>
 
+
 <script>
+    function openModal(id_) {
+        var id = id_.substring(8);
+        $.get("/police_case_detail", {
+            "id": id
+        }, function (data) {
+            UIkit.modal.dialog(data);
+        });
+    }
+
     function changeMy(id_) {
         var id = id_.substring(10);
         var new_status = $("#" + id_).val();
-        console.log(id_, id, new_status, typeof(id));
         $.post("/police_change_status", {
             "id": id,
             "new_status": new_status
@@ -272,6 +283,7 @@
             }
         }, "json")
     }
+
     function change(id_) {
         var id = id_.substring(8);
         var new_status = $("#" + id_).val();

@@ -40,6 +40,7 @@ urlpatterns = [
     # url(r"^save_changes$", view.save_changes),
     url(r"^police_report$", police.report),
     url(r"^police_change_status$", police.change_status),
+    url(r"^police_case_detail$", police.case_detail),
     # url(r"^admin$", view.admin),
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),

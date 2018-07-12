@@ -11,6 +11,45 @@ import time
 
 
 @ensure_csrf_cookie
+def case_detail(request):
+    error_msg = '<div class="uk-modal-header"><h2 class="uk-modal-title" style="color: #cc3947">%s</h2></div>'
+
+    if '%police_cases_watch%' not in request.session.get('permissions', None):
+        return HttpResponse(error_msg % "您没有查看案件详情的权限！")
+
+    try:
+        id_ = int(request.GET.get('id', None))
+    except ValueError:
+        return HttpResponse(error_msg % "参数错误！")
+
+    try:
+        obj = Cases.objects.get(id=id_)
+        obj.report_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(obj.report_time)))
+        obj.nickname = username_get_nickname(obj.username)
+        if obj.status == 0:
+            obj.status_label = ''
+            obj.status_text = '等待调查'
+        elif obj.status == 1:
+            obj.status_label = 'uk-label-warning'
+            obj.status_text = '正在调查'
+        elif obj.status == 2:
+            obj.status_label = 'uk-label-success'
+            obj.status_text = '处理成功'
+        elif obj.status == 3:
+            obj.status_label = 'uk-label-danger'
+            obj.status_text = '处理失败'
+        else:
+            obj.status_label = ''
+            obj.status_text = '未知状态'
+        return render(request, "dashboard/police/cases_detail.html", {'case': obj})
+    except MultipleObjectsReturned as e:
+        print(e)
+        return HttpResponse(error_msg % "内部错误，请联系管理员！")
+    except ObjectDoesNotExist:
+        return HttpResponse(error_msg % "报案不存在！")
+
+
+@ensure_csrf_cookie
 @check_post
 # 更改案件状态
 def change_status(request):
@@ -18,11 +57,10 @@ def change_status(request):
         return HttpResponse(r'{"status": "failed", "msg": "权限不足，此操作已被记录！用户名: %s，操作时间：%s ..."}' % (
             request.session.get('username', None), time.time()))
     print(request.POST.get('id', None))
+
     try:
         id_ = int(request.POST.get('id', None))
-
         new_status = int(request.POST.get('new_status', None))
-
     except ValueError:
         return HttpResponse(r'{"status": "failed", "msg": "参数错误！"}')
 
@@ -124,6 +162,8 @@ def page_police_hall(request):
         cases[i].avatar = username_get_avatar(cases[i].username)
         cases[i].nickname = username_get_nickname(cases[i].username)
         cases[i].report_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(cases[i].report_time))
+        if len(cases[i].detail) > 30:
+            cases[i].detail = cases[i].detail[:30] + "..."
         print(cases[i].id)
         if cases[i].status == 0:
             cases[i].status_label = ''

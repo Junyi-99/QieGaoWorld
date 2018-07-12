@@ -1,0 +1,43 @@
+<button class="uk-modal-close-default" type="button" uk-close></button>
+
+<div class="uk-modal-header">
+    <h2 class="uk-modal-title">案件详情</h2>
+</div>
+
+<div class="uk-modal-body" uk-overflow-auto>
+    <article class="uk-article">
+        <h1 class="uk-article-title">{{ case.summary }}
+            <span class="uk-margin-left uk-label {{ case.status_label }}" style="vertical-align: middle">
+                {{ case.status_text }}
+            </span>
+        </h1>
+        <p class="uk-article-meta">{{ case.nickname }} 于 {{ case.report_time }} 报案</p>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">案发地点：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ case.position }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">精确坐标 (xyz)：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ case.coordinate }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">案件详情：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ case.detail }}</p>
+            </div>
+        </div>
+    </article>
+</div>
+<div class="uk-modal-footer uk-text-right">
+    <button class="uk-button uk-button-primary uk-modal-close" type="button">关闭</button>
+</div>

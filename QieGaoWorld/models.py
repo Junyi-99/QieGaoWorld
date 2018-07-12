@@ -9,7 +9,9 @@ class User(models.Model):
     usrgroup = models.IntegerField(default=0)  # 用户组
     register_time = models.IntegerField(default=0)  # 注册时间
     avatar = models.CharField(max_length=1024, default='static\\face\\default.jpg')  # 头像
-    permissions = models.CharField(max_length=2048, default='%default%')  # 权限
+    permissions = models.CharField(max_length=2048,
+                                   default='%default%police_cases_watch%police_cases_add%declaration_animals'
+                                           '%declaration_buildings%declaration_watch%')  # 权限
 
 
 # 报案记录
