@@ -10,14 +10,20 @@ from QieGaoWorld.views.police import username_get_nickname
 import time
 
 
+def url(request,s):
+    return eval(s)(request)
+
+
+
 @check_login
 @check_post
 def animals_list(request):
     my_animals = []
 
-    animals = DeclareAnimals.objects.all()
+    animals = DeclareAnimals.objects.filter(username=request.session.get('username', None))
     for i in range(0, len(animals)):
         animals[i].declare_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(animals[i].declare_time))
+        animals[i].username=username_get_nickname(animals[i].username)
 
         if animals[i].status == 0:
             animals[i].status_label = ''
@@ -32,9 +38,7 @@ def animals_list(request):
             animals[i].status_label = 'uk-label-danger'
             animals[i].status_text = '死亡'
 
-        if request.session.get('username', None) == animals[i].username:
-            my_animals.append(animals[i])
-    return my_animals
+    return animals
 
 
 @ensure_csrf_cookie
@@ -96,3 +100,20 @@ def animals_check_license_exist(license_):
         return True
     except ObjectDoesNotExist:
         return False
+
+
+def animals_change_status(request):
+    try:
+        try:
+            id = int(str(request.POST.get('id', None)).strip())
+            status = int(str(request.POST.get('status', None)).strip())
+        except ValueError:
+            return HttpResponse(r'{"status": "failed", "msg": "数值错误！"}')
+
+        obj = DeclareAnimals.objects.get(id=id)
+        obj.status=status
+        obj.save()
+        return HttpResponse(r'{"status": "ok", "msg": "更新成功！"}')
+    except Exception as e:
+        print(e)
+        return HttpResponse(r'{"status": "failed", "msg": "内部错误"}')

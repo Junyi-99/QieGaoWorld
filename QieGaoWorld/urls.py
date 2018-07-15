@@ -15,6 +15,7 @@ Including another URLconf
 """
 
 from django.conf.urls import url
+from django.urls import path
 from . import view
 from .views import register
 from .views import login
@@ -45,4 +46,5 @@ urlpatterns = [
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),
     url(r"^animals_add$", declare.animals_add),
+    path("declare/<str:s>", declare.url),
 ]

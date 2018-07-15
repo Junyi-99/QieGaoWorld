@@ -1,10 +1,9 @@
 <h2>动物申报
     <small style="color: #666666; font-size: medium">Animal Declaration</small>
-    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
-            uk-toggle="target: #edit-box">新申报
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top" uk-toggle="target: #edit-box">新申报
     </button>
 </h2>
-<hr class="uk-margin"/>
+<hr class="uk-margin" />
 <div class="uk-alert-primary" uk-alert id="tips" style="display:none">
     <a class="uk-alert-close" uk-close></a>
     <p></p>
@@ -23,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for a in my_animals %}
+        {% for a in my_animals %}
         <tr>
             <td>{{ a.license }}</td>
             <td>{{ a.binding }}</td>
@@ -33,18 +32,18 @@
             <td>{{ a.declare_time }}</td>
             <td>
                 <label>
-                    <select class="uk-select" id="options">
-                        <option>...</option>
-                        <option>丢失</option>
-                        <option>正常</option>
-                        <option>死亡</option>
+                    <select class="uk-select options" _id="{{ a.id }}">
+                        <option value="0" {% if a.status == 0 %} selected {% endif %} >未知</option>
+                        <option value="1" {% if a.status == 1 %} selected {% endif %}>存活</option>
+                        <option value="2" {% if a.status == 2 %} selected {% endif %}>丢失</option>
+                        <option value="3" {% if a.status == 3 %} selected {% endif %}>死亡</option>
                     </select>
                 </label>
             </td>
             <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
             <td></td>
         </tr>
-    {% endfor %}
+        {% endfor %}
     </tbody>
 </table>
 
@@ -116,17 +115,32 @@
     </div>
 </div>
 <script>
-
-
-
     $(document).ready(
-        $(function () {
-            $("#options").change(function () {
-                console.log("23224")
+        $(function() {
+            $(".options").change(function() {
+                $.post("declare/animals_change_status", {
+                    "id": $(this).attr('_id'),
+                    "status": $(this).val()
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#edit-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
             });
 
 
-            $("#save").click(function () {
+            $("#save").click(function() {
 
                 var binding = $("#binding").val();
                 var license = $("#license").val();
@@ -138,7 +152,7 @@
                     "license": license,
                     "feature": feature,
                     "status": status
-                }, function (obj) {
+                }, function(obj) {
                     if (obj.status === "ok") {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
