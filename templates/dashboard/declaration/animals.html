@@ -30,12 +30,12 @@
             <td>{{ a.binding }}</td>
             <td>{{ a.feature }}</td>
             <td><span class="uk-label {{ a.status_label }}">{{ a.status_text }}</span></td>
-            <td>{{ a.username }}</td>
+            <td>{{ a.nickname }}</td>
             <td>{{ a.declare_time }}</td>
             <td>
                 <label>
                     <select class="uk-select options" _id="{{ a.id }}">
-                        <option value="0" {% if a.status == 0 %} selected {% endif %} >未知</option>
+                        <option value="0" {% if a.status == 0 %} selected {% endif %}>未知</option>
                         <option value="1" {% if a.status == 1 %} selected {% endif %}>存活</option>
                         <option value="2" {% if a.status == 2 %} selected {% endif %}>丢失</option>
                         <option value="3" {% if a.status == 3 %} selected {% endif %}>死亡</option>

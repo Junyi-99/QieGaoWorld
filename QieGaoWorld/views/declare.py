@@ -10,9 +10,8 @@ from QieGaoWorld.views.police import username_get_nickname
 import time
 
 
-def url(request,s):
+def url(request, s):
     return eval(s)(request)
-
 
 
 @ensure_csrf_cookie
@@ -21,7 +20,7 @@ def url(request,s):
 def animals_change_status(request):
     try:
         id_ = int(request.POST.get('id', None))
-        new_status = int(request.POST.get('new_status', None))
+        new_status = int(request.POST.get('status', None))
         username = request.session.get('username', None)
     except ValueError:
         return HttpResponse(r'{"status": "failed", "msg": "参数错误！"}')
@@ -54,14 +53,14 @@ def animals_list(request):
     animals = DeclareAnimals.objects.filter(username=request.session.get('username', None))
     for i in range(0, len(animals)):
         animals[i].declare_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(animals[i].declare_time))
-        animals[i].username=username_get_nickname(animals[i].username)
+        animals[i].nickname = username_get_nickname(animals[i].username)
 
         if animals[i].status == 0:
             animals[i].status_label = ''
             animals[i].status_text = '未知'
         elif animals[i].status == 1:
             animals[i].status_label = 'uk-label-success'
-            animals[i].status_text = '正常'
+            animals[i].status_text = '存活'
         elif animals[i].status == 2:
             animals[i].status_label = 'uk-label-warning'
             animals[i].status_text = '丢失'
