@@ -13,3 +13,4 @@ POLICE_CASES_MODIFY = '%police_cases_modify%'  # 是否允许修改案件信息
 DECLARATION_ANIMALS = '%declaration_animals%'  # 是否允许申报动物
 DECLARATION_BUILDINGS = '%declaration_buildings%'  # 是否允许申报建筑物
 DECLARATION_WATCH = '%declaration_watch%'  # 是否允许查看申报中心
+DECLARATION_ANIMALS_MODIFY = '%declaration_animals_modify%'  # 是否允许修改申报动物信息

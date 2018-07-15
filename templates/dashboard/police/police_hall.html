@@ -131,7 +131,8 @@
                         <td>
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-auto">
-                                    <img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40" alt="">
+                                    <img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40"
+                                         alt="">
                                 </div>
                                 <div class="uk-width-expand">
 
@@ -265,6 +266,10 @@
     function changeMy(id_) {
         var id = id_.substring(10);
         var new_status = $("#" + id_).val();
+
+        if (id === "-1")
+            return;
+
         $.post("/police_change_status", {
             "id": id,
             "new_status": new_status

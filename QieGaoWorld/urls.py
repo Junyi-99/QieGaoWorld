@@ -45,4 +45,5 @@ urlpatterns = [
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),
     url(r"^animals_add$", declare.animals_add),
+    url(r"^animals_change_status$", declare.animals_change_status),
 ]

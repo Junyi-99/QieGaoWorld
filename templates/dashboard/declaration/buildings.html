@@ -6,6 +6,7 @@
     </button>
 </h2>
 <hr class="uk-margin"/>
+<p class="uk-text-meta">下面显示的是你申报的所有建筑</p>
 <div class="uk-alert-primary" uk-alert id="tips" style="display:none">
     <a class="uk-alert-close" uk-close></a>
     <p></p>
@@ -79,7 +80,7 @@
 
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <div class="uk-modal-header">
-            <h2 class="uk-modal-title">自助上牌</h2>
+            <h2 class="uk-modal-title">建筑申报</h2>
         </div>
         <div class="uk-modal-body">
             <form class="uk-form-horizontal" name="info">
@@ -87,33 +88,123 @@
                 <div class="uk-margin">
                     <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-1-5@s">
-                            <label class="uk-form-label" for="form-horizontal-text">牌照号</label>
+                            <label class="uk-form-label" for="form-horizontal-text">建筑名</label>
                         </div>
                         <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="license" type="text" placeholder="糕A001 测试">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
                         </div>
                     </div>
                 </div>
                 <div class="uk-margin">
                     <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-1-5@s">
-                            <label class="uk-form-label" for="form-horizontal-text">隶属</label>
+                            <label class="uk-form-label" for="form-horizontal-text">英文名</label>
                         </div>
                         <div class="uk-width-4-5@s">
-                            <select id="binding" class="uk-select">
-                                <option value="0">个人</option>
-                                <option value="1">公共</option>
+                            <input class="uk-input" id="license" type="text" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑简介</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑详细介绍</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑坐标</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑面积</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 33,496 M²">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">预计开始时间</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">预计结束时间</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">概念图</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">平面图</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">透视图</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑类型</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <select class="uk-select">
+                                <option value="0">公共建筑</option>
+                                <option value="1">私有建筑</option>
                             </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-margin">
-                    <div class="uk-grid-small" uk-grid>
-                        <div class="uk-width-1-5@s">
-                            <label class="uk-form-label" for="form-horizontal-text">特征</label>
-                        </div>
-                        <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="feature" type="text" placeholder="例如：白底黑色斑点">
                         </div>
                     </div>
                 </div>

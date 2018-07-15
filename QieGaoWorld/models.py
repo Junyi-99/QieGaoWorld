@@ -28,7 +28,7 @@ class Cases(models.Model):
 
 
 # 建筑申报记录
-class DeclareResidences(models.Model):
+class DeclareBuildings(models.Model):
     declare_time = models.IntegerField(default=0)  # 申请时间
     username = models.CharField(max_length=100, default='')  # 申请人用户名
     coordinate = models.CharField(max_length=64, default='')  # 建筑坐标

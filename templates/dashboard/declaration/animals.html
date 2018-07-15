@@ -5,6 +5,7 @@
     </button>
 </h2>
 <hr class="uk-margin"/>
+<p class="uk-text-meta">下面显示的是你申报的所有动物</p>
 <div class="uk-alert-primary" uk-alert id="tips" style="display:none">
     <a class="uk-alert-close" uk-close></a>
     <p></p>
@@ -33,11 +34,11 @@
             <td>{{ a.declare_time }}</td>
             <td>
                 <label>
-                    <select class="uk-select" id="options">
-                        <option>...</option>
-                        <option>丢失</option>
-                        <option>正常</option>
-                        <option>死亡</option>
+                    <select class="uk-select" id="animals-{{ a.id }}" onchange="change(this.id)">
+                        <option value="-1">...</option>
+                        <option value="1">正常</option>
+                        <option value="2">丢失</option>
+                        <option value="3">死亡</option>
                     </select>
                 </label>
             </td>
@@ -100,7 +101,7 @@
                         <div class="uk-width-4-5@s">
                             <select id="status" class="uk-select">
                                 <option value="0">未知</option>
-                                <option value="1">存活</option>
+                                <option value="1">正常</option>
                                 <option value="2">丢失</option>
                                 <option value="3">死亡</option>
                             </select>
@@ -116,7 +117,32 @@
     </div>
 </div>
 <script>
+    function change(id_) {
+        var id = id_.substring(8);
+        var new_status = $("#" + id_).val();
 
+        if(new_status === "-1")
+            return;
+
+        $.post("/animals_change_status", {
+            "id": id,
+            "new_status": new_status
+        }, function (obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+            } else {
+                UIkit.notification({
+                    message: obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+        }, "json")
+    }
 
 
     $(document).ready(
