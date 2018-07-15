@@ -24,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for a in my_animals %}
+        {% for a in my_animals %}
         <tr>
             <td>{{ a.license }}</td>
             <td>{{ a.binding }}</td>
@@ -34,11 +34,11 @@
             <td>{{ a.declare_time }}</td>
             <td>
                 <label>
-                    <select class="uk-select" id="animals-{{ a.id }}" onchange="change(this.id)">
-                        <option value="-1">...</option>
-                        <option value="1">正常</option>
-                        <option value="2">丢失</option>
-                        <option value="3">死亡</option>
+                    <select class="uk-select options" _id="{{ a.id }}">
+                        <option value="0" {% if a.status == 0 %} selected {% endif %} >未知</option>
+                        <option value="1" {% if a.status == 1 %} selected {% endif %}>存活</option>
+                        <option value="2" {% if a.status == 2 %} selected {% endif %}>丢失</option>
+                        <option value="3" {% if a.status == 3 %} selected {% endif %}>死亡</option>
                     </select>
                 </label>
             </td>
@@ -101,7 +101,7 @@
                         <div class="uk-width-4-5@s">
                             <select id="status" class="uk-select">
                                 <option value="0">未知</option>
-                                <option value="1">正常</option>
+                                <option value="1">存活</option>
                                 <option value="2">丢失</option>
                                 <option value="3">死亡</option>
                             </select>
@@ -117,38 +117,28 @@
     </div>
 </div>
 <script>
-    function change(id_) {
-        var id = id_.substring(8);
-        var new_status = $("#" + id_).val();
-
-        if(new_status === "-1")
-            return;
-
-        $.post("/animals_change_status", {
-            "id": id,
-            "new_status": new_status
-        }, function (obj) {
-            if (obj.status === "ok") {
-                UIkit.notification({
-                    message: obj.msg,
-                    status: 'success',
-                    timeout: 2000
-                });
-            } else {
-                UIkit.notification({
-                    message: obj.msg,
-                    status: 'danger',
-                    timeout: 2000
-                })
-            }
-        }, "json")
-    }
-
-
     $(document).ready(
-        $(function () {
-            $("#options").change(function () {
-                console.log("23224")
+        $(function() {
+            $(".options").change(function() {
+                $.post("declare/animals_change_status", {
+                    "id": $(this).attr('_id'),
+                    "status": $(this).val()
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#edit-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
             });
 
 
