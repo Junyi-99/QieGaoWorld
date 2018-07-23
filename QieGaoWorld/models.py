@@ -63,4 +63,5 @@ class Announcement(models.Model):
     username = models.CharField(max_length=100)  # 公告发布者
     title = models.CharField(max_length=100)  # 公告标题
     content = models.CharField(max_length=512)  # 公告内容
-    type = models.IntegerField(default=0)  # 公告类型（0:通知, 1:警告, 2:严重）
+    type = models.IntegerField(default=0)  # 公告类型（0:通知, 1:重要, 2:严重）
+    visible = models.BooleanField(default=True)  # 公告是否可见

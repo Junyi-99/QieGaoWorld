@@ -129,7 +129,9 @@ TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+FACE_ROOT = os.path.join(BASE_DIR, 'static\\media\\face')
 
+DEFAULT_FACE = os.path.join(BASE_DIR, 'static\\media\\face\\default.jpg')
 BUILDING_CONCEPT_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/concept')
 BUILDING_PLAN_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/plan')
 BUILDING_PERSPECTIVE_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/perspective')

@@ -1,124 +1,131 @@
-    {% load static %}
+{% load static %}
 
-    <div class="uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid>
-        <div class="uk-inline">
-            <h2 class="uk-margin-small-top">公告
-                <small style="color: #666666; font-size: medium">Announcement</small>
+<div class="uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid>
+    <div class="uk-inline">
+        <h2 class="uk-margin-small-top">公告
+            <small style="color: #666666; font-size: medium">Announcement</small>
 
-            </h2>
-            <div class="uk-position-top-right">
-                <a href="#modal-center" class="uk-icon-link uk-margin-top" uk-icon="icon: plus; ratio: 1.5" uk-toggle></a>
-            </div>
-
-            <div id="modal-center" class="uk-flex-top" uk-modal>
-                <div class="uk-modal-dialog uk-margin-auto-vertical">
-                    <button class="uk-modal-close-default" type="button" uk-close></button>
-                    {% if '%publish_announcement%' in permissions %}
-                        {% include "dashboard/announcement/new_announcement.html" %}
-                    {% else %}
-                        {% include "dashboard/announcement/permission_denied.html" %}
-                    {% endif %}
-                </div>
-            </div>
-
-            <hr class="uk-margin" />
-            <div class="uk-grid-match" uk-grid>
-                <div>
-                    <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-card-body" style="background-color: #F7F7F7; border-radius: 1em">
-                        <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <div class="uk-width-auto">
-                                <img class="uk-border-circle" width="40" height="40" src="{% static "assets/images/Nova.jpg" %}">
-                            </div>
-                            <div class="uk-width-expand">
-                                <h3 class="uk-card-title uk-margin-remove-bottom">禁止讨论</h3>
-                                <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">8102/6/20</time></p>
-                            </div>
-                            <span class="uk-label">通知</span>
-                        </div>
-                        <p>今天起QQ群禁止讨论任何和赌球相关的一切信息，包括但不限于相关的关键字，隐喻，代号等，违者后果自负。@全体成员</p>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-grid-match" uk-grid>
-                <div>
-                    <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-card-body" style="background-color: #FFF7F9; border-radius: 1em">
-                        <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <div class="uk-width-auto">
-                                <img class="uk-border-circle" width="40" height="40" src="{% static "assets/images/Nova.jpg" %}">
-                            </div>
-                            <div class="uk-width-expand">
-                                <h3 class="uk-card-title uk-margin-remove-bottom">处罚公告</h3>
-                                <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">8102/6/6</time></p>
-                            </div>
-                            <span class="uk-label uk-label-danger">严重</span>
-                        </div>
-                        <p>玩家染山6月5日为获取成就，独自摘取冒险者公会末影龙蛋并丢失，无法归还，造成了无法挽回的破坏。另之前其主导的大河镇雪糕阁建设为未经审批强行开工的大型建筑，在新人玩家尚未进驻之前占据大片面积，破坏了之前的规划预期。综合多方反馈意见及考虑到此玩家历次造成的恶劣影响，决定驱逐出切糕世界。希望各位玩家以此事件为诫。在游戏中注意自身行为，遵守共同缔造的社区秩序。与其他玩家良好相处。</p>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-grid-match" uk-grid>
-                <div>
-                    <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-card-body" style="background-color: #FFFBF7; border-radius: 1em">
-                        <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <div class="uk-width-auto">
-                                <img class="uk-border-circle" width="40" height="40" src="{% static "assets/images/Nova.jpg" %}">
-                            </div>
-                            <div class="uk-width-expand">
-                                <h3 class="uk-card-title uk-margin-remove-bottom">搬家在即，请填写个人物资登记表</h3>
-                                <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">8102/6/6</time></p>
-                            </div>
-                            <span class="uk-label uk-label-warning">重要</span>
-                        </div>
-                        <p>切糕世界将于近期搬迁，我们将对原服务器地图进行下载。由于工作人员需要对所有私人物资进行整体检视，请大家尽快整理自己的物资并及时填写此登记表 <a>https://www.wenjuan.com/s/YR7Brap/</a></p>
-                    </div>
-                </div>
-            </div>
+        </h2>
+        <div class="uk-position-top-right">
+            <a href="#modal-center" class="uk-icon-link uk-margin-top" uk-icon="icon: plus; ratio: 1.5" uk-toggle></a>
         </div>
-        <div>
-            <h2 class="uk-margin-small-top">服务器信息
-                <small style="color: #666666; font-size: medium">Announcement</small>
-            </h2>
-            <hr class="uk-margin" />
-            <div class="uk-card uk-card-hover uk-card-default">
-                <div class="uk-card-header">
-                    <div class="uk-grid-small uk-flex-middle" uk-grid>
-                        <div class="uk-width-auto">
-                            <img class="uk-border-circle" width="40" height="40" src="{{ favicon }}">
-                        </div>
-                        <div class="uk-width-expand">
-                            <h3 class="uk-card-title uk-margin-remove-bottom">切糕世界</h3>
-                            <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">{{ server_address }}</time></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-card-body">
-                    <p><b>MOTD:</b> {{ motd }}</p>
-                    <p><b>Version: </b> {{ version }}</p>
 
-                    <div class="uk-child-width-auto" uk-grid>
-                        <div>
-                            <b>Players:&nbsp;</b>
-                        </div>
-                        <div>
-                            <ul uk-accordion>
-                                <li>
-                                    <p class="uk-accordion-title" href="#" style="font-size: 16px;">{{ online_players_number }} / {{ max_players_number }}</p>
-                                    <div class="uk-accordion-content">
-                                        {% for usr in online_players_list %}
-                                            <p user_id="{{ usr.id }}">{{ usr.name }}</p>
-                                        {% endfor %}
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <p><b>Ping: </b> {{ ping }}ms</p>
-                </div>
-                <div class="uk-card-footer">
-                    <a href="http://map.qiegaoshijie.club" class="uk-button uk-button-text">打开世界地图</a>
-                </div>
+        <div id="modal-center" class="uk-flex-top" uk-modal>
+            <div class="uk-modal-dialog uk-margin-auto-vertical">
+                <button class="uk-modal-close-default" type="button" uk-close></button>
+                {% if '%publish_announcement%' in permissions %}
+                    {% include "dashboard/announcement/new_announcement.html" %}
+                {% else %}
+                    {% include "dashboard/announcement/permission_denied.html" %}
+                {% endif %}
             </div>
         </div>
 
-
+        <hr class="uk-margin"/>
+        {% for a in announcements %}
+            {% if a.visible %}
+                <div class="uk-grid-match announcement_{{ a.id }}" uk-grid>
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-card-body"
+                             style="background-color: {{ a.color }}; border-radius: 1em">
+                            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                                <div class="uk-width-auto">
+                                    <img class="uk-border-circle" width="40" height="40" src="{{ a.avatar }}">
+                                </div>
+                                <div class="uk-width-large">
+                                    <h3 class="uk-card-title uk-margin-remove-bottom">{{ a.title }}</h3>
+                                    <p class="uk-text-meta uk-margin-remove-top">{{ a.publish_time }}</p>
+                                </div>
+                                <span class="uk-label {{ a.type_label }}">{{ a.type_text }}</span>
+                                <button type="button" _id="{{ a.id }}" title="删除这条公告" class="delBtn" uk-close></button>
+                            </div>
+                            <p class="uk-width-large">{{ a.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
+    <div>
+        <h2 class="uk-margin-small-top">服务器信息
+            <small style="color: #666666; font-size: medium">Announcement</small>
+        </h2>
+        <hr class="uk-margin"/>
+        <div class="uk-card uk-card-hover uk-card-default">
+            <div class="uk-card-header">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-auto">
+                        <img class="uk-border-circle" width="40" height="40" src="{{ favicon }}">
+                    </div>
+                    <div class="uk-width-expand">
+                        <h3 class="uk-card-title uk-margin-remove-bottom">切糕世界</h3>
+                        <p class="uk-text-meta uk-margin-remove-top">
+                            <time datetime="2016-04-01T19:00">{{ server_address }}</time>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-card-body">
+                <p><b>MOTD:</b> {{ motd }}</p>
+                <p><b>Version: </b> {{ version }}</p>
+
+                <div class="uk-child-width-auto" uk-grid>
+                    <div>
+                        <b>Players:&nbsp;</b>
+                    </div>
+                    <div>
+                        <ul uk-accordion>
+                            <li>
+                                <p class="uk-accordion-title" href="#"
+                                   style="font-size: 16px;">{{ online_players_number }} / {{ max_players_number }}</p>
+                                <div class="uk-accordion-content">
+                                    {% for usr in online_players_list %}
+                                        <p user_id="{{ usr.id }}">{{ usr.name }}</p>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p><b>Ping: </b> {{ ping }}ms</p>
+            </div>
+            <div class="uk-card-footer">
+                <a href="http://map.qiegaoshijie.club" class="uk-button uk-button-text">打开世界地图</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script>
+    $(document).ready(
+        $(function () {
+            $(".delBtn").click(function () {
+                var $this = $(this);
+                var id = $this.attr('_id');
+                $.post("/announcement_delete?_=" + Date.parse(new Date()), {
+                    "id": id,
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        // 我知道，这个写法很不优雅，但我不会写JS
+                        $this.parent().parent().parent().addClass('uk-animation-slide-left-small uk-animation-reverse');
+                        setTimeout(function () {
+                            $this.parent().parent().parent().remove();
+                        }, 500);
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+        })
+    );
+</script>

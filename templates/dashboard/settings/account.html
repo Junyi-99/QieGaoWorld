@@ -19,23 +19,23 @@
             <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-text">昵称</label>
                 <div class="uk-form-controls">
-                    <input class="uk-input" id="form-horizontal-text nickname" name="nickname" type="text" value="{{ nickname }}">
+                    <input class="uk-input" id="form-horizontal-text nickname" name="nickname" type="text" value="{{ nickname }}" disabled>
                 </div>
             </div>
-            <div class="uk-margin">
+           {% comment %} <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-text">QQ号</label>
                 <div class="uk-form-controls">
                     <input class="uk-input" id="form-horizontal-text qqnumber" type="text" value="{{ qqnumber }}">
                 </div>
-            </div>
-            <div class="uk-margin">
+            </div>{% endcomment %}
+            {% comment %}<div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-select">性别</label>
                 <div class="uk-form-controls uk-form-controls-text">
                     <label><input id="radio_boy" class="uk-radio" type="radio" name="radio1" {{ check_boy }}> 男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <label><input id="radio_girl" class="uk-radio" type="radio" name="radio1" {{ check_girl }}> 女&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <label><input id="radio_bisexual" class="uk-radio" type="radio" name="radio1" {{ check_bisexual }}> 双性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                 </div>
-            </div>
+            </div>{% endcomment %}
             <div class="uk-margin">
                 <label class="uk-form-label" for="form-horizontal-text">密码</label>
                 <div class="uk-form-controls">
@@ -48,11 +48,11 @@
                     <button class="uk-button uk-button-default uk-button-small" uk-toggle="target: #modal-change-face">点此修改头像</button>
                 </div>
             </div>
-            <div class="uk-margin">
+            {% comment %}<div class="uk-margin">
                 <div class="uk-form-controls">
                     <button type="button" class="uk-button uk-button-primary" id="save">保存修改</button>
                 </div>
-            </div>
+            </div>{% endcomment %}
         </form>
         <div id="modal-change-face" uk-modal>
             <div class="uk-modal-dialog uk-modal-body uk-form-horizontal">
@@ -226,7 +226,8 @@
         <div id="modal-change-password" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">修改密码</h2>
-                <div class="uk-margin-small uk-width-1-1">
+                <p>请联系管理员修改密码</p>
+                {% comment %}<div class="uk-margin-small uk-width-1-1">
                     <div class="uk-margin">
                         <label class="uk-form-label" for="form-horizontal-select">原密码</label>
                         <div class="uk-form-controls uk-form-controls-text">
@@ -246,7 +247,7 @@
                         </div>
                     </div>
                     <button class="uk-button uk-button-primary">确定修改</button>
-                </div>
+                </div>{% endcomment %}
             </div>
         </div>
     </div>

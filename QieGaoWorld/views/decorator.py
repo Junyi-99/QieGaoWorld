@@ -16,7 +16,6 @@ def check_login(func):
 # 使用此装饰器，请保证函数的第一个参数为request
 def check_post(func):
     def wrapper(*args, **kw):
-        print(args, kw)
         if args[0].method != "POST":
             return render(args['request'], "error.html", {"error_message": "Request method invalid"})
         else:

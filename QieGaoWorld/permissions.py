@@ -7,6 +7,7 @@
 # 仅供查阅
 
 ANNOUNCEMENT_PUBLISH = '%publish_announcement%'  # 是否允许发布公告
+ANNOUNCEMENT_DELETE = '%announcement_delete%'  # 是否允许删除公告
 POLICE_CASES_WATCH = '%police_cases_watch%'  # 是否允许查看报案详情
 POLICE_CASES_ADD = '%police_cases_add%'  # 是否允许报案
 POLICE_CASES_MODIFY = '%police_cases_modify%'  # 是否允许修改案件信息

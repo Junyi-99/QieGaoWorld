@@ -17,28 +17,31 @@ Including another URLconf
 from django.conf.urls import url
 from django.urls import path
 from . import view
-from .views import register
-from .views import login
-from .views import logout
-from .views import avatar
-from .views import police
-from .views import declare
+from .views import login, logout
+from .views import avatar, police
+from .views import declare, register
+from .views import announcement
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^$', login.login),
-    url(r"^register$", register.register),
-    url(r"^register_verify$", register.register_verify),
-    url(r"^forgotten$", view.forgotten),
+
     url(r"^login$", login.login),
     url(r"^logout$", logout.logout),
     url(r"^login_verify$", login.login_verify),
+
+    url(r"^register$", register.register),
+    url(r"^register_verify$", register.register_verify),
+
+    url(r"^forgotten$", view.forgotten),
     url(r"^agreement$", view.agreement),
     url(r"^dashboard$", view.dashboard),
+
     url(r"^upload_face$", avatar.avatar_upload),
     url(r"^upload_building_plan$", declare.upload_building_plan),
     url(r"^upload_building_concept$", declare.upload_building_concept),
     url(r"^upload_building_perspective$", declare.upload_building_perspective),
+
     url(r"^dashboard\/page$", view.dashboard_page),
     # TODO: 完善 Save Changes
     # url(r"^save_changes$", view.save_changes),
@@ -48,9 +51,14 @@ urlpatterns = [
     # url(r"^admin$", view.admin),
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),
-    url(r"^buildings_add$", declare.buildings_add),
-    url(r"^animals_add$", declare.animals_add),
     path("declare/<str:s>", declare.url),
+
+    url(r"^animals_add$", declare.animals_add),
     url(r"^animals_change_status$", declare.animals_change_status),
+
+    url(r"^buildings_add$", declare.buildings_add),
     url(r"^buildings_change_status$", declare.buildings_change_status),
+
+    url(r"^announcement_new$", announcement.announcement_new),
+    url(r"^announcement_delete$", announcement.announcement_delete),
 ]

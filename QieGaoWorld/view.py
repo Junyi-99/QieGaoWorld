@@ -7,6 +7,8 @@ from django.conf import settings
 import json
 import time
 import logging
+
+from QieGaoWorld.views.announcement import announcement_list
 from .views.decorator import check_login, check_post
 from .views.police import page_police_hall
 from .views.settings import page_settings
@@ -62,6 +64,8 @@ def user_center(request):
             for e in status.players.sample:
                 user.append({'name': e.name, 'id': e.id})
 
+        announcements = announcement_list(request)
+
         context = {
             'motd': motd,
             'favicon': fav,
@@ -72,6 +76,7 @@ def user_center(request):
             'online_players_number': opn,
             'ping': latency,
             'permissions': request.session['permissions'],
+            'announcements': announcements
         }
         logging.debug(context)
     except Exception as e:
@@ -84,7 +89,12 @@ def user_center(request):
 
 @check_login
 def page_announcement(request):
-    return render(request, "dashboard/announcement/announcement.html", {})
+    announcements = announcement_list(request)
+    print(announcements)
+    content = {
+        'announcements': announcements
+    }
+    return render(request, "dashboard/announcement/announcement.html", content)
 
 
 @check_login
@@ -117,7 +127,6 @@ def page_declare_animals(request):
 @check_login
 def page_declare_buildings(request):
     my_building = buildings_list(request, 'user')  # 这里选择获取当前登录用户的obj
-    print(my_building)
     content = {
         'buildings': my_building,
         'permissions': request.session['permissions'],
