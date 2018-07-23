@@ -144,12 +144,15 @@ def animals_change_status(request):
         return HttpResponse(r'{"status": "failed", "msg": "可能这个动物不属于你！"}')
 
 
+# operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
 @check_login
 @check_post
-def buildings_list(request):
-    my_animals = []
-
-    buildings = DeclareBuildings.objects.filter(username=request.session.get('username', None))
+def buildings_list(request, operation):
+    global buildings
+    if 'all' in operation:
+        buildings = DeclareBuildings.objects.all()
+    elif 'user' in operation:
+        buildings = DeclareBuildings.objects.filter(username=request.session.get('username', None))
 
     for i in range(0, len(buildings)):
         buildings[i].declare_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].declare_time))
@@ -181,10 +184,16 @@ def buildings_list(request):
     return buildings
 
 
+# operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
 @check_login
 @check_post
-def animals_list(request):
-    animals = DeclareAnimals.objects.filter(username=request.session.get('username', None))
+def animals_list(request, operation):
+    global animals
+    if 'all' in operation:
+        animals = DeclareAnimals.objects.all()
+    elif 'user' in operation:
+        animals = DeclareAnimals.objects.filter(username=request.session.get('username', None))
+
     for i in range(0, len(animals)):
         animals[i].declare_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(animals[i].declare_time))
         animals[i].nickname = username_get_nickname(animals[i].username)

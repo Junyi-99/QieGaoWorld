@@ -45,7 +45,7 @@
             <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
             <td></td>
         </tr>
-    {% endfor %}
+        {% endfor %}
     </tbody>
 </table>
 
@@ -120,7 +120,7 @@
     $(document).ready(
         $(function() {
             $(".options").change(function() {
-                $.post("declare/animals_change_status", {
+                $.post("declare/animals_change_status?_=" + Date.parse(new Date()), {
                     "id": $(this).attr('_id'),
                     "status": $(this).val()
                 }, function(obj) {
@@ -149,7 +149,7 @@
                 var feature = $("#feature").val();
                 var status = $("#status").val();
 
-                $.post("/animals_add", {
+                $.post("/animals_add?_=" + Date.parse(new Date()), {
                     "binding": binding,
                     "license": license,
                     "feature": feature,

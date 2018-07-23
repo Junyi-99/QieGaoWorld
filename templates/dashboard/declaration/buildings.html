@@ -20,7 +20,9 @@
         <th class="uk-width-medium">介绍</th>
         <th class="uk-width-medium">建筑时间</th>
         <th class="uk-width-small">状态</th>
-        <th class="uk-width-small">操作</th>
+        {% if '%police_cases_modify%' in permissions %}
+            <th class="uk-width-small">操作</th>
+        {% endif %}
     </tr>
     </thead>
     <tbody>

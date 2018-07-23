@@ -89,7 +89,14 @@ def page_announcement(request):
 
 @check_login
 def page_declaration_center(request):
-    return render(request, "dashboard/declaration/center.html", {})
+    animals = animals_list(request, 'all')
+    buildings = buildings_list(request, 'all')
+    content = {
+        'animals': animals,
+        'buildings': buildings,
+        'permissions': request.session['permissions'],
+    }
+    return render(request, "dashboard/declaration/center.html", content)
 
 
 @check_login
@@ -99,7 +106,7 @@ def page_call_the_police(request):
 
 @check_login
 def page_declare_animals(request):
-    my_animals = animals_list(request)
+    my_animals = animals_list(request, 'user')
     content = {
         'my_animals': my_animals,
         'permissions': request.session['permissions'],
@@ -109,7 +116,7 @@ def page_declare_animals(request):
 
 @check_login
 def page_declare_buildings(request):
-    my_building = buildings_list(request)
+    my_building = buildings_list(request, 'user')  # 这里选择获取当前登录用户的obj
     print(my_building)
     content = {
         'buildings': my_building,
