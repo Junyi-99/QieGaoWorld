@@ -1,4 +1,5 @@
 import os
+import logging
 from PIL import Image
 from django.core.files.base import ContentFile
 
@@ -60,14 +61,13 @@ def upload_building_picture(request, upload_type):
         try:
             save_path = "buildings/%s/%s_%d_%s" % (
                 upload_type, request.session.get('username', 'N/A'), int(time.time()), file_name)
-            print(save_path)
 
             path = default_storage.save(save_path, ContentFile(file_obj.read()))
             tmp_file = os.path.join(settings.MEDIA_ROOT, path)
 
             # im = Image.open(tmp_file)
         except Exception as e:
-            print(e)
+            logging.error(e)
             return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误"}')
 
         # out = im.resize((128, 128), Image.ANTIALIAS)
@@ -103,7 +103,7 @@ def animals_change_status(request):
         else:
             return HttpResponse(r'{"status": "failed", "msg": "状态值错误！"}')
     except MultipleObjectsReturned as e:
-        print(e)
+        logging.error(e)
         return HttpResponse(r'{"status": "failed", "msg": "内部错误！请联系管理员"}')
     except ObjectDoesNotExist:
         return HttpResponse(r'{"status": "failed", "msg": "可能这个动物不属于你！"}')
@@ -165,10 +165,10 @@ def animals_add(request):
         else:
             binding = '公共'
 
-        print("binding: " + binding)
-        print("license: " + license_)
-        print("feature: " + feature)
-        print("status: " + str(status))
+        logging.debug("binding: " + binding)
+        logging.debug("license: " + license_)
+        logging.debug("feature: " + feature)
+        logging.debug("status: " + str(status))
 
         obj = DeclareAnimals(
             declare_time=declare_time,
@@ -181,7 +181,7 @@ def animals_add(request):
         obj.save()
         return HttpResponse(r'{"status": "ok", "msg": "更新成功！"}')
     except Exception as e:
-        print(e)
+        logging.error(e)
         return HttpResponse(r'{"status": "failed", "msg": "内部错误"}')
 
 

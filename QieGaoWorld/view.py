@@ -6,6 +6,7 @@ from django.conf import settings
 
 import json
 import time
+import logging
 from .views.decorator import check_login, check_post
 from .views.police import page_police_hall
 from .views.settings import page_settings
@@ -71,13 +72,13 @@ def user_center(request):
             'online_players_number': opn,
             'ping': latency,
         }
-        print(context)
+        logging.debug(context)
     except Exception as e:
-        print(e)
+        logging.error(e)
         context = {}
 
     context['permissions'] = request.session['permissions']
-    print(context['permissions'])
+    logging.debug(context['permissions'])
     return render(request, "dashboard/user_center.html", context)
 
 
@@ -150,8 +151,7 @@ def dashboard(request):
 @check_post
 def dashboard_page(request):
     ensure_csrf_cookie(request)
-    print(request.POST.get("page", None))
-
+    logging.info("Page Changed: " + request.POST.get("page", None))
     if request.POST.get("page", None) == "user_center":
         return user_center(request)
 

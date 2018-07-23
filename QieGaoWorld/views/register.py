@@ -6,6 +6,7 @@ from QieGaoWorld.models import User
 
 import re
 import time
+import logging
 
 
 def register(request):
@@ -19,7 +20,7 @@ def register_verify(request):
     password = str(request.POST.get("password", None))
     nickname = str(request.POST.get("nickname", None))
 
-    print(username, password, nickname)
+    logging.info("用户注册： 用户名：[%s] 密码：[%s] 昵称：[%s]" % (username, password, nickname))
 
     # 检测username是否合法
     pattern = re.compile(r'[^\w]')

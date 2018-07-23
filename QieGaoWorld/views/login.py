@@ -1,3 +1,4 @@
+import logging
 from django.core.exceptions import MultipleObjectsReturned
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -20,7 +21,7 @@ def login_verify(request):
     username = str(request.POST.get("username", None))
     password = str(request.POST.get("password", None))
 
-    print(username, password)
+    logging.debug("Login Verify: [%s] [%s]" % (username, password))
 
     try:
         user = User.objects.filter(username=username, password=password)
