@@ -170,9 +170,13 @@
                         <div class="uk-width-1-5@s">
                             <label class="uk-form-label" for="form-horizontal-text">概念图</label>
                         </div>
-                        <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        <div class="uk-width-4-5@s upload concept" uk-form-custom>
+                            {% csrf_token %}
+                            <input type="file" multiple>
+                            <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
+                            <p>文件格式：jpg jpeg gif png</p>
                         </div>
+                        <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
                     </div>
                 </div>
                 <div class="uk-margin">
@@ -232,9 +236,6 @@
     </div>
 </div>
 <script>
-
-
-
     $(document).ready(
         $(function () {
             $("#options").change(function () {
@@ -273,4 +274,59 @@
             });
         })
     );
+
+    var bar_concept = document.getElementById('progress_concept');
+
+    UIkit.upload('.upload', {
+        url: '/upload_building_picture$',
+        multiple: false,
+        allow : '*.(jpg|jpeg|gif|png)',
+
+
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_concept.removeAttribute('hidden');
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_concept);
+        }
+
+    });
+
+    function completeAll(responseText, progressBar){
+        obj = JSON.parse(responseText);
+
+        if(obj.status === "ok")
+        {
+            $("#msg").text("修改成功，刷新页面后生效");
+            UIkit.notification({message: obj.msg, status: 'success'});
+        }
+        else
+        {
+            $("#msg").text("修改失败");
+            UIkit.notification({message: obj.msg, status: 'danger'});
+        }
+
+        setTimeout(function () {
+            progressBar.setAttribute('hidden', 'hidden');
+        }, 1000);
+    }
 </script>

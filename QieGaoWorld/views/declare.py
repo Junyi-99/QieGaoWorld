@@ -1,17 +1,61 @@
-from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
+import os
+from PIL import Image
+from django.core.files.base import ContentFile
+
 from django.http import HttpResponse
 from django.shortcuts import render
-from QieGaoWorld.models import DeclareAnimals
-from django.views.decorators.csrf import ensure_csrf_cookie
 
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.core.files.storage import default_storage
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.police import username_get_nickname
+from QieGaoWorld.models import DeclareAnimals
+from QieGaoWorld import settings
 import time
 
 
 def url(request, s):
     return eval(s)(request)
+
+
+@check_post
+@check_login
+def upload_building_picture(request):
+    file_obj = request.FILES["files[]"]
+    file_name = str(file_obj)
+
+    pos = file_name.find(".")
+    if pos == -1:
+        return HttpResponse(r'{"status": "failed", "msg": "File type error."}')
+    suffix = file_name[pos:]
+
+    allowed_type = [".jpg", ".png", ".jpeg", ".gif"]
+
+    flag = False
+    for eachType in allowed_type:
+        if suffix.lower() == eachType:
+            flag = True
+            break
+
+    if flag:
+        save_path = "%s_%s" % (request.session.get('username', 'N/A'), suffix)
+        path = default_storage.save(save_path, ContentFile(file_obj.read()))
+        tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+
+        try:
+            im = Image.open(tmp_file)
+        except Exception as e:
+            print(e)
+            return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误"}')
+
+        out = im.resize((128, 128), Image.ANTIALIAS)
+        out.save(tmp_file)
+
+        return HttpResponse(r'{"status": "ok", "msg": "修改成功</br>刷新页面后生效"}')
+    else:
+        return HttpResponse(r'{"status": "failed", "msg": "文件类型错误"}')
 
 
 @ensure_csrf_cookie
