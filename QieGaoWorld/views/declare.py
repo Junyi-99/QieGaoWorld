@@ -22,14 +22,31 @@ def url(request, s):
 
 @check_post
 @check_login
-def upload_building_picture(request):
+def upload_building_concept(request):
+    return upload_building_picture(request, 'concept')
+
+
+@check_post
+@check_login
+def upload_building_plan(request):
+    return upload_building_picture(request, 'plan')
+
+
+@check_post
+@check_login
+def upload_building_perspective(request):
+    return upload_building_picture(request, 'perspective')
+
+
+def upload_building_picture(request, upload_type):
     file_obj = request.FILES["files[]"]
     file_name = str(file_obj)
 
     pos = file_name.find(".")
     if pos == -1:
         return HttpResponse(r'{"status": "failed", "msg": "File type error."}')
-    suffix = file_name[pos:]
+
+    suffix = file_name[pos:]  # 取出后缀名
 
     allowed_type = [".jpg", ".png", ".jpeg", ".gif"]
 
@@ -40,18 +57,21 @@ def upload_building_picture(request):
             break
 
     if flag:
-        save_path = "%s_%s" % (request.session.get('username', 'N/A'), suffix)
-        path = default_storage.save(save_path, ContentFile(file_obj.read()))
-        tmp_file = os.path.join(settings.MEDIA_ROOT, path)
-
         try:
-            im = Image.open(tmp_file)
+            save_path = "buildings/%s/%s_%d_%s" % (
+                upload_type, request.session.get('username', 'N/A'), int(time.time()), file_name)
+            print(save_path)
+
+            path = default_storage.save(save_path, ContentFile(file_obj.read()))
+            tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+
+            # im = Image.open(tmp_file)
         except Exception as e:
             print(e)
             return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误"}')
 
-        out = im.resize((128, 128), Image.ANTIALIAS)
-        out.save(tmp_file)
+        # out = im.resize((128, 128), Image.ANTIALIAS)
+        # out.save(tmp_file)
 
         return HttpResponse(r'{"status": "ok", "msg": "修改成功</br>刷新页面后生效"}')
     else:

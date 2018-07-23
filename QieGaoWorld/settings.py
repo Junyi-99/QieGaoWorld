@@ -128,10 +128,10 @@ STATICFILES_DIRS = [
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/face')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
-BUILDING_CONCEPT_ROOT = os.path.join(BASE_DIR, 'static/buildings/concept')
-BUILDING_PLAN_ROOT = os.path.join(BASE_DIR, 'static/buildings/plan')
-BUILDING_PERSPECTIVE_ROOT = os.path.join(BASE_DIR, 'static/buildings/perspective')
+BUILDING_CONCEPT_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/concept')
+BUILDING_PLAN_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/plan')
+BUILDING_PERSPECTIVE_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/perspective')
 
 PROJECT_VERSION = '1.0 Beta (180708)'

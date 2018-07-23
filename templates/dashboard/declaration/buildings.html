@@ -14,63 +14,65 @@
 <table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
     <caption></caption>
     <thead>
-        <tr>
-            <th class="uk-width-medium">建筑名</th>
-            <th class="uk-width-medium">建筑面积</th>
-            <th class="uk-width-medium">介绍</th>
-            <th class="uk-width-medium">建筑时间</th>
-            <th class="uk-width-small">申报状态</th>
-            <th class="uk-width-small">操作</th>
-        </tr>
+    <tr>
+        <th class="uk-width-medium">建筑名</th>
+        <th class="uk-width-medium">建筑面积</th>
+        <th class="uk-width-medium">介绍</th>
+        <th class="uk-width-medium">建筑时间</th>
+        <th class="uk-width-small">申报状态</th>
+        <th class="uk-width-small">操作</th>
+    </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                <div class="uk-grid-small uk-flex-middle" uk-grid>
-                    <div class="uk-width-auto">
-                        <img class="uk-preserve-width uk-border-circle" src="{% static "buildings/times_square.jpg" %}" width="40" alt="">
-                    </div>
-                    <div class="uk-width-expand">
+    <tr>
+        <td>
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                <div class="uk-width-auto">
+                    <img class="uk-preserve-width uk-border-circle" src="{% static "media/buildings/times_square.jpg" %}"
+                         width="40" alt="">
+                </div>
+                <div class="uk-width-expand">
 
-                        <h4 class="uk-margin-remove-bottom">时代广场</h4>
-                        <p class="uk-text-meta uk-margin-remove-top">Times Square</p>
-                    </div>
+                    <h4 class="uk-margin-remove-bottom">时代广场</h4>
+                    <p class="uk-text-meta uk-margin-remove-top">Times Square</p>
                 </div>
-            </td>
-            <td class="nowrap">
-                <div class="uk-grid-small uk-flex-middle" uk-grid>
-                    <div class="uk-width-expand">
-                        <h4 class="uk-margin-remove-bottom">788,910 M<sup>2</sup></h4>
-                        <p class="uk-text-meta uk-margin-remove-top">XYZ: -2273, 165, 2267</p>
-                    </div>
+            </div>
+        </td>
+        <td class="nowrap">
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                <div class="uk-width-expand">
+                    <h4 class="uk-margin-remove-bottom">788,910 M<sup>2</sup></h4>
+                    <p class="uk-text-meta uk-margin-remove-top">XYZ: -2273, 165, 2267</p>
                 </div>
-            </td>
-            <td class="nowrap">
-                <div class="uk-grid-small uk-flex-middle" uk-grid>
-                    <div class="uk-width-expand">
-                        <h4 class="uk-margin-remove-bottom">世界的十字路口</h4>
-                        <p class="uk-text-truncate uk-text-meta uk-margin-remove-top">百老汇上的剧院、大量耀眼的霓虹光管广告、以及电视式的宣传版，已经深入成为象征纽约的标志，反映曼哈顿强烈的都市特性。时报广场是市内唯一在规划法令内，要求业主“必须”悬挂亮眼宣传版的地区。</p>
-                    </div>
+            </div>
+        </td>
+        <td class="nowrap">
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                <div class="uk-width-expand">
+                    <h4 class="uk-margin-remove-bottom">世界的十字路口</h4>
+                    <p class="uk-text-truncate uk-text-meta uk-margin-remove-top">
+                        百老汇上的剧院、大量耀眼的霓虹光管广告、以及电视式的宣传版，已经深入成为象征纽约的标志，反映曼哈顿强烈的都市特性。时报广场是市内唯一在规划法令内，要求业主“必须”悬挂亮眼宣传版的地区。</p>
                 </div>
-            </td>
-            <td class="nowrap">
-                <div class="uk-grid-small uk-flex-middle" uk-grid>
-                    <div class="uk-width-expand">
-                        <p class="uk-margin-remove-bottom uk-margin-remove-top">预计开工：2018/7/12</p>
-                        <p class="uk-margin-remove-bottom uk-margin-remove-top">预计结束：2018/7/30</p>
-                    </div>
+            </div>
+        </td>
+        <td class="nowrap">
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                <div class="uk-width-expand">
+                    <p class="uk-margin-remove-bottom uk-margin-remove-top">预计开工：2018/7/12</p>
+                    <p class="uk-margin-remove-bottom uk-margin-remove-top">预计结束：2018/7/30</p>
                 </div>
-            </td>
-            <td>
-                <span class="uk-label uk-label-warning" style="vertical-align: middle">正在审核</span>
-            </td>
-            <td>
-                <select id="options" class="uk-select">
-                    <option value="0">...</option>
-                    <option value="1">标记为完工</option>
-                </select>
-            </td>
-        </tr>
+            </div>
+        </td>
+        <td>
+            <span class="uk-label uk-label-warning" style="vertical-align: middle">正在审核</span>
+        </td>
+        <td>
+            <select id="options" class="uk-select">
+                <option value="0">...</option>
+                <option value="1">标记为完工</option>
+            </select>
+        </td>
+    </tr>
     </tbody>
 </table>
 
@@ -170,7 +172,7 @@
                         <div class="uk-width-1-5@s">
                             <label class="uk-form-label" for="form-horizontal-text">概念图</label>
                         </div>
-                        <div class="uk-width-4-5@s upload concept" uk-form-custom>
+                        <div class="uk-width-4-5@s upload_concept" uk-form-custom>
                             {% csrf_token %}
                             <input type="file" multiple>
                             <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
@@ -184,9 +186,12 @@
                         <div class="uk-width-1-5@s">
                             <label class="uk-form-label" for="form-horizontal-text">平面图</label>
                         </div>
-                        <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        <div class="uk-width-4-5@s upload_plan" uk-form-custom>
+                            {% csrf_token %}
+                            <input type="file" multiple>
+                            <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
                         </div>
+                        <progress id="progress_plan" class="uk-progress" value="0" max="100" hidden></progress>
                     </div>
                 </div>
                 <div class="uk-margin">
@@ -194,9 +199,12 @@
                         <div class="uk-width-1-5@s">
                             <label class="uk-form-label" for="form-horizontal-text">透视图</label>
                         </div>
-                        <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="license" type="text" placeholder="如 私人住宅">
+                        <div class="uk-width-4-5@s upload_perspective" uk-form-custom>
+                            {% csrf_token %}
+                            <input type="file" multiple>
+                            <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
                         </div>
+                        <progress id="progress_perspective" class="uk-progress" value="0" max="100" hidden></progress>
                     </div>
                 </div>
                 <div class="uk-margin">
@@ -276,13 +284,13 @@
     );
 
     var bar_concept = document.getElementById('progress_concept');
-
-    UIkit.upload('.upload', {
-        url: '/upload_building_picture$',
+    var bar_perspective = document.getElementById('progress_perspective');
+    var bar_plan = document.getElementById('progress_plan');
+    {#不会写JS，只能写的这么臃肿了QAQ#}
+    UIkit.upload('.upload_concept', {
+        url: '/upload_building_concept',
         multiple: false,
-        allow : '*.(jpg|jpeg|gif|png)',
-
-
+        allow: '*.(jpg|jpeg|gif|png)',
         beforeSend: function (env) {
             console.log(this);
             env.headers = {"X-CSRFToken": getCookie("csrftoken")};
@@ -304,23 +312,75 @@
             bar_concept.max = e.total;
             bar_concept.value = e.loaded;
         },
-
         completeAll: function (xhr) {
             completeAll(xhr.responseText, bar_concept);
         }
+    });
+    UIkit.upload('.upload_plan', {
+        url: '/upload_building_plan',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_plan.removeAttribute('hidden');
+            bar_plan.max = e.total;
+            bar_plan.value = e.loaded;
+        },
 
+        progress: function (e) {
+            bar_plan.max = e.total;
+            bar_plan.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_plan);
+        }
+    });
+    UIkit.upload('.upload_perspective', {
+        url: '/upload_building_perspective',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_perspective.removeAttribute('hidden');
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_perspective);
+        }
     });
 
-    function completeAll(responseText, progressBar){
+    function completeAll(responseText, progressBar) {
         obj = JSON.parse(responseText);
 
-        if(obj.status === "ok")
-        {
+        if (obj.status === "ok") {
             $("#msg").text("修改成功，刷新页面后生效");
             UIkit.notification({message: obj.msg, status: 'success'});
         }
-        else
-        {
+        else {
             $("#msg").text("修改失败");
             UIkit.notification({message: obj.msg, status: 'danger'});
         }

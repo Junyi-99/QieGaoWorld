@@ -36,7 +36,9 @@ urlpatterns = [
     url(r"^agreement$", view.agreement),
     url(r"^dashboard$", view.dashboard),
     url(r"^upload_face$", avatar.avatar_upload),
-    url(r"^upload_building_picture$", declare.upload_building_picture),
+    url(r"^upload_building_plan$", declare.upload_building_plan),
+    url(r"^upload_building_concept$", declare.upload_building_concept),
+    url(r"^upload_building_perspective$", declare.upload_building_perspective),
     url(r"^dashboard\/page$", view.dashboard_page),
     # TODO: 完善 Save Changes
     # url(r"^save_changes$", view.save_changes),
