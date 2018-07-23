@@ -1,5 +1,6 @@
 import os
 import logging
+import time
 
 from PIL import Image
 from django.http import HttpResponse
@@ -46,7 +47,8 @@ def avatar_upload(request):
             break
 
     if flag:
-        path = default_storage.save(request.session.get('username', 'N/A') + suffix, ContentFile(file_obj.read()))
+        save_path = "face/%s_%d_%s" % (request.session.get('username', 'N/A'), int(time.time()), file_name)
+        path = default_storage.save(save_path, ContentFile(file_obj.read()))
         tmp_file = os.path.join(settings.MEDIA_ROOT, path)
 
         try:
@@ -58,7 +60,7 @@ def avatar_upload(request):
         out = im.resize((128, 128), Image.ANTIALIAS)
         out.save(tmp_file)
 
-        avatar_update(request, 'static\\face\\' + str(path))
+        avatar_update(request, 'static\\media\\' + str(path))
         return HttpResponse(r'{"status": "ok", "msg": "修改成功</br>刷新页面后生效"}')
     else:
         return HttpResponse(r'{"status": "failed", "msg": "文件类型错误"}')

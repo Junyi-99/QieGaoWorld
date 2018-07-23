@@ -10,7 +10,7 @@ import logging
 from .views.decorator import check_login, check_post
 from .views.police import page_police_hall
 from .views.settings import page_settings
-from .views.declare import animals_list
+from .views.declare import animals_list, buildings_list
 
 
 # 使用协议
@@ -71,13 +71,13 @@ def user_center(request):
             'online_players_list': user,
             'online_players_number': opn,
             'ping': latency,
+            'permissions': request.session['permissions'],
         }
         logging.debug(context)
     except Exception as e:
         logging.error(e)
         context = {}
 
-    context['permissions'] = request.session['permissions']
     logging.debug(context['permissions'])
     return render(request, "dashboard/user_center.html", context)
 
@@ -101,9 +101,21 @@ def page_call_the_police(request):
 def page_declare_animals(request):
     my_animals = animals_list(request)
     content = {
-        'my_animals': my_animals
+        'my_animals': my_animals,
+        'permissions': request.session['permissions'],
     }
     return render(request, "dashboard/declaration/animals.html", content)
+
+
+@check_login
+def page_declare_buildings(request):
+    my_building = buildings_list(request)
+    print(my_building)
+    content = {
+        'buildings': my_building,
+        'permissions': request.session['permissions'],
+    }
+    return render(request, "dashboard/declaration/buildings.html", content)
 
 
 @check_login
@@ -174,7 +186,7 @@ def dashboard_page(request):
         return page_declaration_center(request)
 
     if request.POST.get("page", None) == "declare_buildings":
-        return render(request, "dashboard/declaration/buildings.html", {})
+        return page_declare_buildings(request)
 
     if request.POST.get("page", None) == "declare_animals":
         return page_declare_animals(request)

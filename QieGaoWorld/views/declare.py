@@ -12,7 +12,7 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.police import username_get_nickname
-from QieGaoWorld.models import DeclareAnimals
+from QieGaoWorld.models import DeclareAnimals, DeclareBuildings
 from QieGaoWorld import settings
 import time
 
@@ -65,17 +65,52 @@ def upload_building_picture(request, upload_type):
             path = default_storage.save(save_path, ContentFile(file_obj.read()))
             tmp_file = os.path.join(settings.MEDIA_ROOT, path)
 
-            # im = Image.open(tmp_file)
+            im = Image.open(tmp_file)
+            width, height = im.size
+
+            if width < height:
+                print("resize")
+                out = im.resize((width, width), Image.ANTIALIAS)
+                out.save(tmp_file)
+            else:
+                out = im.resize((height, height), Image.ANTIALIAS)
+                out.save(tmp_file)
+
         except Exception as e:
             logging.error(e)
             return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误"}')
 
-        # out = im.resize((128, 128), Image.ANTIALIAS)
-        # out.save(tmp_file)
-
-        return HttpResponse(r'{"status": "ok", "msg": "修改成功</br>刷新页面后生效"}')
+        return HttpResponse(r'{"status": "ok", "msg": "修改成功", "url":"static\\media\\%s"}' % save_path)
     else:
         return HttpResponse(r'{"status": "failed", "msg": "文件类型错误"}')
+
+
+def buildings_change_status(request):
+    try:
+        id_ = int(request.POST.get('id', None))
+        new_status = int(request.POST.get('status', None))
+        username = request.session.get('username', None)
+    except ValueError:
+        return HttpResponse(r'{"status": "failed", "msg": "参数错误！"}')
+
+    try:
+        obj = DeclareBuildings.objects.get(id=id_)
+        # 判断id为id_的动物是否属于当前用户，如果不属于，检查其是否是管理员
+        if obj.username != username and '%declaration_buildings_modify%' \
+                not in request.session.get('permissions', '%default%'):
+            return HttpResponse(r'{"status": "failed", "msg": "权限不足！"}')
+
+        if 0 <= new_status <= 5:
+            obj.status = new_status
+            obj.save()
+            return HttpResponse(r'{"status": "ok", "msg": "更新建筑申报信息成功！刷新页面生效！"}')
+        else:
+            return HttpResponse(r'{"status": "failed", "msg": "状态值错误！"}')
+    except MultipleObjectsReturned as e:
+        logging.error(e)
+        return HttpResponse(r'{"status": "failed", "msg": "内部错误！请联系管理员"}')
+    except ObjectDoesNotExist:
+        return HttpResponse(r'{"status": "failed", "msg": "可能这个动物不属于你！"}')
 
 
 @ensure_csrf_cookie
@@ -111,9 +146,44 @@ def animals_change_status(request):
 
 @check_login
 @check_post
-def animals_list(request):
+def buildings_list(request):
     my_animals = []
 
+    buildings = DeclareBuildings.objects.filter(username=request.session.get('username', None))
+
+    for i in range(0, len(buildings)):
+        buildings[i].declare_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].declare_time))
+        buildings[i].nickname = username_get_nickname(buildings[i].username)
+
+        buildings[i].predict_start_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].predict_start_time))
+        buildings[i].predict_end_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].predict_end_time))
+
+        buildings[i].logo = buildings[i].concept
+
+        if buildings[i].status == 0:
+            buildings[i].status_label = 'uk-label-warning'
+            buildings[i].status_text = '审核挂起'
+        elif buildings[i].status == 1:
+            buildings[i].status_label = 'uk-label-warning'
+            buildings[i].status_text = '正在审核'
+        elif buildings[i].status == 2:
+            buildings[i].status_label = 'uk-label-danger'
+            buildings[i].status_text = '审核不通过'
+        elif buildings[i].status == 3:
+            buildings[i].status_label = ''
+            buildings[i].status_text = '审核通过'
+        elif buildings[i].status == 4:
+            buildings[i].status_label = ''
+            buildings[i].status_text = '正在建设'
+        elif buildings[i].status == 5:
+            buildings[i].status_label = 'uk-label-success'
+            buildings[i].status_text = '完工'
+    return buildings
+
+
+@check_login
+@check_post
+def animals_list(request):
     animals = DeclareAnimals.objects.filter(username=request.session.get('username', None))
     for i in range(0, len(animals)):
         animals[i].declare_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(animals[i].declare_time))
@@ -133,6 +203,53 @@ def animals_list(request):
             animals[i].status_text = '死亡'
 
     return animals
+
+
+# 添加一个建筑申报
+@ensure_csrf_cookie
+@check_login
+@check_post
+def buildings_add(request):
+    try:
+        arg_list = {'name', 'english_name', 'summary', 'detail', 'coordinate', 'area', 'predict_start_time',
+                    'predict_end_time', 'type', 'pic_concept', 'pic_plan', 'pic_perspective'}
+
+        lis = {key: str(request.POST.get(key, '')).strip() for key in arg_list}
+        print(lis)
+        print(lis['type'])
+        lis['declare_time'] = int(time.time())
+        lis['username'] = request.session.get('username', None)
+
+        for l in lis:
+            if len(str(lis[l])) == 0:
+                return HttpResponse(r'{"status": "failed", "msg": "%s为空！请检查！"}' % l)
+
+        obj = DeclareBuildings(
+            declare_time=lis['declare_time'],
+            username=lis['username'],
+            coordinate=lis['coordinate'],
+            area=lis['area'],
+            concept=lis['pic_concept'],
+            plan=lis['pic_plan'],
+            name=lis['name'],
+            english_name=lis['english_name'],
+            summary=lis['summary'],
+            detail=lis['detail'],
+            perspective=lis['pic_perspective'],
+            predict_start_time=time.mktime(time.strptime(lis['predict_start_time'], "%Y-%m-%d")),
+            predict_end_time=time.mktime(time.strptime(lis['predict_end_time'], "%Y-%m-%d")),
+            actually_end_time=0,
+            status=0,
+            type=int(str(lis['type'])),
+        )
+        obj.save()
+        return HttpResponse(r'{"status": "ok", "msg": "申报成功！请等待管理员审核！"}')
+    except ValueError as e:
+        print(e)
+        return HttpResponse(r'{"status": "failed", "msg": "数值错误！"}')
+    except Exception as e:
+        logging.error(e)
+        return HttpResponse(r'{"status": "failed", "msg": "内部错误 -7 ！请联系管理员！"}')
 
 
 @ensure_csrf_cookie

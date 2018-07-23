@@ -48,7 +48,9 @@ urlpatterns = [
     # url(r"^admin$", view.admin),
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),
+    url(r"^buildings_add$", declare.buildings_add),
     url(r"^animals_add$", declare.animals_add),
     path("declare/<str:s>", declare.url),
     url(r"^animals_change_status$", declare.animals_change_status),
+    url(r"^buildings_change_status$", declare.buildings_change_status),
 ]

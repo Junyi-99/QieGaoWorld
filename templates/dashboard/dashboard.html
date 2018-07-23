@@ -137,7 +137,7 @@
                 var url_to = "/dashboard#" + page_to;
                 ajax = $.ajax(
                     {
-                        url: "/dashboard/page",
+                        url: "/dashboard/page?_=" + Date.parse(new Date()),
                         type: "post",
                         data: {page: page_to},
                         success: function (res) {
