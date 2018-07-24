@@ -25,16 +25,16 @@
         {% for a in announcements %}
             {% if a.visible %}
                 <div class="uk-grid-match announcement_{{ a.id }}" uk-grid>
-                    <div>
+                    <div class="uk-width-large@m uk-width-xlarge@l">
                         <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-card-body"
                              style="background-color: {{ a.color }}; border-radius: 1em">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-auto">
                                     <img class="uk-border-circle" width="40" height="40" src="{{ a.avatar }}">
                                 </div>
-                                <div class="uk-width-large">
+                                <div class="uk-width-expand">
                                     <h3 class="uk-card-title uk-margin-remove-bottom">{{ a.title }}</h3>
-                                    <p class="uk-text-meta uk-margin-remove-top">{{ a.publish_time }}</p>
+                                    <p class="uk-visible@s uk-text-meta uk-margin-remove-top">{{ a.publish_time }}</p>
                                 </div>
                                 <span class="uk-label {{ a.type_label }}">{{ a.type_text }}</span>
                                 <button type="button" _id="{{ a.id }}" title="删除这条公告" class="delBtn" uk-close></button>
@@ -45,6 +45,50 @@
                 </div>
             {% endif %}
         {% endfor %}
+    </div>
+    <div>
+        <div class="uk-inline">
+            <h2 class="uk-margin-small-top">公告
+                <small style="color: #666666; font-size: medium">Announcement</small>
+            </h2>
+            <hr class="uk-margin"/>
+            <div uk-grid>
+                <div class="uk-width-1-2@l">
+                    <div class="uk-card uk-card-hover uk-card-default">
+                        <div class="uk-card-header">
+                            <div class="uk-grid-small" uk-grid>
+                                <div class="uk-width-auto">
+                                    <span uk-icon="icon: users; ratio: 1.7" class="uk-margin-small-right"></span>
+                                </div>
+                                <div class="uk-width-expand">
+                                    <h3>注册用户</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-card-body">
+                            <canvas id="chart-0" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-width-1-2@l">
+                    <div class="uk-card uk-card-hover uk-card-default">
+                        <div class="uk-card-header">
+                            <div class="uk-grid-small" uk-grid>
+                                <div class="uk-width-auto">
+                                    <span uk-icon="icon: file-edit; ratio: 1.7" class="uk-margin-small-right"></span>
+                                </div>
+                                <div class="uk-width-expand">
+                                    <h3>申报/报案</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uk-card-body">
+                            <canvas id="chart-1" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div>
         <h2 class="uk-margin-small-top">服务器信息

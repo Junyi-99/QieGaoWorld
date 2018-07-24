@@ -64,7 +64,7 @@
     </div>
 
     <div class="uk-grid-divider" uk-grid>
-        <div class="uk-visible@m uk-width-1-5@m">
+        <div class="uk-visible@m uk-width-1-5">
             <div uk-sticky="offset:100; bottom: #top">
                 <div id="left_panel" class="uk-margin-medium-left uk-margin-small-top"
                      style="overflow-y: auto; width: 100%">
@@ -73,8 +73,9 @@
                 </div>
             </div>
         </div>
-        <div class="uk-width-expand@m uk-margin-medium-left uk-margin-medium-right uk-margin-small-top"
+        <div class="uk-width-4-5 uk-width-expand@m uk-margin-medium-left uk-margin-medium-right uk-margin-small-top"
              id="main_content">
+            {{ default_html }}
         </div>
     </div>
 
@@ -94,6 +95,19 @@
     function resize() {
         document.getElementById("left_panel").style.height = window.innerHeight - 150 + "px";
     }
+
+    $(document).ready(function () {
+        ajax = $.ajax(
+            {
+                url: "/dashboard/page?_=" + Date.parse(new Date()),
+                type: "post",
+                data: {page: 'user_center'},
+                success: function (res) {
+                    $("#main_content").html(res);
+                }
+            }
+        )
+    });
 
     $(function () {
         var ajax, currentState;
@@ -155,34 +169,6 @@
                             //$(this).addClass("uk-active");
                             history.pushState(state, null, url_to);
                             chart_init();
-                            return;
-                            // 第一步：匹配加载的页面中是否含有js
-                            var regDetectJs = /<script(.|\n)*?>(.|\n|\r\n)*?<\/script>/ig;
-                            var jsContained = res.match(regDetectJs);
-
-                            // 第二步：如果包含js，则一段一段的取出js再加载执行
-                            if (jsContained) {
-                                console.log("Detected!");
-                                // 分段取出js正则
-                                var regGetJS = /<script(.|\n)*?>((.|\n|\r\n)*)?<\/script>/im;
-
-                                // 按顺序分段执行js
-                                var jsNums = jsContained.length;
-                                for (var i = 0; i < jsNums; i++) {
-                                    var jsSection = jsContained[i].match(regGetJS);
-
-                                    if (jsSection[2]) {
-                                        if (window.execScript) {
-                                            // 给IE的特殊待遇
-                                            window.execScript(jsSection[2]);
-                                        } else {
-                                            // 给其他大部分浏览器用的
-                                            window.eval(jsSection[2]);
-                                        }
-                                    }
-                                }
-                            }
-
                         }
                     }
                 )

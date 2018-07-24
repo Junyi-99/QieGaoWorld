@@ -39,42 +39,42 @@ def handle_uploaded_file(f):
 @check_login
 def user_center(request):
     try:
-        from mcstatus import MinecraftServer
-
-        server_address = 'mc.qiegaoshijie.club:21182'
-
-        server = MinecraftServer.lookup(server_address)
-        status = server.status()
-
-        latency = server.ping()
-        mot = status.description['text']
-        motd = str(mot)
-        pos = motd.find('§')
-        while pos != -1:
-            motd = motd[:pos] + motd[pos + 2:]
-            pos = motd.find('§')
-
-        ver = status.version.name
-        fav = status.favicon
-        mpn = status.players.max
-        opn = status.players.online
-        user = []
-
-        if status.players.sample is not None:
-            for e in status.players.sample:
-                user.append({'name': e.name, 'id': e.id})
+        # from mcstatus import MinecraftServer
+        #
+        # server_address = 'mc.qiegaoshijie.club:21182'
+        #
+        # server = MinecraftServer.lookup(server_address)
+        # status = server.status()
+        #
+        # latency = server.ping()
+        # mot = status.description['text']
+        # motd = str(mot)
+        # pos = motd.find('§')
+        # while pos != -1:
+        #     motd = motd[:pos] + motd[pos + 2:]
+        #     pos = motd.find('§')
+        #
+        # ver = status.version.name
+        # fav = status.favicon
+        # mpn = status.players.max
+        # opn = status.players.online
+        # user = []
+        #
+        # if status.players.sample is not None:
+        #     for e in status.players.sample:
+        #         user.append({'name': e.name, 'id': e.id})
 
         announcements = announcement_list(request)
 
         context = {
-            'motd': motd,
-            'favicon': fav,
-            'version': ver,
-            'server_address': server_address,
-            'max_players_number': mpn,
-            'online_players_list': user,
-            'online_players_number': opn,
-            'ping': latency,
+            # 'motd': motd,
+            # 'favicon': fav,
+            # 'version': ver,
+            # 'server_address': server_address,
+            # 'max_players_number': mpn,
+            # 'online_players_list': user,
+            # 'online_players_number': opn,
+            # 'ping': latency,
             'permissions': request.session['permissions'],
             'announcements': announcements
         }
