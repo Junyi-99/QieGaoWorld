@@ -41,7 +41,6 @@ def announcement_new(request):
 @check_post
 def announcement_delete(request):
     if '%announcement_delete%' not in request.session.get('permissions', '%default%'):
-
         return HttpResponse(dialog('failed', 'danger', '权限不足'))
     id = str(request.POST.get('id', '')).strip()
     try:
@@ -59,7 +58,11 @@ def announcement_delete(request):
 
 def announcement_list(request):
     obj = Announcement.objects.all()
-    for i in range(0, len(obj)):
+    obj = sorted(obj, key=lambda e: e.publish_time, reverse=True)
+    length = len(obj)
+    if length > 5:
+        length = 5
+    for i in range(0, length):
         obj[i].publish_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(obj[i].publish_time))
         if obj[i].type == 0:
             obj[i].color = '#F7F7F7'
@@ -82,4 +85,4 @@ def announcement_list(request):
         except MultipleObjectsReturned:
             obj[i].avatar = settings.DEFAULT_FACE
 
-    return obj
+    return obj[:length]

@@ -33,18 +33,19 @@
                                     <img class="uk-border-circle" width="40" height="40" src="{{ a.avatar }}">
                                 </div>
                                 <div class="uk-width-expand">
-                                    <h3 class="uk-card-title uk-margin-remove-bottom">{{ a.title }}</h3>
+                                    <h3 class="uk-card-title uk-margin-remove-bottom uk-text-truncate">{{ a.title }}</h3>
                                     <p class="uk-visible@s uk-text-meta uk-margin-remove-top">{{ a.publish_time }}</p>
                                 </div>
                                 <span class="uk-label {{ a.type_label }}">{{ a.type_text }}</span>
                                 <button type="button" _id="{{ a.id }}" title="删除这条公告" class="delBtn" uk-close></button>
                             </div>
-                            <p class="uk-width-large">{{ a.content }}</p>
+                            <p class="uk-width-large"><b>{{ a.title }}:</b> <br/> {{ a.content }}</p>
                         </div>
                     </div>
                 </div>
             {% endif %}
         {% endfor %}
+    <p class="uk-text-meta">公告只显示最新5条</p>
     </div>
     <div>
         <div class="uk-inline">
