@@ -12,6 +12,7 @@ from django.core.files.storage import default_storage
 from QieGaoWorld import settings
 from QieGaoWorld.models import User
 from QieGaoWorld.views.decorator import check_login, check_post
+from QieGaoWorld.views.dialog import dialog
 
 
 def avatar_update(request, new_avatar_url):
@@ -19,9 +20,9 @@ def avatar_update(request, new_avatar_url):
     try:
         obj = User.objects.filter(username=username)
     except MultipleObjectsReturned:
-        return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误 错误代码:1"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
     if len(obj) == 0:
-        return HttpResponse(r'{"status": "failed", "msg": "更新头像失败 错误代码:2"}')
+        return HttpResponse(dialog('failed', 'danger', '更新头像失败'))
     obj[0].avatar = new_avatar_url
     obj[0].save()
     request.session['avatar'] = new_avatar_url
@@ -35,7 +36,7 @@ def avatar_upload(request):
 
     pos = file_name.find(".")
     if pos == -1:
-        return HttpResponse(r'{"status": "failed", "msg": "File type error."}')
+        return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
     suffix = file_name[pos:]
 
     allowed_type = [".jpg", ".png", ".jpeg", ".gif"]
@@ -55,12 +56,12 @@ def avatar_upload(request):
             im = Image.open(tmp_file)
         except Exception as e:
             logging.error(e)
-            return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误"}')
+            return HttpResponse(dialog('failed', 'danger', '服务器内部错误，请联系管理员'))
 
         out = im.resize((128, 128), Image.ANTIALIAS)
         out.save(tmp_file)
 
         avatar_update(request, 'static\\media\\' + str(path))
-        return HttpResponse(r'{"status": "ok", "msg": "修改成功</br>刷新页面后生效"}')
+        return HttpResponse(dialog('ok', 'success', '修改成功，刷新页面后生效'))
     else:
-        return HttpResponse(r'{"status": "failed", "msg": "文件类型错误"}')
+        return HttpResponse(dialog('failed', 'danger', '文件类型错误'))

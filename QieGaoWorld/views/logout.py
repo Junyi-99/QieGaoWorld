@@ -1,11 +1,12 @@
 from django.http import HttpResponse
 
+from QieGaoWorld.views.decorator import check_post
+from QieGaoWorld.views.dialog import dialog
 
+
+@check_post
 def logout(request):
-    if request.method != 'POST':
-        return HttpResponse(r'{"status": "failed", "msg": "request method invalid"}')
-
     request.session['is_login'] = False
     request.session['username'] = ''
     request.session['password'] = ''
-    return HttpResponse(r'{"status": "ok", "msg": "logout successfully."}')
+    return HttpResponse(dialog('ok', 'success', '登出成功'))

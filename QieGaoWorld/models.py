@@ -1,5 +1,7 @@
 from django.db import models
 
+from QieGaoWorld import settings
+
 
 class User(models.Model):
     username = models.CharField(max_length=100)  # 用户名
@@ -8,10 +10,9 @@ class User(models.Model):
     qqnumber = models.IntegerField(default=0)  # QQ号
     usrgroup = models.IntegerField(default=0)  # 用户组
     register_time = models.IntegerField(default=0)  # 注册时间
-    avatar = models.CharField(max_length=1024, default='static\\face\\default.jpg')  # 头像
+    avatar = models.CharField(max_length=1024, default='static\\media\\face\\default.jpg')  # 头像
     permissions = models.CharField(max_length=2048,
-                                   default='%default%police_cases_watch%police_cases_add%declaration_animals'
-                                           '%declaration_buildings%declaration_watch%')  # 权限
+                                   default=settings.DEFAULT_PERMISSIONS)  # 权限
 
 
 # 报案记录

@@ -156,14 +156,11 @@
                         $("#status").removeClass("uk-label-success uk-label-danger uk-animation-fade uk-animation-reverse");
 
                         if (obj.status === "ok") {
-                            $("#status").addClass("uk-label-success uk-animation-fade");
-                            $("#status").html(obj.msg);
-                            setTimeout(
-                                function () {
-                                    $("#status").addClass("uk-animation-reverse");
-                                    $("#status").html('');
-                                }
-                            , 2000);
+                            UIkit.notification({
+                                message: obj.msg,
+                                status: 'success',
+                                timeout: 2000
+                            });
 
                             $("#position").val();
 
@@ -176,14 +173,11 @@
                             $("#detail").val('');
                         }
                         else {
-                            $("#status").addClass("uk-label-danger uk-animation-fade");
-                            $("#status").html(obj.msg);
-                            setTimeout(
-                                function () {
-                                    $("#status").addClass("uk-animation-reverse");
-                                    $("#status").html('');
-                                }
-                            , 2000);
+                            UIkit.notification({
+                                message: obj.msg,
+                                status: 'danger',
+                                timeout: 2000
+                            });
                         }
 
                     })

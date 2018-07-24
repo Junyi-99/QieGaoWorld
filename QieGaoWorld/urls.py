@@ -61,4 +61,5 @@ urlpatterns = [
 
     url(r"^announcement_new$", announcement.announcement_new),
     url(r"^announcement_delete$", announcement.announcement_delete),
+    url(r"^test", login.test),
 ]

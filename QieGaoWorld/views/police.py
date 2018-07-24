@@ -10,6 +10,9 @@ from QieGaoWorld.models import User
 import time
 import logging
 
+from QieGaoWorld.views.dialog import dialog
+
+
 @ensure_csrf_cookie
 def case_detail(request):
     error_msg = '<div class="uk-modal-header"><h2 class="uk-modal-title" style="color: #cc3947">%s</h2></div>'
@@ -54,29 +57,28 @@ def case_detail(request):
 # 更改案件状态
 def change_status(request):
     if '%police_cases_modify%' not in request.session.get('permissions', None):
-        return HttpResponse(r'{"status": "failed", "msg": "权限不足，此操作已被记录！用户名: %s，操作时间：%s ..."}' % (
-            request.session.get('username', None), time.time()))
+        return HttpResponse(dialog('failed', 'danger', '权限不足'))
 
     try:
         id_ = int(request.POST.get('id', None))
         new_status = int(request.POST.get('new_status', None))
         logging.debug("更改案件状态： id=%d, new_status=%d" % (id_, new_status))
     except ValueError:
-        return HttpResponse(r'{"status": "failed", "msg": "参数错误！"}')
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
 
     try:
         obj = Cases.objects.get(id=id_)
         if 0 <= new_status <= 3:
             obj.status = new_status
             obj.save()
-            return HttpResponse(r'{"status": "ok", "msg": "更新案件信息成功！刷新页面生效！"}')
+            return HttpResponse(dialog('ok', 'success', '更新案件信息成功，刷新页面后生效'))
         else:
-            return HttpResponse(r'{"status": "failed", "msg": "状态值错误！"}')
+            return HttpResponse(dialog('failed', 'danger', '状态值错误'))
     except MultipleObjectsReturned as e:
         logging.error(e)
-        return HttpResponse(r'{"status": "failed", "msg": "内部错误！请联系管理员"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
     except ObjectDoesNotExist:
-        return HttpResponse(r'{"status": "failed", "msg": "报案不存在！"}')
+        return HttpResponse(dialog('failed', 'danger', '报案不存在'))
 
 
 @ensure_csrf_cookie
@@ -90,7 +92,7 @@ def report(request):
             coordinate_y = int(request.POST.get('coordinate_y', None))
             coordinate_z = int(request.POST.get('coordinate_z', None))
         except ValueError:
-            return HttpResponse(r'{"status": "failed", "msg": "坐标请填入整数"}')
+            return HttpResponse(dialog('failed', 'danger', '坐标请填入整数'))
 
         summary = str(request.POST.get('summary', None)).strip()
         detail = str(request.POST.get('detail', None)).strip()
@@ -103,7 +105,7 @@ def report(request):
         if len(detail) == 0:
             flag = True
         if flag:
-            return HttpResponse(r'{"status": "failed", "msg": "请确认没有留空项目！"}')
+            return HttpResponse(dialog('failed', 'danger', '请确认没有留空项目'))
 
         obj = Cases(
             report_time=int(time.time()),
@@ -122,9 +124,9 @@ def report(request):
 
     except Exception as e:
         logging.error(e)
-        return HttpResponse(r'{"status": "failed", "msg": "内部错误"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
 
-    return HttpResponse(r'{"status": "ok", "msg": "报警成功！"}')
+    return HttpResponse(dialog('ok', 'success', '报案成功！您可以在警署大厅看到自己的报案'))
 
 
 def username_get_avatar(username):

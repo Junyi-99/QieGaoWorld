@@ -11,6 +11,7 @@ from django.core.files.storage import default_storage
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
+from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld.views.police import username_get_nickname
 from QieGaoWorld.models import DeclareAnimals, DeclareBuildings
 from QieGaoWorld import settings
@@ -45,7 +46,8 @@ def upload_building_picture(request, upload_type):
 
     pos = file_name.find(".")
     if pos == -1:
-        return HttpResponse(r'{"status": "failed", "msg": "File type error."}')
+
+        return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
 
     suffix = file_name[pos:]  # 取出后缀名
 
@@ -78,11 +80,11 @@ def upload_building_picture(request, upload_type):
 
         except Exception as e:
             logging.error(e)
-            return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误"}')
+            return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
 
-        return HttpResponse(r'{"status": "ok", "msg": "修改成功", "url":"static\\media\\%s"}' % save_path)
+        return HttpResponse(dialog('ok', 'success', '修改成功', {'url': "static\\media\\%s" % save_path}))
     else:
-        return HttpResponse(r'{"status": "failed", "msg": "文件类型错误"}')
+        return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
 
 
 def buildings_change_status(request):
@@ -91,26 +93,26 @@ def buildings_change_status(request):
         new_status = int(request.POST.get('status', None))
         username = request.session.get('username', None)
     except ValueError:
-        return HttpResponse(r'{"status": "failed", "msg": "参数错误！"}')
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
 
     try:
         obj = DeclareBuildings.objects.get(id=id_)
         # 判断id为id_的动物是否属于当前用户，如果不属于，检查其是否是管理员
         if obj.username != username and '%declaration_buildings_modify%' \
                 not in request.session.get('permissions', '%default%'):
-            return HttpResponse(r'{"status": "failed", "msg": "权限不足！"}')
+            return HttpResponse(dialog('failed', 'danger', '权限不足'))
 
         if 0 <= new_status <= 5:
             obj.status = new_status
             obj.save()
-            return HttpResponse(r'{"status": "ok", "msg": "更新建筑申报信息成功！刷新页面生效！"}')
+            return HttpResponse(dialog('ok', 'success', '更新建筑申报信息成功！刷新页面生效！'))
         else:
-            return HttpResponse(r'{"status": "failed", "msg": "状态值错误！"}')
+            return HttpResponse(dialog('failed', 'danger', '状态值错误'))
     except MultipleObjectsReturned as e:
         logging.error(e)
-        return HttpResponse(r'{"status": "failed", "msg": "内部错误！请联系管理员"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
     except ObjectDoesNotExist:
-        return HttpResponse(r'{"status": "failed", "msg": "可能这个动物不属于你！"}')
+        return HttpResponse(dialog('failed', 'danger', '可能这个动物不属于你！'))
 
 
 @ensure_csrf_cookie
@@ -122,26 +124,26 @@ def animals_change_status(request):
         new_status = int(request.POST.get('status', None))
         username = request.session.get('username', None)
     except ValueError:
-        return HttpResponse(r'{"status": "failed", "msg": "参数错误！"}')
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
 
     try:
         obj = DeclareAnimals.objects.get(id=id_)
         # 判断id为id_的动物是否属于当前用户，如果不属于，检查其是否是管理员
         if obj.username != username and '%declaration_animals_modify%' \
                 not in request.session.get('permissions', '%default%'):
-            return HttpResponse(r'{"status": "failed", "msg": "这个动物并不属于你，且你不是管理员！"}')
+            return HttpResponse(dialog('failed', 'danger', '这个动物并不属于你'))
 
         if 0 <= new_status <= 3:
             obj.status = new_status
             obj.save()
-            return HttpResponse(r'{"status": "ok", "msg": "更新动物信息成功！刷新页面生效！"}')
+            return HttpResponse(dialog('ok', 'success', '更新动物信息成功！刷新页面生效！'))
         else:
-            return HttpResponse(r'{"status": "failed", "msg": "状态值错误！"}')
+            return HttpResponse(dialog('failed', 'danger', '状态值错误'))
     except MultipleObjectsReturned as e:
         logging.error(e)
-        return HttpResponse(r'{"status": "failed", "msg": "内部错误！请联系管理员"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
     except ObjectDoesNotExist:
-        return HttpResponse(r'{"status": "failed", "msg": "可能这个动物不属于你！"}')
+        return HttpResponse(dialog('failed', 'danger', '这个动物并不属于你'))
 
 
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
@@ -231,7 +233,7 @@ def buildings_add(request):
 
         for l in lis:
             if len(str(lis[l])) == 0:
-                return HttpResponse(r'{"status": "failed", "msg": "%s为空！请检查！"}' % l)
+                return HttpResponse(dialog('failed', 'danger', '%s为空！请检查！' % l))
 
         obj = DeclareBuildings(
             declare_time=lis['declare_time'],
@@ -252,13 +254,13 @@ def buildings_add(request):
             type=int(str(lis['type'])),
         )
         obj.save()
-        return HttpResponse(r'{"status": "ok", "msg": "申报成功！请等待管理员审核！"}')
+        return HttpResponse(dialog('ok', 'success', '申报成功！请等待管理员审核！'))
     except ValueError as e:
         print(e)
-        return HttpResponse(r'{"status": "failed", "msg": "数值错误！"}')
+        return HttpResponse(dialog('failed', 'danger', '数值错误'))
     except Exception as e:
         logging.error(e)
-        return HttpResponse(r'{"status": "failed", "msg": "内部错误 -7 ！请联系管理员！"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
 
 
 @ensure_csrf_cookie
@@ -273,18 +275,18 @@ def animals_add(request):
         feature = str(request.POST.get('feature', None)).strip()
 
         if len(license_) == 0:
-            return HttpResponse(r'{"status": "failed", "msg": "牌照号不能为空！"}')
+            return HttpResponse(dialog('failed', 'danger', '牌照号不能为空'))
         if len(feature) == 0:
-            return HttpResponse(r'{"status": "failed", "msg": "特征不能为空！"}')
+            return HttpResponse(dialog('failed', 'danger', '特征不能为空'))
 
         try:
             binding = int(str(request.POST.get('binding', None)).strip())
             status = int(str(request.POST.get('status', None)).strip())
         except ValueError:
-            return HttpResponse(r'{"status": "failed", "msg": "数值错误！"}')
+            return HttpResponse(dialog('failed', 'danger', '数值错误'))
 
         if animals_check_license_exist(license_):
-            return HttpResponse(r'{"status": "failed", "msg": "牌照已存在！"}')
+            return HttpResponse(dialog('failed', 'danger', '牌照已存在'))
 
         if binding == 0:
             binding = username_get_nickname(username)
@@ -305,10 +307,10 @@ def animals_add(request):
             status=status
         )
         obj.save()
-        return HttpResponse(r'{"status": "ok", "msg": "更新成功！"}')
+        return HttpResponse(dialog('ok', 'success', '更新成功'))
     except Exception as e:
         logging.error(e)
-        return HttpResponse(r'{"status": "failed", "msg": "内部错误"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
 
 
 # 检查牌照是否存在，存在返回True，不存在返回False

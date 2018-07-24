@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from QieGaoWorld import settings
 from QieGaoWorld.views.decorator import check_post, check_login
 from QieGaoWorld.models import Announcement, User
+from QieGaoWorld.views.dialog import dialog
 
 
 @check_login
@@ -18,7 +19,7 @@ def announcement_new(request):
     announcement_type = request.POST.get('type', '')
 
     if '%publish_announcement%' not in request.session.get('permissions', '%default%'):
-        return HttpResponse(r'{"status": "failed", "msg": "权限不足！"}')
+        return HttpResponse(dialog('failed', 'danger', '权限不足'))
 
     try:
         obj = Announcement(
@@ -29,27 +30,29 @@ def announcement_new(request):
             type=announcement_type
         )
         obj.save()
-        return HttpResponse(r'{"status": "ok", "msg": "公告发布成功！"}')
+
+        return HttpResponse(dialog('ok', 'success', '公告发布成功'))
     except Exception as e:
         logging.error(e)
-        return HttpResponse(r'{"status": "failed", "msg": "Internal Server Error 服务器内部错误 错误代码:458"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
 
 
 @check_login
 @check_post
 def announcement_delete(request):
     if '%announcement_delete%' not in request.session.get('permissions', '%default%'):
-        return HttpResponse(r'{"status": "failed", "msg": "权限不足！"}')
+
+        return HttpResponse(dialog('failed', 'danger', '权限不足'))
     id = str(request.POST.get('id', '')).strip()
     try:
         obj = Announcement.objects.get(id=id)
         obj.visible = False
         obj.save()
-        return HttpResponse(r'{"status": "ok", "msg": "删除成功"}')
+        return HttpResponse(dialog('ok', 'success', '删除成功'))
     except ObjectDoesNotExist:
-        return HttpResponse(r'{"status": "failed", "msg": "公告ID不存在！"}')
+        return HttpResponse(dialog('failed', 'danger', '公告ID不存在'))
     except MultipleObjectsReturned:
-        return HttpResponse(r'{"status": "failed", "msg": "内部错误：15873"}')
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
 
     pass
 
@@ -72,7 +75,7 @@ def announcement_list(request):
             obj[i].type_label = 'uk-label-danger'
 
         try:
-            user = User.objects.get(username=request.session.get('username', 'N/A'))
+            user = User.objects.get(username=obj[i].username)
             obj[i].avatar = user.avatar
         except ObjectDoesNotExist:
             obj[i].avatar = settings.DEFAULT_FACE

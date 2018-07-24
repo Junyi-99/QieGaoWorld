@@ -8,14 +8,16 @@ import re
 import time
 import logging
 
+from QieGaoWorld.views.decorator import check_post
+from QieGaoWorld.views.dialog import dialog
+
 
 def register(request):
     return render(request, "register.html", {})
 
 
+@check_post
 def register_verify(request):
-    if request.method != "POST":
-        return HttpResponse(r'{"status": "failed", "msg": "request method invalid"}')
     username = str(request.POST.get("username", None))
     password = str(request.POST.get("password", None))
     nickname = str(request.POST.get("nickname", None))
@@ -26,12 +28,12 @@ def register_verify(request):
     pattern = re.compile(r'[^\w]')
     match = pattern.match(username)
     if match:
-        return HttpResponse(r'{"status": "failed", "msg": "username invalid"}')
+        return HttpResponse(dialog('failed', 'danger', '用户名不合法'))
 
     # 检测password是否合法
     match = pattern.match(password)
     if match:
-        return HttpResponse(r'{"status": "failed", "msg": "password invalid"}')
+        return HttpResponse(dialog('failed', 'danger', '密码不合法'))
 
     lis = ["SYSTEM", "N/A", "ADMIN", "管理员", "版主", "vip", ".com", ".cn", "官方", "京东", "淘宝", "SELECT", "FROM", "WHERE",
            "INSERT", "黑社会", "性爱", "操", "肏", "你妈", "YY", "攻击", "黄网", "迷药", "匿名", "NULL", "公司", "经理", "投资商", "迅雷",
@@ -39,11 +41,11 @@ def register_verify(request):
            "百度"]
     for eachL in lis:
         if eachL in username.upper():
-            return HttpResponse(r'{"status": "failed", "msg": "用户名包含非法字符"}')
+            return HttpResponse(dialog('failed', 'danger', '用户名包含非法字符'))
 
     for eachL in lis:
         if eachL in nickname.upper():
-            return HttpResponse(r'{"status": "failed", "msg": "昵称包含非法字符"}')
+            return HttpResponse(dialog('failed', 'danger', '昵称包含非法字符'))
 
     # pattern = re.compile(r'^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+')
     # match = pattern.match(email)  # 检测email是否合法
@@ -63,9 +65,9 @@ def register_verify(request):
     # ===================================检测重复用户部分开始
     user = User.objects.filter(username=username)
     if len(user) != 0:
-        return HttpResponse(r'{"status": "failed", "msg": "用户名已存在"}')
+        return HttpResponse(dialog('failed', 'danger', '用户名已存在'))
     # ===================================检测重复用户部分结束
 
     obj = User(username=username, password=password, nickname=nickname, register_time=int(time.time()))
     obj.save()
-    return HttpResponse(r'{"status": "ok", "msg": "注册成功"}')
+    return HttpResponse(dialog('ok', 'success', '注册成功！赶快去登录吧！'))
