@@ -45,7 +45,7 @@ def login_verify(request):
         s="%"
         for b in plays:
             s+=b['name']+"%"
-        if "%"+username+"%"  in plays:
+        if "%"+username+"%"  in s:
             return HttpResponse(dialog('failed', 'danger', '登录失败!您的帐号已被此服务器封禁!'))
     try:
         user_url="../plugins/ksptooi/fastlogin/database/"
