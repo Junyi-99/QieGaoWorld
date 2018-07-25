@@ -194,7 +194,7 @@ def animals_list(request, operation):
     if 'all' in operation:
         animals = DeclareAnimals.objects.all()
     elif 'user' in operation:
-        animals = DeclareAnimals.objects.filter(username=request.session.get('username', None))
+        animals = DeclareAnimals.objects.filter(username=request.session.get('username', None)) | DeclareAnimals.objects.filter(binding='公共')
 
     for i in range(0, len(animals)):
         animals[i].declare_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(animals[i].declare_time))

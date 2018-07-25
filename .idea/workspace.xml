@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="fee87d6c-b810-4032-a46d-90d4e0fb0643" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QieGaoWorld/views/announcement.py" beforeDir="false" afterPath="$PROJECT_DIR$/QieGaoWorld/views/announcement.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/police/police_hall.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/police/police_hall.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/user_center.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/user_center.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QieGaoWorld/views/declare.py" beforeDir="false" afterPath="$PROJECT_DIR$/QieGaoWorld/views/declare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard/declaration/animals.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/declaration/animals.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard/declaration/buildings.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/declaration/buildings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard/declaration/center.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/declaration/center.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/httpRequests/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,41 +55,8 @@
       <file leaf-file-name="user_center.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/dashboard/user_center.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="41" column="71" selection-start-line="41" selection-start-column="71" selection-end-line="41" selection-end-column="71" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cases_detail.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard/police/cases_detail.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
-              <folding>
-                <element signature="n#style#0;n#span#0;n#h1#0;n#article#0;n#div#1;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QieGaoWorld/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="130" column="71" selection-start-line="130" selection-start-column="39" selection-end-line="130" selection-end-column="71" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="call_the_police.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard/police/call_the_police.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="5" column="40" lean-forward="true" selection-start-line="5" selection-end-line="5" selection-end-column="40" />
-              <folding>
-                <element signature="n#style#0;n#small#0;n#h2#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="-54">
+              <caret line="34" column="61" lean-forward="true" selection-start-line="34" selection-start-column="61" selection-end-line="34" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -95,32 +64,47 @@
       <file leaf-file-name="police.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="logout.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/logout.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+            <state relative-caret-position="454">
+              <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
               <folding>
-                <element signature="e#0#36#0" expanded="true" />
+                <element signature="e#0#78#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="announcement.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/announcement.py">
+      <file leaf-file-name="dashboard.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/dashboard/dashboard.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="479">
-              <caret line="87" column="22" selection-start-line="87" selection-start-column="22" selection-end-line="87" selection-end-column="22" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="294">
+              <caret line="53" column="72" lean-forward="true" selection-start-line="53" selection-start-column="72" selection-end-line="53" selection-end-column="72" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="menu.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/dashboard/menu.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-248">
+              <caret line="10" column="57" lean-forward="true" selection-start-line="10" selection-start-column="57" selection-end-line="10" selection-end-column="57" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="buildings.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/buildings.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="213">
+              <caret line="304" column="46" selection-start-line="304" selection-start-column="46" selection-end-line="304" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="center.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/center.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="177" column="27" lean-forward="true" selection-start-line="177" selection-start-column="27" selection-end-line="177" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -128,8 +112,8 @@
       <file leaf-file-name="declare.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/declare.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="473">
-              <caret line="236" lean-forward="true" selection-start-line="236" selection-end-line="236" />
+            <state relative-caret-position="203">
+              <caret line="196" column="139" selection-start-line="196" selection-start-column="139" selection-end-line="196" selection-end-column="139" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -140,8 +124,8 @@
       <file leaf-file-name="police_hall.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/dashboard/police/police_hall.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="16" column="20" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+            <state relative-caret-position="81">
+              <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -158,12 +142,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>edit-box</find>
-      <find>世界地图</find>
-      <find>oncli</find>
-      <find>cases[i]</find>
-      <find>animals_check_license_exist</find>
-      <find>username</find>
       <find>animals_change_status</find>
       <find>change_status</find>
       <find>js-upload</find>
@@ -188,6 +166,12 @@
       <find>href=&quot;#offcanvas-push&quot;</find>
       <find>href=&quot;#&quot; uk-toggle</find>
       <find>&quot;msg&quot;</find>
+      <find>request.session.get('permissio</find>
+      <find>cases</find>
+      <find>sorted</find>
+      <find>uk-text-truncate</find>
+      <find>edit-box</find>
+      <find>用户</find>
     </findStrings>
     <replaceStrings>
       <replace>obj</replace>
@@ -226,11 +210,8 @@
         <option value="$PROJECT_DIR$/templates/dashboard/papers/community.html" />
         <option value="$PROJECT_DIR$/templates/agreement.html" />
         <option value="$PROJECT_DIR$/templates/trash/dashboard.html" />
-        <option value="$PROJECT_DIR$/templates/dashboard/declaration/buildings.html" />
-        <option value="$PROJECT_DIR$/templates/dashboard/declaration/animals.html" />
         <option value="$PROJECT_DIR$/templates/dashboard/world_map/map.html" />
         <option value="$PROJECT_DIR$/templates/dashboard/rookies/rookies.html" />
-        <option value="$PROJECT_DIR$/templates/dashboard/declaration/center.html" />
         <option value="$PROJECT_DIR$/Readme.md" />
         <option value="$PROJECT_DIR$/templates/dashboard/announcement/new_announcement.html" />
         <option value="$PROJECT_DIR$/QieGaoWorld/views/decorator.py" />
@@ -238,7 +219,6 @@
         <option value="$PROJECT_DIR$/QieGaoWorld/permissions.py" />
         <option value="$PROJECT_DIR$/templates/error.html" />
         <option value="$PROJECT_DIR$/QieGaoWorld/view.py" />
-        <option value="$PROJECT_DIR$/templates/dashboard/dashboard.html" />
         <option value="$PROJECT_DIR$/QieGaoWorld/urls.py" />
         <option value="$PROJECT_DIR$/templates/dialog.html" />
         <option value="$PROJECT_DIR$/templates/login.html" />
@@ -250,13 +230,17 @@
         <option value="$PROJECT_DIR$/QieGaoWorld/models.py" />
         <option value="$PROJECT_DIR$/templates/dashboard/menu.html" />
         <option value="$PROJECT_DIR$/templates/dashboard/police/call_the_police.html" />
-        <option value="$PROJECT_DIR$/QieGaoWorld/views/police.py" />
         <option value="$PROJECT_DIR$/QieGaoWorld/views/logout.py" />
-        <option value="$PROJECT_DIR$/QieGaoWorld/views/declare.py" />
-        <option value="$PROJECT_DIR$/templates/dashboard/police/police_hall.html" />
         <option value="$PROJECT_DIR$/QieGaoWorld/views/announcement.py" />
         <option value="$PROJECT_DIR$/templates/dashboard/user_center.html" />
         <option value="$PROJECT_DIR$/templates/dashboard/police/cases_detail.html" />
+        <option value="$PROJECT_DIR$/templates/dashboard/police/police_hall.html" />
+        <option value="$PROJECT_DIR$/QieGaoWorld/views/police.py" />
+        <option value="$PROJECT_DIR$/QieGaoWorld/views/declare.py" />
+        <option value="$PROJECT_DIR$/templates/dashboard/declaration/buildings.html" />
+        <option value="$PROJECT_DIR$/templates/dashboard/declaration/center.html" />
+        <option value="$PROJECT_DIR$/templates/dashboard/declaration/animals.html" />
+        <option value="$PROJECT_DIR$/templates/dashboard/dashboard.html" />
       </list>
     </option>
   </component>
@@ -324,6 +308,13 @@
               <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="dashboard" type="462c0819:PsiDirectoryNode" />
               <item name="announcement" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
+              <item name="QieGaoWorld" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
+              <item name="declaration" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="QieGaoWorld" type="b2602c69:ProjectViewProjectNode" />
@@ -642,7 +633,21 @@
       <option name="project" value="LOCAL" />
       <updated>1532445054686</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="警署大厅响应式适配">
+      <created>1532451066350</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1532451066350</updated>
+    </task>
+    <task id="LOCAL-00021" summary="细节：报案按照时间先后排序">
+      <created>1532497982675</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1532497982675</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TodoView">
@@ -663,11 +668,11 @@
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="1" sideWeight="0.8816631" weight="0.26940134" />
       <window_info anchor="bottom" id="Python Console" order="5" weight="0.32815966" />
-      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.8075693" visible="true" weight="0.19068736" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.8075693" visible="true" weight="0.18756816" />
       <window_info anchor="bottom" id="Terminal" order="4" weight="0.18292683" />
       <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.7632027" visible="true" weight="0.23987207" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="right" id="Database" order="1" visible="true" weight="0.24147122" />
+      <window_info anchor="right" id="Database" order="1" weight="0.24147122" />
       <window_info anchor="bottom" id="Find" order="7" weight="0.32815966" />
       <window_info anchor="right" id="SciView" order="0" weight="0.32995737" />
       <window_info id="Structure" order="2" sideWeight="0.23679727" side_tool="true" weight="0.23123324" />
@@ -749,7 +754,9 @@
     <MESSAGE value="公告的删除功能" />
     <MESSAGE value="公告页的响应式可算调好了" />
     <MESSAGE value="全面替换成自定义dialog" />
-    <option name="LAST_COMMIT_MESSAGE" value="全面替换成自定义dialog" />
+    <MESSAGE value="警署大厅响应式适配" />
+    <MESSAGE value="细节：报案按照时间先后排序" />
+    <option name="LAST_COMMIT_MESSAGE" value="细节：报案按照时间先后排序" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -887,27 +894,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/animals.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="121" column="23" selection-start-line="121" selection-start-column="16" selection-end-line="121" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/center.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" column="42" lean-forward="true" selection-start-line="5" selection-start-column="42" selection-end-line="5" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/buildings.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="617">
-          <caret line="303" column="27" lean-forward="true" selection-start-line="303" selection-start-column="27" selection-end-line="303" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/permissions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
@@ -940,13 +926,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3699">
           <caret line="7" column="21" lean-forward="true" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="81" column="27" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="27" />
         </state>
       </provider>
     </entry>
@@ -1045,13 +1024,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/menu.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12">
-          <caret line="10" column="57" lean-forward="true" selection-start-line="10" selection-start-column="57" selection-end-line="10" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/logout.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1062,34 +1034,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/declare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="473">
-          <caret line="236" lean-forward="true" selection-start-line="236" selection-end-line="236" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_announcement">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/police_hall.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="16" column="20" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
@@ -1117,6 +1065,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/control_panel.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="22" column="14" lean-forward="true" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/cases_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="4" column="6" lean-forward="true" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#h1#0;n#article#0;n#div#1;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/dashboard/police/call_the_police.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1127,27 +1092,72 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/police_hall.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/declare.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="196" column="139" selection-start-line="196" selection-start-column="139" selection-end-line="196" selection-end-column="139" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
+          <folding>
+            <element signature="e#0#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/buildings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="304" column="46" selection-start-line="304" selection-start-column="46" selection-end-line="304" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/animals.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="35">
+          <caret line="158" column="42" lean-forward="true" selection-start-line="158" selection-start-column="42" selection-end-line="158" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/center.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="177" column="27" lean-forward="true" selection-start-line="177" selection-start-column="27" selection-end-line="177" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/dashboard/user_center.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="41" column="71" selection-start-line="41" selection-start-column="71" selection-end-line="41" selection-end-column="71" />
+        <state relative-caret-position="-54">
+          <caret line="34" column="61" lean-forward="true" selection-start-line="34" selection-start-column="61" selection-end-line="34" selection-end-column="61" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/control_panel.html">
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/menu.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="22" column="14" lean-forward="true" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+        <state relative-caret-position="-248">
+          <caret line="10" column="57" lean-forward="true" selection-start-line="10" selection-start-column="57" selection-end-line="10" selection-end-column="57" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/cases_detail.html">
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
-          <folding>
-            <element signature="n#style#0;n#span#0;n#h1#0;n#article#0;n#div#1;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="294">
+          <caret line="53" column="72" lean-forward="true" selection-start-line="53" selection-start-column="72" selection-end-line="53" selection-end-column="72" />
         </state>
       </provider>
     </entry>

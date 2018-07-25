@@ -1,11 +1,11 @@
 <h2>动物申报
     <small style="color: #666666; font-size: medium">Animal Declaration</small>
     <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
-            uk-toggle="target: #edit-box">新申报
+            uk-toggle="target: #animal-box">新申报
     </button>
 </h2>
 <hr class="uk-margin"/>
-<p class="uk-text-meta">下面显示的是你申报的所有动物</p>
+<p class="uk-text-meta">下面显示的是你申报的所有动物和所有共享的动物</p>
 <div class="uk-alert-primary" uk-alert id="tips" style="display:none">
     <a class="uk-alert-close" uk-close></a>
     <p></p>
@@ -14,25 +14,25 @@
     <caption></caption>
     <thead>
         <tr>
-            <th>牌照号</th>
-            <th>隶属</th>
-            <th>特征</th>
-            <th>状态</th>
-            <th>申请人</th>
-            <th>更新时间</th>
-            <th>更改状态为</th>
+            <th class="uk-table-expand">牌照号</th>
+            <th class="uk-visible@s">隶属</th>
+            <th class="uk-visible@s">特征</th>
+            <th class="uk-table-shrink">状态</th>
+            <th class="uk-visible@s">申请人</th>
+            <th class="uk-visible@l">申请时间</th>
+            <th class="uk-visible@s">更改状态为</th>
         </tr>
     </thead>
     <tbody>
         {% for a in my_animals %}
         <tr>
-            <td>{{ a.license }}</td>
-            <td>{{ a.binding }}</td>
-            <td>{{ a.feature }}</td>
+            <td class="uk-text-truncate">{{ a.license }}</td>
+            <td class="uk-visible@s">{{ a.binding }}</td>
+            <td class="uk-visible@s">{{ a.feature }}</td>
             <td><span class="uk-label {{ a.status_label }}">{{ a.status_text }}</span></td>
-            <td>{{ a.nickname }}</td>
-            <td>{{ a.declare_time }}</td>
-            <td>
+            <td class="uk-visible@s">{{ a.nickname }}</td>
+            <td class="uk-visible@l">{{ a.declare_time }}</td>
+            <td class="uk-visible@s">
                 <label>
                     <select class="uk-select options" _id="{{ a.id }}">
                         <option value="0" {% if a.status == 0 %} selected {% endif %}>未知</option>
@@ -50,7 +50,7 @@
 </table>
 
 
-<div id="edit-box" class="uk-flex-top" uk-modal>
+<div id="animal-box" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
 
         <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -130,7 +130,7 @@
                             status: 'success',
                             timeout: 2000
                         });
-                        UIkit.modal("#edit-box").hide();
+                        UIkit.modal("#animal-box").hide();
                     } else {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
@@ -161,7 +161,7 @@
                             status: 'success',
                             timeout: 2000
                         });
-                        UIkit.modal("#edit-box").hide();
+                        UIkit.modal("#animal-box").hide();
                     } else {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,

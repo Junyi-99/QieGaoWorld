@@ -2,7 +2,7 @@
 <h2>建筑申报
     <small style="color: #666666; font-size: medium">Construction Declaration</small>
     <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
-            uk-toggle="target: #edit-box">新申报
+            uk-toggle="target: #building-box">新申报
     </button>
 </h2>
 <hr class="uk-margin"/>
@@ -91,7 +91,7 @@
 </table>
 
 
-<div id="edit-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+<div id="building-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
 
         <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -257,7 +257,7 @@
                             status: 'success',
                             timeout: 2000
                         });
-                        UIkit.modal("#edit-box").hide();
+                        UIkit.modal("#building-box").hide();
                     } else {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
@@ -302,7 +302,7 @@
                             status: 'success',
                             timeout: 2000
                         });
-                        UIkit.modal("#edit-box").hide();
+                        UIkit.modal("#building-box").hide();
                     } else {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
