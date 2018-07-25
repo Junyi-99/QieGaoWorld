@@ -38,8 +38,9 @@
                                          width="40" alt="">
                                 </div>
                                 <div class="uk-width-expand">
-
-                                    <h4 class="uk-margin-remove-bottom">{{ b.name }}</h4>
+                                    <h4 class="uk-margin-remove-bottom"><a id="building{{ b.id }}" class="uk-link-reset"
+                                                                           onclick="buildingDetail(this.id)">{{ b.name }}</a>
+                                    </h4>
                                     <p class="uk-text-meta uk-margin-remove-top">{{ b.english_name }}</p>
                                 </div>
                             </div>
@@ -143,6 +144,16 @@
     </li>
 </ul>
 <script>
+    function buildingDetail(id_) {
+        var id = id_.substring(8);
+        console.log(id_);
+        $.get("/buildings_detail", {
+            "id": id
+        }, function (data) {
+            UIkit.modal.dialog(data);
+        });
+    }
+
     $(document).ready(
         $(function () {
             $(".building_options").change(function () {

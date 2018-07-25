@@ -57,6 +57,7 @@ urlpatterns = [
     url(r"^animals_change_status$", declare.animals_change_status),
 
     url(r"^buildings_add$", declare.buildings_add),
+    url(r"^buildings_detail$", declare.buildings_detail),
     url(r"^buildings_change_status$", declare.buildings_change_status),
 
     url(r"^announcement_new$", announcement.announcement_new),

@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/templates/dashboard/declaration/animals.html" line="32" />
+    <bookmark url="file://$PROJECT_DIR$/templates/dashboard/declaration/animals.html" line="30" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fee87d6c-b810-4032-a46d-90d4e0fb0643" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/QieGaoWorld/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/QieGaoWorld/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QieGaoWorld/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/QieGaoWorld/view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/js/chart.js/Chart.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/js/chart.js/Chart.bundle.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/js/chart.js/Chart.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/js/chart.js/Chart.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/js/chart.js/utils.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/js/dashboard/my.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/assets/js/dashboard/my.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QieGaoWorld/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/QieGaoWorld/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QieGaoWorld/views/declare.py" beforeDir="false" afterPath="$PROJECT_DIR$/QieGaoWorld/views/declare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/agreement.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/agreement.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/dashboard/declaration/animals.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/declaration/animals.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/dashboard/declaration/buildings.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/declaration/buildings.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/dashboard/declaration/center.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/declaration/center.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/menu.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/rookies/rookies.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/rookies/rookies.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/user_center.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/user_center.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/world_map/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/world_map/map.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/httpRequests/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -65,112 +56,18 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="user_center.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard/user_center.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="91" column="3" selection-start-line="91" selection-start-column="3" selection-end-line="91" selection-end-column="3" />
-              <folding>
-                <element signature="n#style#0;n#a#0;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="view.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QieGaoWorld/view.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="70" column="41" lean-forward="true" selection-start-line="70" selection-start-column="41" selection-end-line="70" selection-end-column="41" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dashboard.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard/dashboard.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="35" column="18" lean-forward="true" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/QieGaoWorld/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="buildings.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/buildings.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="8" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="map.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard/world_map/map.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="2" column="16" lean-forward="true" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="rookies.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard/rookies/rookies.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="6" column="25" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="permissions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/QieGaoWorld/permissions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="17" column="61" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="61" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="menu.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/dashboard/menu.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="32" column="55" lean-forward="true" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>change_st</find>
-      <find>static</find>
-      <find>print</find>
-      <find>announcemtn</find>
-      <find>time.</find>
-      <find>%Y-%m</find>
       <find>options</find>
       <find>navbar</find>
       <find>切糕面板</find>
@@ -195,12 +92,19 @@
       <find>chart.js</find>
       <find>chart.</find>
       <find>chart</find>
+      <find>detail</find>
+      <find>buildings[i]</find>
+      <find>case.</find>
+      <find>area</find>
+      <find>avatar</find>
+      <find>permissions</find>
     </findStrings>
     <replaceStrings>
-      <replace>obj</replace>
       <replace>nav</replace>
       <replace>href=&quot;#offcanvas-push&quot; uk-toggle</replace>
       <replace>href=&quot;#&quot;</replace>
+      <replace>obj</replace>
+      <replace>building.</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\hji20\PycharmProjects\QieGaoWorld\static\assets\js\chart.js</dir>
@@ -242,7 +146,6 @@
         <option value="$PROJECT_DIR$/QieGaoWorld/views/decorator.py" />
         <option value="$PROJECT_DIR$/templates/dashboard/settings/account.html" />
         <option value="$PROJECT_DIR$/templates/error.html" />
-        <option value="$PROJECT_DIR$/QieGaoWorld/urls.py" />
         <option value="$PROJECT_DIR$/templates/dialog.html" />
         <option value="$PROJECT_DIR$/templates/login.html" />
         <option value="$PROJECT_DIR$/QieGaoWorld/views/login.py" />
@@ -256,11 +159,8 @@
         <option value="$PROJECT_DIR$/templates/dashboard/police/cases_detail.html" />
         <option value="$PROJECT_DIR$/templates/dashboard/police/police_hall.html" />
         <option value="$PROJECT_DIR$/QieGaoWorld/views/police.py" />
-        <option value="$PROJECT_DIR$/QieGaoWorld/views/declare.py" />
         <option value="$PROJECT_DIR$/QieGaoWorld/permissions.py" />
         <option value="$PROJECT_DIR$/templates/dashboard/declaration/animals.html" />
-        <option value="$PROJECT_DIR$/templates/dashboard/declaration/center.html" />
-        <option value="$PROJECT_DIR$/templates/dashboard/declaration/buildings.html" />
         <option value="$PROJECT_DIR$/static/assets/js/dashboard/my.js" />
         <option value="$PROJECT_DIR$/templates/dashboard/user_center.html" />
         <option value="$PROJECT_DIR$/QieGaoWorld/view.py" />
@@ -268,6 +168,11 @@
         <option value="$PROJECT_DIR$/templates/dashboard/world_map/map.html" />
         <option value="$PROJECT_DIR$/templates/dashboard/rookies/rookies.html" />
         <option value="$PROJECT_DIR$/templates/dashboard/dashboard.html" />
+        <option value="$PROJECT_DIR$/QieGaoWorld/urls.py" />
+        <option value="$PROJECT_DIR$/templates/dashboard/declaration/buildings.html" />
+        <option value="$PROJECT_DIR$/templates/dashboard/declaration/center.html" />
+        <option value="$PROJECT_DIR$/templates/dashboard/declaration/building_detail.html" />
+        <option value="$PROJECT_DIR$/QieGaoWorld/views/declare.py" />
         <option value="$PROJECT_DIR$/QieGaoWorld/settings.py" />
       </list>
     </option>
@@ -368,7 +273,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="SearchEverywhereHistoryKey" value="reforma&#9;ACTION&#9;ReformatCode&#10;refor&#9;ACTION&#9;ReformatCode&#10;find in&#9;ACTION&#9;FindInPath&#10;find in &#9;ACTION&#9;FindInPath&#10;reformat&#9;ACTION&#9;ReformatCode&#10;find&#9;ACTION&#9;FindInPath&#10;todo&#9;ACTION&#9;ActivateTODOToolWindow&#10;restful&#9;ACTION&#9;WebServicesPlugin.CreateRESTClient&#10;inspe&#9;ACTION&#9;InspectCode&#10;ensure_csrf_cookie&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="find in &#9;ACTION&#9;FindInPath&#10;todo&#9;ACTION&#9;ActivateTODOToolWindow&#10;reforma&#9;ACTION&#9;ReformatCode&#10;refor&#9;ACTION&#9;ReformatCode&#10;find in&#9;ACTION&#9;FindInPath&#10;reformat&#9;ACTION&#9;ReformatCode&#10;find&#9;ACTION&#9;FindInPath&#10;restful&#9;ACTION&#9;WebServicesPlugin.CreateRESTClient&#10;inspe&#9;ACTION&#9;InspectCode&#10;ensure_csrf_cookie&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="true" />
     <property name="database.console.LAST_STATE" value="false" />
@@ -691,7 +596,14 @@
       <option name="project" value="LOCAL" />
       <updated>1532506872849</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="我觉得可以上线了">
+      <created>1532510077331</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1532510077331</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TodoView">
@@ -705,25 +617,24 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="TODO" order="12" weight="0.3292683" />
+      <window_info anchor="bottom" id="TODO" order="12" weight="0.32824427" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.1924307" side_tool="true" weight="0.23882225" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="1" sideWeight="0.8816631" weight="0.26940134" />
       <window_info anchor="bottom" id="Python Console" order="5" weight="0.32815966" />
-      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.8075693" visible="true" weight="0.18756816" />
-      <window_info anchor="bottom" id="Terminal" order="4" weight="0.18292683" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.7632027" visible="true" weight="0.23987207" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.8075693" weight="0.18647765" />
+      <window_info anchor="bottom" id="Terminal" order="4" weight="0.17993458" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.76226825" visible="true" weight="0.20255864" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="1" weight="0.24147122" />
       <window_info anchor="bottom" id="Find" order="7" weight="0.32815966" />
       <window_info anchor="right" id="SciView" order="0" weight="0.32995737" />
-      <window_info id="Structure" order="2" sideWeight="0.23679727" side_tool="true" weight="0.23123324" />
+      <window_info id="Structure" order="2" sideWeight="0.23773174" side_tool="true" visible="true" weight="0.20255864" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
-      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.3293348" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="2" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
@@ -732,7 +643,7 @@
       <window_info anchor="bottom" id="Message" order="6" />
       <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.3293348" />
-      <window_info anchor="right" id="Coverage" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.3293348" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -801,7 +712,8 @@
     <MESSAGE value="警署大厅响应式适配" />
     <MESSAGE value="细节：报案按照时间先后排序" />
     <MESSAGE value="BUG FIXED" />
-    <option name="LAST_COMMIT_MESSAGE" value="BUG FIXED" />
+    <MESSAGE value="我觉得可以上线了" />
+    <option name="LAST_COMMIT_MESSAGE" value="我觉得可以上线了" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -809,27 +721,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="106" selection-start-line="106" selection-end-line="106" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/agreement.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/assets/js/csrf.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="1" column="1" lean-forward="true" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/assets/js/jquery-3.2.1.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="239">
@@ -848,13 +739,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
           <caret line="114" column="4" selection-start-line="114" selection-start-column="4" selection-end-line="114" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_declareanimals">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
@@ -879,13 +763,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_declarebuildings">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -901,13 +778,6 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="266">
           <caret line="14" column="24" lean-forward="true" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="11" column="49" lean-forward="true" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
         </state>
       </provider>
     </entry>
@@ -987,16 +857,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="62" column="29" lean-forward="true" selection-start-line="62" selection-start-column="29" selection-end-line="62" selection-end-column="29" />
-          <folding>
-            <element signature="e#636#668#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/avatar.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -1017,16 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="12" column="88" selection-start-line="12" selection-start-column="88" selection-end-line="12" selection-end-column="88" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/logout.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1034,13 +884,6 @@
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_announcement">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
@@ -1068,49 +911,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/cases_detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="6" lean-forward="true" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-          <folding>
-            <element signature="n#style#0;n#span#0;n#h1#0;n#article#0;n#div#1;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/dashboard/police/call_the_police.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="5" column="40" lean-forward="true" selection-start-line="5" selection-end-line="5" selection-end-column="40" />
           <folding>
             <element signature="n#style#0;n#small#0;n#h2#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/police_hall.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/declare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="196" column="139" selection-start-line="196" selection-start-column="139" selection-end-line="196" selection-end-column="139" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="454">
-          <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
-          <folding>
-            <element signature="e#0#78#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1122,13 +928,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/assets/js/dashboard/my.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -1136,24 +935,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/center.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="535">
-          <caret line="89" column="40" lean-forward="true" selection-start-line="89" selection-start-column="40" selection-end-line="89" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/QieGaoWorld/permissions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="17" column="61" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/view.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="70" column="41" lean-forward="true" selection-start-line="70" selection-start-column="41" selection-end-line="70" selection-end-column="41" />
+        <state relative-caret-position="1539">
+          <caret line="70" column="41" selection-start-line="70" selection-start-column="41" selection-end-line="70" selection-end-column="41" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
@@ -1162,7 +947,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/dashboard/user_center.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
+        <state relative-caret-position="2457">
           <caret line="91" column="3" selection-start-line="91" selection-start-column="3" selection-end-line="91" selection-end-column="3" />
           <folding>
             <element signature="n#style#0;n#a#0;n#li#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
@@ -1172,22 +957,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/dashboard/menu.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="32" column="55" lean-forward="true" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/buildings.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="8" selection-end-column="42" />
+        <state relative-caret-position="864">
+          <caret line="32" column="55" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/dashboard/world_map/map.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
-          <caret line="2" column="16" lean-forward="true" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
+          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -1198,17 +976,164 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/cases_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="19" column="36" lean-forward="true" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/police.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="46" column="24" selection-start-line="46" selection-start-column="24" selection-end-line="46" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="59" column="34" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
+          <folding>
+            <element signature="e#636#668#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/police/police_hall.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="127" column="123" lean-forward="true" selection-start-line="126" selection-start-column="72" selection-end-line="127" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/buildings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="47" column="86" selection-start-line="47" selection-start-column="73" selection-end-line="47" selection-end-column="86" />
+          <folding>
+            <element signature="n#td#2;n#tr#0;n#tbody#0;n#table#0;n#!!top" />
+            <element signature="n#td#3;n#tr#0;n#tbody#0;n#table#0;n#!!top" />
+            <element signature="n#td#4;n#tr#0;n#tbody#0;n#table#0;n#!!top" />
+            <element signature="n#td#5;n#tr#0;n#tbody#0;n#table#0;n#!!top" />
+            <element signature="n#div#1;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/dashboard/dashboard.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="35" column="18" lean-forward="true" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
+        <state relative-caret-position="209">
+          <caret line="39" column="80" selection-start-line="39" selection-start-column="74" selection-end-line="39" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="44" column="20" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="18" column="18" lean-forward="true" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/views/declare.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="336" lean-forward="true" selection-start-line="336" selection-end-line="336" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/center.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="38" column="38" lean-forward="true" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+          <folding>
+            <element signature="n#td#3;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#li#0;n#ul#1;n#!!top" />
+            <element signature="n#td#4;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#li#0;n#ul#1;n#!!top" />
+            <element signature="n#if#1;n#!!top" />
+            <element signature="n#li#1;n#ul#1;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/dashboard/declaration/building_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="90" column="18" lean-forward="true" selection-start-line="90" selection-start-column="18" selection-end-line="90" selection-end-column="18" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#h1#0;n#article#0;n#div#1;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/QieGaoWorld/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="121" lean-forward="true" selection-start-line="121" selection-end-line="121" />
+        <state relative-caret-position="266">
+          <caret line="127" lean-forward="true" selection-start-line="127" selection-end-line="127" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QieGaoWorld/permissions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="17" column="15" lean-forward="true" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_cases">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_announcement">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/django_session">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_declareanimals">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_declarebuildings">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://5dfdc19e-3b38-4c31-947c-1a355fda196b/schema/main/table/qiegaoworld_user">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>

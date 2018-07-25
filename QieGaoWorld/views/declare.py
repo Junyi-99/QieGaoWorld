@@ -322,3 +322,51 @@ def animals_check_license_exist(license_):
         return True
     except ObjectDoesNotExist:
         return False
+
+@ensure_csrf_cookie
+def buildings_detail(request):
+    error_msg = '<div class="uk-modal-header"><h2 class="uk-modal-title" style="color: #cc3947">%s</h2></div>'
+
+    if '%declaration_watch%' not in request.session.get('permissions', ''):
+        return HttpResponse(error_msg % "您没有查看建筑详情的权限！")
+
+    try:
+        id_ = int(request.GET.get('id', None))
+    except ValueError:
+        return HttpResponse(error_msg % "参数错误！")
+
+    try:
+        obj = DeclareBuildings.objects.get(id=id_)
+        obj.declare_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(obj.declare_time)))
+        obj.predict_start_time = time.strftime("%Y-%m-%d", time.localtime(int(obj.predict_start_time)))
+        obj.predict_end_time = time.strftime("%Y-%m-%d", time.localtime(int(obj.predict_end_time)))
+        obj.nickname = username_get_nickname(obj.username)
+        if obj.type == 0:
+            obj.type = '公共建筑'
+        else:
+            obj.type = '私有建筑'
+
+        if obj.status == 0:
+            obj.status_label = 'uk-label-warning'
+            obj.status_text = '审核挂起'
+        elif obj.status == 1:
+            obj.status_label = 'uk-label-warning'
+            obj.status_text = '正在审核'
+        elif obj.status == 2:
+            obj.status_label = 'uk-label-danger'
+            obj.status_text = '审核不通过'
+        elif obj.status == 3:
+            obj.status_label = ''
+            obj.status_text = '审核通过'
+        elif obj.status == 4:
+            obj.status_label = ''
+            obj.status_text = '正在建设'
+        elif obj.status == 5:
+            obj.status_label = 'uk-label-success'
+            obj.status_text = '完工'
+        return render(request, "dashboard/declaration/building_detail.html", {'building': obj})
+    except MultipleObjectsReturned as e:
+        logging.error(e)
+        return HttpResponse(error_msg % "内部错误，请联系管理员！")
+    except ObjectDoesNotExist:
+        return HttpResponse(error_msg % "建筑不存在！")

@@ -126,8 +126,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 FACE_ROOT = os.path.join(BASE_DIR, 'static\\media\\face')
 
-DEFAULT_PERMISSIONS = '%default%police_cases_watch%police_cases_add%declaration_animals%declaration_buildings' \
-                      '%declaration_watch% '
+DEFAULT_PERMISSIONS = '%police_cases_watch%police_cases_add%declaration_animals%declaration_buildings%declaration_watch%'
 DEFAULT_FACE = os.path.join(BASE_DIR, 'static\\media\\face\\default.jpg')
 BUILDING_CONCEPT_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/concept')
 BUILDING_PLAN_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/plan')

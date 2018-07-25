@@ -250,6 +250,15 @@
 </div>
 
 <script>
+    function buildingDetail(id_) {
+        var id = id_.substring(8);
+        console.log(id);
+        $.get("/buildings_detail", {
+            "id": id
+        }, function (data) {
+            UIkit.modal.dialog(data);
+        });
+    }
     $(document).ready(
         $(function () {
             $(".options").change(function () {
