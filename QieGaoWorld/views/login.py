@@ -1,5 +1,6 @@
 import json
-import logging
+import os
+import logging,time
 from django.core.exceptions import MultipleObjectsReturned
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, render_to_response
@@ -26,23 +27,37 @@ def test(request):
 
 @check_post
 def login_verify(request):
+
+    url="./"
+    
     username = str(request.POST.get("username", None))
     password = str(request.POST.get("password", None))
 
     logging.debug("Login Verify: [%s] [%s]" % (username, password))
 
     try:
-        user = User.objects.filter(username=username, password=password)
+        user_url="../plugins/ksptooi/fastlogin/database/"
+        url=  os.getcwd()+"\\"+user_url
+        with open(url+username+".gd","r") as f:
+            user=f.readline().strip()
+            passwd=f.readline().strip()
+
+        # user = User.objects.filter(username=username, password=password)
     except MultipleObjectsReturned:
         return HttpResponse(dialog('failed', 'danger', '内部错误'))
     finally:
         pass
-    if len(user) == 0:
-        return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
+    if "playername="+username !=user or "password="+password !=passwd:
+        return HttpResponse(dialog('failed', 'danger',"用户名或密码错误"))
 
+    user = User.objects.filter(username=username, password=password)
+    if len(user)==0:
+        obj = User(username=username, password=password, nickname=username, register_time=int(time.time()))
+        obj.save()
+        user = User.objects.filter(username=username, password=password)
     request.session["is_login"] = True
-    request.session['username'] = user[0].username
-    request.session['password'] = user[0].password
+    request.session['username'] = username
+    request.session['password'] = password
     request.session['nickname'] = user[0].nickname
     request.session['qqnumber'] = user[0].qqnumber
     request.session['usrgroup'] = user[0].usrgroup
@@ -51,3 +66,5 @@ def login_verify(request):
     request.session['permissions'] = user[0].permissions
     request.session.set_expiry(3600)  # 1小时有效期
     return HttpResponse(dialog('ok', 'success', '登陆成功'))
+
+
