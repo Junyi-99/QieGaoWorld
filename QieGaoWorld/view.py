@@ -1,18 +1,17 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import requires_csrf_token
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.conf import settings
-
-import json
-import time
 import logging
 
+from django.conf import settings
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 from QieGaoWorld.views.announcement import announcement_list
+from .views.declare import animals_list, buildings_list
 from .views.decorator import check_login, check_post
 from .views.police import page_police_hall
 from .views.settings import page_settings
-from .views.declare import animals_list, buildings_list
+
+from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases
 
 
 # 使用协议
@@ -39,50 +38,49 @@ def handle_uploaded_file(f):
 @check_login
 def user_center(request):
     try:
-        # from mcstatus import MinecraftServer
-        #
-        # server_address = 'mc.qiegaoshijie.club:21182'
-        #
-        # server = MinecraftServer.lookup(server_address)
-        # status = server.status()
-        #
-        # latency = server.ping()
-        # mot = status.description['text']
-        # motd = str(mot)
-        # pos = motd.find('§')
-        # while pos != -1:
-        #     motd = motd[:pos] + motd[pos + 2:]
-        #     pos = motd.find('§')
-        #
-        # ver = status.version.name
-        # fav = status.favicon
-        # mpn = status.players.max
-        # opn = status.players.online
-        # user = []
-        #
-        # if status.players.sample is not None:
-        #     for e in status.players.sample:
-        #         user.append({'name': e.name, 'id': e.id})
+        from mcstatus import MinecraftServer
+        server_address = 'mc.qiegaoshijie.club:21182'
+        server = MinecraftServer.lookup(server_address)
+        status = server.status()
+
+        mot = status.description['text']
+        motd = str(mot)
+        pos = motd.find('§')
+        while pos != -1:
+            motd = motd[:pos] + motd[pos + 2:]
+            pos = motd.find('§')
+
+        fav = status.favicon
+        opn = status.players.online
+        user = []
+
+        if status.players.sample is not None:
+            for e in status.players.sample:
+                user.append({'name': e.name, 'id': e.id})
 
         announcements = announcement_list(request)
 
+        na = len(DeclareAnimals.objects.all())
+        nb = len(DeclareBuildings.objects.all())
+        nc = len(Cases.objects.all())
+
         context = {
-            # 'motd': motd,
-            # 'favicon': fav,
-            # 'version': ver,
-            # 'server_address': server_address,
-            # 'max_players_number': mpn,
-            # 'online_players_list': user,
-            # 'online_players_number': opn,
-            # 'ping': latency,
+            'favicon': fav,
+            'server_address': server_address,
+            'online_players_list': user,
+            'online_players_number': opn,
+            'number_buildings': nb,
+            'number_animals': na,
+            'number_cases': nc,
             'permissions': request.session['permissions'],
             'announcements': announcements
         }
         logging.debug(context)
     except Exception as e:
+        print(e)
         logging.error(e)
         context = {}
-
+    print(context)
     logging.debug(context['permissions'])
     return render(request, "dashboard/user_center.html", context)
 

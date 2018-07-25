@@ -11,30 +11,31 @@
     <p></p>
 </div>
 <table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
-    <caption></caption>
     <thead>
-        <tr>
-            <th class="uk-table-expand">牌照号</th>
-            <th class="uk-visible@s">隶属</th>
-            <th class="uk-visible@s">特征</th>
-            <th class="uk-table-shrink">状态</th>
-            <th class="uk-visible@s">申请人</th>
-            <th class="uk-visible@l">申请时间</th>
-            <th class="uk-visible@s">更改状态为</th>
-        </tr>
+    <tr>
+        <th class="uk-table-expand">牌照号</th>
+        <th class="uk-visible@s">隶属</th>
+        <th class="uk-visible@s uk-table-expand">特征</th>
+        <th class="uk-table-small">状态</th>
+        <th class="uk-visible@l">申请人</th>
+        <th class="uk-visible@l">申请时间</th>
+        {% if '%declaration_animals_modify%' in permissions %}
+            <th class="uk-width-small uk-visible@s">操作</th>
+        {% endif %}
+    </tr>
     </thead>
     <tbody>
-        {% for a in my_animals %}
+    {% for a in my_animals %}
         <tr>
             <td class="uk-text-truncate">{{ a.license }}</td>
             <td class="uk-visible@s">{{ a.binding }}</td>
             <td class="uk-visible@s">{{ a.feature }}</td>
-            <td><span class="uk-label {{ a.status_label }}">{{ a.status_text }}</span></td>
-            <td class="uk-visible@s">{{ a.nickname }}</td>
+            <td><span class="uk-text-truncate uk-label {{ a.status_label }}">{{ a.status_text }}</span></td>
+            <td class="uk-visible@l">{{ a.nickname }}</td>
             <td class="uk-visible@l">{{ a.declare_time }}</td>
             <td class="uk-visible@s">
                 <label>
-                    <select class="uk-select options" _id="{{ a.id }}">
+                    <select class="uk-select animal_options" _id="{{ a.id }}">
                         <option value="0" {% if a.status == 0 %} selected {% endif %}>未知</option>
                         <option value="1" {% if a.status == 1 %} selected {% endif %}>存活</option>
                         <option value="2" {% if a.status == 2 %} selected {% endif %}>丢失</option>
@@ -42,10 +43,11 @@
                     </select>
                 </label>
             </td>
+
             <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
             <td></td>
         </tr>
-        {% endfor %}
+    {% endfor %}
     </tbody>
 </table>
 
@@ -118,12 +120,12 @@
 </div>
 <script>
     $(document).ready(
-        $(function() {
-            $(".options").change(function() {
+        $(function () {
+            $(".options").change(function () {
                 $.post("declare/animals_change_status?_=" + Date.parse(new Date()), {
                     "id": $(this).attr('_id'),
                     "status": $(this).val()
-                }, function(obj) {
+                }, function (obj) {
                     if (obj.status === "ok") {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,

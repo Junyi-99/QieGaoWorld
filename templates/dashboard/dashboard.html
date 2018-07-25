@@ -14,9 +14,6 @@
     <script src="{% static "assets/js/csrf.js" %}"></script>
     <script src="{% static "assets/js/uikit.js" %}"></script>
     <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
-
-    <script src="{% static "assets/js/chart.js/Chart.bundle.min.js" %}"></script>
-    <script src="{% static "assets/js/chart.js/utils.js" %}"></script>
     <script src="{% static "assets/js/dashboard/my.js" %}"></script>
 </head>
 
@@ -48,14 +45,14 @@
                             <li class="uk-nav-header">更多选项</li>
                             <li class="nav" id="user_center" data-page="user_center"
                                 data-url="/dashboard#user_center"><a href="#"><span class="uk-margin-small-right"
-                                                                                     uk-icon="icon: file-edit"></span>个人中心</a>
+                                                                                    uk-icon="icon: file-edit"></span>个人中心</a>
                             </li>
                             <li class="nav" id="settings" data-page="settings" data-url="/dashboard#settings">
                                 <a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>设置</a>
                             </li>
                             <li class="uk-nav-divider"></li>
                             <li><a href="#" id="logout"><span class="uk-margin-small-right"
-                                                              uk-icon="icon: sign-out"></span> 退出登录</a></li>
+                                                              uk-icon="icon: sign-out"></span>退出登录</a></li>
                         </ul>
                     </div>
                 </div>
@@ -73,7 +70,7 @@
                 </div>
             </div>
         </div>
-        <div class="uk-width-4-5 uk-width-expand@m uk-margin-medium-left uk-margin-medium-right uk-margin-small-top"
+        <div class="uk-width-4-5 uk-width-expand uk-margin-medium-left uk-margin-medium-right uk-margin-small-top"
              id="main_content">
             {{ default_html }}
         </div>
@@ -164,11 +161,9 @@
                                 page: page_to,
                                 html: res
                             };
-
                             //$(".nav").removeClass("uk-active");
                             //$(this).addClass("uk-active");
                             history.pushState(state, null, url_to);
-                            chart_init();
                         }
                     }
                 )

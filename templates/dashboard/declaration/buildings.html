@@ -16,12 +16,12 @@
     <thead>
     <tr>
         <th class="uk-width-medium">建筑名</th>
-        <th class="uk-width-medium">建筑面积</th>
-        <th class="uk-width-medium">介绍</th>
-        <th class="uk-width-medium">建筑时间</th>
+        <th class="uk-width-medium uk-visible@s">建筑面积</th>
+        <th class="uk-width-medium uk-visible@m">介绍</th>
+        <th class="uk-width-medium uk-visible@l">建筑时间</th>
         <th class="uk-width-small">状态</th>
-        {% if '%police_cases_modify%' in permissions %}
-            <th class="uk-width-small">操作</th>
+        {% if '%declaration_buildings_modify%' in permissions %}
+            <th class="uk-width-small uk-visible@s">操作</th>
         {% endif %}
     </tr>
     </thead>
@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </td>
-            <td class="nowrap">
+            <td class="nowrap uk-visible@s">
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                     <div class="uk-width-expand">
                         <h4 class="uk-margin-remove-bottom">{{ b.area }} M<sup>2</sup></h4>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </td>
-            <td class="nowrap">
+            <td class="nowrap uk-visible@m">
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                     <div class="uk-width-expand">
                         <h4 class="uk-margin-remove-bottom">{{ b.summary }}</h4>
@@ -59,32 +59,35 @@
                     </div>
                 </div>
             </td>
-            <td class="nowrap">
+            <td class="nowrap uk-visible@l">
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                     <div class="uk-width-expand">
-                        <p class="uk-margin-remove-bottom uk-margin-remove-top">预计开工：{{ b.predict_start_time }}</p>
-                        <p class="uk-margin-remove-bottom uk-margin-remove-top">预计结束：{{ b.predict_end_time }}</p>
+                        <p class="uk-text-meta uk-margin-remove-bottom uk-margin-remove-top">
+                            开工：{{ b.predict_start_time }}</p>
+                        <p class="uk-text-meta uk-margin-remove-bottom uk-margin-remove-top">
+                            结束：{{ b.predict_end_time }}</p>
                     </div>
                 </div>
             </td>
             <td>
-                <span class="uk-label {{ b.status_label }}" style="vertical-align: middle">{{ b.status_text }}</span>
+                            <span class="uk-label {{ b.status_label }}"
+                                  style="vertical-align: middle">{{ b.status_text }}</span>
             </td>
-            <td>
-                <label>
-                    <select class="uk-select options" _id="{{ b.id }}">
-                        <option value="-1">...</option>
-                        {% if '%declaration_buildings_modify%' in permissions %}
-                        <option value="0">申报挂起</option>
-                        <option value="1">正在审核</option>
-                        <option value="2">审核不通过</option>
-                        <option value="3">审核通过</option>
-                        <option value="4">正在建设</option>
-                        <option value="5">完工</option>
-                        {% endif %}
-                    </select>
-                </label>
-            </td>
+            {% if '%declaration_buildings_modify%' in permissions %}
+                <td class="uk-visible@s">
+                    <label>
+                        <select class="uk-select building_options" _id="{{ b.id }}">
+                            <option value="-1">...</option>
+                            <option value="0">申报挂起</option>
+                            <option value="1">正在审核</option>
+                            <option value="2">审核不通过</option>
+                            <option value="3">审核通过</option>
+                            <option value="4">正在建设</option>
+                            <option value="5">完工</option>
+                        </select>
+                    </label>
+                </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
@@ -147,7 +150,8 @@
                             <label class="uk-form-label" for="form-horizontal-text">建筑坐标</label>
                         </div>
                         <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="coordinate" type="text" placeholder="按照XYZ填写，英文半角逗号加空格分隔 如 1, 2, 3">
+                            <input class="uk-input" id="coordinate" type="text"
+                                   placeholder="按照XYZ填写，英文半角逗号加空格分隔 如 1, 2, 3">
                         </div>
                     </div>
                 </div>
@@ -167,7 +171,8 @@
                             <label class="uk-form-label" for="form-horizontal-text">预计开始时间</label>
                         </div>
                         <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="predict_start_time" type="text" placeholder="如 2018-7-23 （严格按照格式填写）">
+                            <input class="uk-input" id="predict_start_time" type="text"
+                                   placeholder="如 2018-7-23 （严格按照格式填写）">
                         </div>
                     </div>
                 </div>
@@ -177,7 +182,8 @@
                             <label class="uk-form-label" for="form-horizontal-text">预计结束时间</label>
                         </div>
                         <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="predict_end_time" type="text" placeholder="如 2018-7-25 （严格按照格式填写）">
+                            <input class="uk-input" id="predict_end_time" type="text"
+                                   placeholder="如 2018-7-25 （严格按照格式填写）">
                         </div>
                     </div>
                 </div>
@@ -246,11 +252,11 @@
 <script>
     $(document).ready(
         $(function () {
-            $(".options").change(function() {
+            $(".options").change(function () {
                 $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
                     "id": $(this).attr('_id'),
                     "status": $(this).val()
-                }, function(obj) {
+                }, function (obj) {
                     if (obj.status === "ok") {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,

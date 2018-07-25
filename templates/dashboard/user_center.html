@@ -1,10 +1,9 @@
 {% load static %}
 
 <div class="uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid>
-    <div class="uk-inline">
+    <div>
         <h2 class="uk-margin-small-top">公告
             <small style="color: #666666; font-size: medium">Announcement</small>
-
         </h2>
         <div class="uk-position-top-right">
             <a href="#modal-center" class="uk-icon-link uk-margin-top" uk-icon="icon: plus; ratio: 1.5" uk-toggle></a>
@@ -45,84 +44,34 @@
                 </div>
             {% endif %}
         {% endfor %}
-    <p class="uk-text-meta">公告只显示最新5条</p>
+        <p class="uk-text-meta">公告只显示最新5条</p>
     </div>
     <div>
-        <div class="uk-inline">
-            <h2 class="uk-margin-small-top">公告
-                <small style="color: #666666; font-size: medium">Announcement</small>
-            </h2>
-            <hr class="uk-margin"/>
-            <div uk-grid>
-                <div class="uk-width-1-2@l">
-                    <div class="uk-card uk-card-hover uk-card-default">
-                        <div class="uk-card-header">
-                            <div class="uk-grid-small" uk-grid>
-                                <div class="uk-width-auto">
-                                    <span uk-icon="icon: users; ratio: 1.7" class="uk-margin-small-right"></span>
-                                </div>
-                                <div class="uk-width-expand">
-                                    <h3>注册用户</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="uk-card-body">
-                            <canvas id="chart-0" height="100"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-width-1-2@l">
-                    <div class="uk-card uk-card-hover uk-card-default">
-                        <div class="uk-card-header">
-                            <div class="uk-grid-small" uk-grid>
-                                <div class="uk-width-auto">
-                                    <span uk-icon="icon: file-edit; ratio: 1.7" class="uk-margin-small-right"></span>
-                                </div>
-                                <div class="uk-width-expand">
-                                    <h3>申报/报案</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="uk-card-body">
-                            <canvas id="chart-1" height="100"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div>
-        <h2 class="uk-margin-small-top">服务器信息
-            <small style="color: #666666; font-size: medium">Announcement</small>
+
+        <h2 class="uk-margin-small-top">状态
+            <small style="color: #666666; font-size: medium">Status</small>
         </h2>
         <hr class="uk-margin"/>
-        <div class="uk-card uk-card-hover uk-card-default">
-            <div class="uk-card-header">
-                <div class="uk-grid-small uk-flex-middle" uk-grid>
-                    <div class="uk-width-auto">
-                        <img class="uk-border-circle" width="40" height="40" src="{{ favicon }}">
+        <div class="uk-child-width-1-2@l uk-child-width-1-1@s" uk-grid>
+            <div class="uk-width-1-2@l">
+                <div class="uk-card uk-card-hover uk-card-default">
+                    <div class="uk-card-header">
+                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                            <div class="uk-width-auto">
+                                <img class="uk-border-circle" width="40" height="40" src="{{ favicon }}">
+                            </div>
+                            <div class="uk-width-expand">
+                                <h3 class="uk-card-title uk-margin-remove-bottom uk-text-truncate">当前玩家</h3>
+                                <p class="uk-text-meta uk-margin-remove-top uk-text-truncate">
+                                    {{ server_address }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="uk-width-expand">
-                        <h3 class="uk-card-title uk-margin-remove-bottom">切糕世界</h3>
-                        <p class="uk-text-meta uk-margin-remove-top">
-                            <time datetime="2016-04-01T19:00">{{ server_address }}</time>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-card-body">
-                <p><b>MOTD:</b> {{ motd }}</p>
-                <p><b>Version: </b> {{ version }}</p>
-
-                <div class="uk-child-width-auto" uk-grid>
-                    <div>
-                        <b>Players:&nbsp;</b>
-                    </div>
-                    <div>
+                    <div class="uk-card-body uk-inline">
                         <ul uk-accordion>
                             <li>
-                                <p class="uk-accordion-title" href="#"
-                                   style="font-size: 16px;">{{ online_players_number }} / {{ max_players_number }}</p>
+                                <a class="uk-article-title uk-accordion-title" href="#" style="font-size: 2.625rem">{{ online_players_number }}</a>
                                 <div class="uk-accordion-content">
                                     {% for usr in online_players_list %}
                                         <p user_id="{{ usr.id }}">{{ usr.name }}</p>
@@ -130,17 +79,32 @@
                                 </div>
                             </li>
                         </ul>
+
                     </div>
                 </div>
-                <p><b>Ping: </b> {{ ping }}ms</p>
             </div>
-            <div class="uk-card-footer">
-                <a href="http://map.qiegaoshijie.club" class="uk-button uk-button-text">打开世界地图</a>
+            <div class="uk-width-1-2@l">
+                <div class="uk-card uk-card-hover uk-card-default">
+                    <div class="uk-card-header">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-auto">
+                                <span uk-icon="icon: file-edit; ratio: 1.7" class="uk-margin-small-right"></span>
+                            </div>
+                            <div class="uk-width-expand">
+                                <h3 class="uk-card-title uk-margin-remove-bottom uk-text-truncate">申报/报案</h3>
+                                <p class="uk-text-meta uk-margin-remove-top uk-text-truncate">
+                                    Buildings / Animals / Cases
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-card-body">
+                        <h1 class="uk-article-title">{{ number_buildings }}/{{ number_animals }}/{{ number_cases }}</h1>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-
 </div>
 <script>
     $(document).ready(
