@@ -38,13 +38,13 @@ def login_verify(request):
     try:
         user_url="../plugins/ksptooi/fastlogin/database/"
         url=  os.getcwd()+"/"+user_url
-        with open(url+username+".gd","r") as f:
+        with open(url+username.lower()+".gd","r") as f:
             user=f.readline().strip()
             passwd=f.readline().strip()
 
         # user = User.objects.filter(username=username, password=password)
     except MultipleObjectsReturned:
-        return HttpResponse(dialog('failed', 'danger', '内部错误'))
+        return HttpResponse(dialog('failed', 'danger', '该账号不存在'))
     finally:
         pass
     if "playername="+username !=user or "password="+password !=passwd:
