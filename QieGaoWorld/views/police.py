@@ -17,7 +17,7 @@ from QieGaoWorld.views.dialog import dialog
 def case_detail(request):
     error_msg = '<div class="uk-modal-header"><h2 class="uk-modal-title" style="color: #cc3947">%s</h2></div>'
 
-    if '%police_cases_watch%' not in request.session.get('permissions', None):
+    if '%police_cases_watch%' not in request.session.get('permissions', ''):
         return HttpResponse(error_msg % "您没有查看案件详情的权限！")
 
     try:
@@ -56,7 +56,7 @@ def case_detail(request):
 @check_post
 # 更改案件状态
 def change_status(request):
-    if '%police_cases_modify%' not in request.session.get('permissions', None):
+    if '%police_cases_modify%' not in request.session.get('permissions', ''):
         return HttpResponse(dialog('failed', 'danger', '权限不足'))
 
     try:
@@ -158,7 +158,7 @@ def username_get_nickname(username):
 def page_police_hall(request):
     my_cases = []
     cases = Cases.objects.all()
-
+    cases = sorted(cases, key=lambda c: c.report_time, reverse=True)
     for i in range(0, len(cases)):
 
         cases[i].avatar = username_get_avatar(cases[i].username)
@@ -182,13 +182,13 @@ def page_police_hall(request):
             cases[i].status_label = ''
             cases[i].status_text = '未知状态'
 
-        if cases[i].username == request.session.get('username', None):
+        if cases[i].username == request.session.get('username', ''):
             my_cases.append(cases[i])
 
     content = {
         'cases': cases,
         'my_cases': my_cases,
-        'permissions': request.session.get('permissions', None)
+        'permissions': request.session.get('permissions', '')
     }
 
     return render(request, "dashboard/police/police_hall.html", content)
