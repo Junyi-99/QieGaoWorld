@@ -1,0 +1,32 @@
+{% if 'danger' in type %}
+<div class="uk-overlay-default uk-position-top-left" style="width: 100%">
+    <div class="uk-card uk-card-small uk-card-hover uk-card-body"
+    style="border: 1px solid #d85030; border-radius: 3px; background-color: #fff1f0">
+        <p>{{ text }}</p>
+    </div>
+</div>
+{% endif %}
+{% if 'warning' in type %}
+<div class="uk-overlay-default uk-position-top-left" style="width: 100%">
+    <div class="uk-card uk-card-small uk-card-hover uk-card-body"
+    style="border: 1px solid #e28327; border-radius: 3px; background-color: #fffceb">
+        <p>{{ text }}</p>
+    </div>
+</div>
+{% endif %}
+{% if 'success' in type %}
+<div class="uk-overlay-default uk-position-top-left" style="width: 100%">
+    <div class="uk-card uk-card-small uk-card-hover uk-card-body"
+    style="border: 1px solid #659f13; border-radius: 3px; background-color: #f2fae3">
+        <p>{{ text }}</p>
+    </div>
+</div>
+{% endif %}
+{% if 'primary' in type %}
+<div class="uk-overlay-default uk-position-top-left" style="width: 100%">
+    <div class="uk-card uk-card-small uk-card-hover uk-card-body"
+    style="border: 1px solid #2d7091; border-radius: 3px; background-color: #ebf7fd">
+        <p>{{ text }}</p>
+    </div>
+</div>
+{% endif %}
