@@ -35,7 +35,18 @@ def login_verify(request):
     password = str(request.POST.get("password", None))
 
     logging.debug("Login Verify: [%s] [%s]" % (username, password))
-
+    
+    with open("../plugins/WhiteList/config.yml","r") as f:
+        plays=f.read()
+        if "- "+username not in plays:
+            return HttpResponse(dialog('failed', 'danger', '您不在白名单'))
+    with open("../banned-players.json","r") as f:
+        plays=json.loads(f.read())
+        s="%"
+        for b in plays:
+            s+=b['name']+"%"
+        if "%"+username+"%"  in plays:
+            return HttpResponse(dialog('failed', 'danger', '登录失败!您的帐号已被此服务器封禁!'))
     try:
         user_url="../plugins/ksptooi/fastlogin/database/"
         url=  os.getcwd()+"/"+user_url
@@ -76,3 +87,4 @@ def login_verify(request):
     request.session.set_expiry(3600)  # 1小时有效期
     return HttpResponse(dialog('ok', 'success', '登陆成功'))
 
+    
