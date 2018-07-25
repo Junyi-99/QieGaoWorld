@@ -37,7 +37,7 @@ def login_verify(request):
 
     try:
         user_url="../plugins/ksptooi/fastlogin/database/"
-        url=  os.getcwd()+"\\"+user_url
+        url=  os.getcwd()+"/"+user_url
         with open(url+username+".gd","r") as f:
             user=f.readline().strip()
             passwd=f.readline().strip()
