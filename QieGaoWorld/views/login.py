@@ -33,17 +33,10 @@ def login_verify(request):
     password = str(request.POST.get("password", None))
 
     logging.debug("Login Verify: [%s] [%s]" % (username, password))
-<<<<<<< HEAD
     
     with open("../plugins/WhiteList/config.yml","r") as f:
         plays=f.read()
         if "- "+username.lower() not in plays:
-=======
-
-    with open("../plugins/WhiteList/config.yml", "r") as f:
-        plays = f.read()
-        if "- " + username not in plays:
->>>>>>> c7f1a4091867feeca175875d15a8df3615bcec9b
             return HttpResponse(dialog('failed', 'danger', '您不在白名单'))
     with open("../banned-players.json", "r") as f:
         plays = json.loads(f.read())
