@@ -58,6 +58,16 @@
             <h2 class="uk-modal-title">自助上牌</h2>
         </div>
         <div class="uk-modal-body">
+            <p class="uk-text-meta">[1]普通牌照：
+                糕 区域编号 – 种类编号 流水编号 + 昵称/所属人或集团后缀/共享</p>
+            <p class="uk-text-meta">[2]友谊牌照：
+                糕友·接收方集团英文简称·种类编号 流水编号+昵称</p>
+            <p class="uk-text-meta">[3]市政
+                糕政·市政人员英文简称·种类类编号 流水号+昵称</p>
+            <p class="uk-text-meta">区域编号：糕A（切糕村）/ 糕B（沙漠村）/ 糕C（贸易村）/ 糕D（大河新区）</p>
+            <p class="uk-text-meta">种类编号：H 普通马 / S 骷髅马 / D 驴子 / M 骡子 / P 佩奇</p>
+            <p class="uk-text-meta">流水编号：请自行按照已登记顺序后推</p>
+            <p class="uk-text-meta">样例：糕B-H011 CR、糕D-H002 鱼饼、糕A-H026、糕C-M001 共享</p>
             <form class="uk-form-horizontal" name="info">
                 {% csrf_token %}
                 <div class="uk-margin">
@@ -66,7 +76,7 @@
                             <label class="uk-form-label" for="form-horizontal-text">牌照号</label>
                         </div>
                         <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="license" type="text" placeholder="糕A001 测试">
+                            <input class="uk-input" id="license" type="text" placeholder="糕C-M001 共享">
                         </div>
                     </div>
                 </div>
