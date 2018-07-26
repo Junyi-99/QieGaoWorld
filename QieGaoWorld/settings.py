@@ -126,8 +126,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 FACE_ROOT = os.path.join(BASE_DIR, 'static\\media\\face')
 
-DEFAULT_PERMISSIONS = '%police_cases_watch%police_cases_add%declaration_animals%declaration_buildings%declaration_watch%'
-OP_PERMISSIONS = '%publish_announcement%announcement_delete%police_cases_watch%police_cases_add%police_cases_modify%declaration_animals%declaration_buildings%declaration_watch%declaration_animals_modify%declaration_buildings_modify%'
+DEFAULT_PERMISSIONS = '%police_cases_watch%police_cases_add%declaration_animals%declaration_buildings' \
+                      '%declaration_watch% '
+OP_PERMISSIONS = '%publish_announcement%announcement_delete%police_cases_watch%police_cases_add%police_cases_modify' \
+                 '%declaration_animals%declaration_buildings%declaration_watch%declaration_animals_modify' \
+                 '%declaration_buildings_modify% '
 
 DEFAULT_FACE = os.path.join(BASE_DIR, 'static\\media\\face\\default.jpg')
 BUILDING_CONCEPT_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/concept')
