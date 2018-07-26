@@ -38,7 +38,7 @@ def login_verify(request):
     
     with open("../plugins/WhiteList/config.yml","r") as f:
         plays=f.read()
-        if "- "+username not in plays:
+        if "- "+username.lower() not in plays:
             return HttpResponse(dialog('failed', 'danger', '您不在白名单'))
     with open("../banned-players.json","r") as f:
         plays=json.loads(f.read())
