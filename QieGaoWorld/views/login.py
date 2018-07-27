@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import time
-
+import hashlib,uuid
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -28,7 +28,7 @@ def test(request):
 @check_post
 def login_verify(request):
     url = "./"
-    ON_SERVER = False
+    ON_SERVER = True
 
     username = str(request.POST.get("username", None))
     password = str(request.POST.get("password", None))
@@ -61,9 +61,14 @@ def login_verify(request):
 
         user = User.objects.filter(username=username, password=password)
         if len(user) == 0:
-            obj = User(username=username, password=password, nickname=username, register_time=int(time.time()))
+            obj = User(username=username, password=password, register_time=int(time.time()))
             obj.save()
-            user = User.objects.filter(username=username, password=password)
+            user = User.objects.get(username=username, password=password)
+        uuid=getuuidfromname(username)
+        nickname=getnicknamefromuuid(uuid)
+        user.uuid=uuid
+        user.nickname=nickname
+        user.save()
     else:
         user = User.objects.filter(username=username, password=password)
         if len(user) == 0:
@@ -73,11 +78,11 @@ def login_verify(request):
     request.session["is_login"] = True
     request.session['username'] = username
     request.session['password'] = password
-    request.session['nickname'] = user[0].nickname
-    request.session['qqnumber'] = user[0].qqnumber
-    request.session['usrgroup'] = user[0].usrgroup
-    request.session['register_time'] = user[0].register_time
-    request.session['avatar'] = user[0].avatar
+    request.session['nickname'] = user.nickname
+    request.session['qqnumber'] = user.qqnumber
+    request.session['usrgroup'] = user.usrgroup
+    request.session['register_time'] = user.register_time
+    request.session['avatar'] = user.avatar
     request.session.set_expiry(3600)  # 1小时有效期
 
     if ON_SERVER:
@@ -90,6 +95,25 @@ def login_verify(request):
             if username in s:
                 request.session['permissions'] = settings.OP_PERMISSIONS
     else:
-        request.session['permissions'] = user[0].permissions
+        request.session['permissions'] = user.permissions
 
     return HttpResponse(dialog('ok', 'success', '登录成功'))
+
+def getuuidfromname(name):
+    playername = "OfflinePlayer:%s" % name
+    m = hashlib.md5()
+    m.update(playername.encode("utf-8"))
+    d = bytearray(m.digest())
+    d[6] &= 0x0f
+    d[6] |= 0x30
+    d[8] &= 0x3f
+    d[8] |= 0x80
+    return (uuid.UUID(bytes=bytes(d)))
+
+def getnicknamefromuuid(uuid):
+    try:
+        with open("../plugins/Essentials/userdata/%s.yml" % uuid) as f:
+            a = (json.loads(f.read()))
+            return a['nickname']
+    except IOError:
+        return ""
