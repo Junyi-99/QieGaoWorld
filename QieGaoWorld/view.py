@@ -14,6 +14,8 @@ from .views.settings import page_settings
 from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases
 
 
+from QieGaoWorld.views.police import username_get_nickname
+
 # 使用协议
 def agreement(request):
     return render(request, "agreement.html", {})
@@ -56,7 +58,7 @@ def user_center(request):
 
         if status.players.sample is not None:
             for e in status.players.sample:
-                user.append({'name': e.name, 'id': e.id})
+                user.append({'name': e.name, 'id': e.id,"nickname":username_get_nickname(e.name)})
 
         announcements = announcement_list(request)
 

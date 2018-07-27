@@ -11,39 +11,31 @@
 
         <div id="modal-center" class="uk-flex-top" uk-modal>
             <div class="uk-modal-dialog uk-margin-auto-vertical">
-                <button class="uk-modal-close-default" type="button" uk-close></button>
-                {% if '%publish_announcement%' in permissions %}
-                    {% include "dashboard/announcement/new_announcement.html" %}
-                {% else %}
-                    {% include "dashboard/announcement/permission_denied.html" %}
-                {% endif %}
+                <button class="uk-modal-close-default" type="button" uk-close></button> {% if '%publish_announcement%' in permissions %} {% include "dashboard/announcement/new_announcement.html" %} {% else %} {% include "dashboard/announcement/permission_denied.html"
+                %} {% endif %}
             </div>
         </div>
 
-        <hr class="uk-margin"/>
-        {% for a in announcements %}
-            {% if a.visible %}
-                <div class="uk-grid-match announcement_{{ a.id }}" uk-grid>
-                    <div class="uk-width-large@m uk-width-xlarge@l">
-                        <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-card-body"
-                             style="background-color: {{ a.color }}; border-radius: 1em">
-                            <div class="uk-grid-small uk-flex-middle" uk-grid>
-                                <div class="uk-width-auto">
-                                    <img class="uk-border-circle" width="40" height="40" src="{{ a.avatar }}">
-                                </div>
-                                <div class="uk-width-expand">
-                                    <h3 class="uk-card-title uk-margin-remove-bottom uk-text-truncate">{{ a.title }}</h3>
-                                    <p class="uk-visible@s uk-text-meta uk-margin-remove-top">{{ a.publish_time }}</p>
-                                </div>
-                                <span class="uk-label {{ a.type_label }}">{{ a.type_text }}</span>
-                                <button type="button" _id="{{ a.id }}" title="删除这条公告" class="delBtn" uk-close></button>
-                            </div>
-                            <p class="uk-width-large"><b>{{ a.title }}:</b> <br/> {{ a.content }}</p>
+        <hr class="uk-margin" /> {% for a in announcements %} {% if a.visible %}
+        <div class="uk-grid-match announcement_{{ a.id }}" uk-grid>
+            <div class="uk-width-large@m uk-width-xlarge@l">
+                <div class="uk-card uk-card-default uk-card-small uk-card-hover uk-card-body" style="background-color: {{ a.color }}; border-radius: 1em">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-auto">
+                            <img class="uk-border-circle" width="40" height="40" src="{{ a.avatar }}">
                         </div>
+                        <div class="uk-width-expand">
+                            <h3 class="uk-card-title uk-margin-remove-bottom uk-text-truncate">{{ a.title }}</h3>
+                            <p class="uk-visible@s uk-text-meta uk-margin-remove-top">{{ a.publish_time }}</p>
+                        </div>
+                        <span class="uk-label {{ a.type_label }}">{{ a.type_text }}</span>
+                        <button type="button" _id="{{ a.id }}" title="删除这条公告" class="delBtn" uk-close></button>
                     </div>
+                    <p class="uk-width-large"><b>{{ a.title }}:</b> <br/> {{ a.content }}</p>
                 </div>
-            {% endif %}
-        {% endfor %}
+            </div>
+        </div>
+        {% endif %} {% endfor %}
         <p class="uk-text-meta">公告只显示最新5条</p>
     </div>
     <div>
@@ -51,7 +43,7 @@
         <h2 class="uk-margin-small-top">状态
             <small style="color: #666666; font-size: medium">Status</small>
         </h2>
-        <hr class="uk-margin"/>
+        <hr class="uk-margin" />
         <div class="uk-child-width-1-2@l uk-child-width-1-1@s" uk-grid>
             <div class="uk-width-1-2@l">
                 <div class="uk-card uk-card-hover uk-card-default">
@@ -74,7 +66,7 @@
                                 <a class="uk-article-title uk-accordion-title" href="#" style="font-size: 2.625rem">{{ online_players_number }}</a>
                                 <div class="uk-accordion-content">
                                     {% for usr in online_players_list %}
-                                        <p user_id="{{ usr.id }}">{{ usr.name }}</p>
+                                    <p user_id="{{ usr.id }}" title="{{ usr.nickname }}">{{ usr.name }} </p>
                                     {% endfor %}
                                 </div>
                             </li>
@@ -108,17 +100,17 @@
 </div>
 <script>
     $(document).ready(
-        $(function () {
-            $(".delBtn").click(function () {
+        $(function() {
+            $(".delBtn").click(function() {
                 var $this = $(this);
                 var id = $this.attr('_id');
                 $.post("/announcement_delete?_=" + Date.parse(new Date()), {
                     "id": id,
-                }, function (obj) {
+                }, function(obj) {
                     if (obj.status === "ok") {
                         // 我知道，这个写法很不优雅，但我不会写JS
                         $this.parent().parent().parent().addClass('uk-animation-slide-left-small uk-animation-reverse');
-                        setTimeout(function () {
+                        setTimeout(function() {
                             $this.parent().parent().parent().remove();
                         }, 500);
                         UIkit.notification({
