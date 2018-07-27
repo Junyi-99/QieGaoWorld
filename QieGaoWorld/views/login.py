@@ -113,7 +113,10 @@ def getuuidfromname(name):
 def getnicknamefromuuid(uuid):
     try:
         with open("../plugins/Essentials/userdata/%s.yml" % uuid) as f:
-            a = (json.loads(f.read()))
-            return a['nickname']
+            lines=f.readlines()
+            for l in lines:
+                if "nickname: " in l:
+                    return  l[9:len(l)-1]
+            return ""
     except IOError:
         return ""
