@@ -58,12 +58,13 @@ def login_verify(request):
 
         if "playername=" + username != user or "password=" + password != passwd:
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
-
-        user = User.objects.get(username=username, password=password)
-        if len(user) == 0:
+        try:
+            user = User.objects.get(username=username, password=password)
+        except DoesNotExist:
             obj = User(username=username, password=password, register_time=int(time.time()))
             obj.save()
             user = User.objects.get(username=username, password=password)
+            
         uuid=getuuidfromname(username)
         nickname=getnicknamefromuuid(uuid)
         user.uuid=uuid
