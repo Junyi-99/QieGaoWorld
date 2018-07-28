@@ -172,6 +172,12 @@
                             timeout: 2000
                         });
                         UIkit.modal("#animal-box").hide();
+
+                        // 清空上次的输入
+                        $("#binding").val('');
+                        $("#license").val('');
+                        $("#feature").val('');
+                        $("#status").val('');
                     } else {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,

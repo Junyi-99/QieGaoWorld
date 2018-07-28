@@ -74,6 +74,8 @@ def login_verify(request):
         user = User.objects.filter(username=username, password=password)
         if len(user) == 0:
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
+        else:
+            user = user[0]
 
     # 登录成功后
     request.session["is_login"] = True
