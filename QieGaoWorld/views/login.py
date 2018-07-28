@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import time
-import hashlib,uuid
+import hashlib, uuid
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -64,11 +64,11 @@ def login_verify(request):
             obj = User(username=username, password=password, register_time=int(time.time()))
             obj.save()
             user = User.objects.filter(username=username, password=password)
-        user=user[0]
-        uuid=getuuidfromname(username)
-        nickname=getnicknamefromuuid(uuid)
-        user.uuid=uuid
-        user.nickname=nickname
+        user = user[0]
+        uuid_ = get_uuid_from_name(username)  # 这里uuid_防止与uuid库名字冲突
+        nickname = get_nickname_from_uuid(uuid_)
+        user.uuid = uuid_
+        user.nickname = nickname
         user.save()
     else:
         user = User.objects.filter(username=username, password=password)
@@ -77,8 +77,8 @@ def login_verify(request):
 
     # 登录成功后
     request.session["is_login"] = True
-    request.session['username'] = username
-    request.session['password'] = password
+    request.session['username'] = user.username
+    request.session['password'] = user.password
     request.session['nickname'] = user.nickname
     request.session['qqnumber'] = user.qqnumber
     request.session['usrgroup'] = user.usrgroup
@@ -88,22 +88,25 @@ def login_verify(request):
 
     if ON_SERVER:
         with open("../ops.json", "r") as f:
-            user = f.read()
-            a = (json.loads(user))
+            ops = f.read()
+            a = (json.loads(ops))
             s = "%"
             for b in a:
                 s += b['name'] + "%"
             if username in s:
                 request.session['permissions'] = settings.OP_PERMISSIONS
+            else:
+                request.session['permissions'] = user.permissions
     else:
         request.session['permissions'] = user.permissions
 
     return HttpResponse(dialog('ok', 'success', '登录成功'))
 
-def getuuidfromname(name):
-    playername = "OfflinePlayer:%s" % name
+
+def get_uuid_from_name(name):
+    player_name = "OfflinePlayer:%s" % name
     m = hashlib.md5()
-    m.update(playername.encode("utf-8"))
+    m.update(player_name.encode("utf-8"))
     d = bytearray(m.digest())
     d[6] &= 0x0f
     d[6] |= 0x30
@@ -111,13 +114,14 @@ def getuuidfromname(name):
     d[8] |= 0x80
     return (uuid.UUID(bytes=bytes(d)))
 
-def getnicknamefromuuid(uuid):
+
+def get_nickname_from_uuid(uuid):
     try:
         with open("../plugins/Essentials/userdata/%s.yml" % uuid) as f:
-            lines=f.readlines()
+            lines = f.readlines()
             for l in lines:
                 if "nickname: " in l:
-                    return  l[9:len(l)-1]
+                    return l[9:len(l) - 1]
             return ""
     except IOError:
         return ""
