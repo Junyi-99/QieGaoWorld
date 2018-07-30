@@ -11,8 +11,12 @@
 
         <div id="modal-center" class="uk-flex-top" uk-modal>
             <div class="uk-modal-dialog uk-margin-auto-vertical">
-                <button class="uk-modal-close-default" type="button" uk-close></button> {% if '%publish_announcement%' in permissions %} {% include "dashboard/announcement/new_announcement.html" %} {% else %} {% include "dashboard/announcement/permission_denied.html"
-                %} {% endif %}
+                <button class="uk-modal-close-default" type="button" uk-close></button> 
+				{% if '%publish_announcement%' in permissions %} 
+					{% include "dashboard/announcement/new_announcement.html" %} 
+				{% else %} 
+					{% include "dashboard/announcement/permission_denied.html"%} 
+				{% endif %}
             </div>
         </div>
 
