@@ -44,7 +44,7 @@ def upload_building_picture(request, upload_type):
     file_obj = request.FILES["files[]"]
     file_name = str(file_obj)
 
-    pos = file_name.find(".")
+    pos = file_name.rfind(".")
     if pos == -1:
 
         return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
