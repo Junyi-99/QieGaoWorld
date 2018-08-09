@@ -46,7 +46,6 @@ def upload_building_picture(request, upload_type):
 
     pos = file_name.rfind(".")
     if pos == -1:
-
         return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
 
     suffix = file_name[pos:]  # 取出后缀名
@@ -156,6 +155,9 @@ def buildings_list(request, operation):
     elif 'user' in operation:
         buildings = DeclareBuildings.objects.filter(username=request.session.get('username', None))
 
+    # 按照时间由新到旧排序
+    buildings = sorted(buildings, key=lambda b: b.declare_time, reverse=True)
+
     for i in range(0, len(buildings)):
         buildings[i].declare_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].declare_time))
         buildings[i].nickname = username_get_nickname(buildings[i].username)
@@ -194,8 +196,11 @@ def animals_list(request, operation):
     if 'all' in operation:
         animals = DeclareAnimals.objects.all()
     elif 'user' in operation:
-        animals = DeclareAnimals.objects.filter(username=request.session.get('username', None)) | DeclareAnimals.objects.filter(binding='公共')
+        animals = DeclareAnimals.objects.filter(
+            username=request.session.get('username', None)) | DeclareAnimals.objects.filter(binding='公共')
 
+    # 按照时间由新到旧排序
+    animals = sorted(animals, key=lambda a: a.declare_time, reverse=True)
     for i in range(0, len(animals)):
         animals[i].declare_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(animals[i].declare_time))
         animals[i].nickname = username_get_nickname(animals[i].username)
@@ -322,6 +327,7 @@ def animals_check_license_exist(license_):
         return True
     except ObjectDoesNotExist:
         return False
+
 
 @ensure_csrf_cookie
 def buildings_detail(request):
