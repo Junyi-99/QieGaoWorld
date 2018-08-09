@@ -31,12 +31,14 @@
                         <td class="uk-visible@s">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-auto uk-visible@m">
-                                    <img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40"
-                                         alt="">
+                                    <a><img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40"
+                                            alt="" id="summary-{{ c.id }}" onclick="openModal(this.id)"></a>
                                 </div>
                                 <div class="uk-width-expand">
 
-                                    <h4 class="uk-margin-remove-bottom">{{ c.nickname }}</h4>
+                                    <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                           onclick="openModal(this.id)">{{ c.nickname }}</a>
+                                    </h4>
                                     <p class="uk-text-meta uk-margin-remove-top uk-visible@m">{{ c.report_time }}</p>
                                 </div>
                             </div>
@@ -44,7 +46,9 @@
                         <td class="nowrap uk-visible@s">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-expand">
-                                    <h4 class="uk-margin-remove-bottom">{{ c.position }}</h4>
+                                    <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                           onclick="openModal(this.id)">{{ c.position }}</a>
+                                    </h4>
                                     <p class="uk-text-meta uk-margin-remove-top">{{ c.coordinate }}</p>
                                 </div>
                             </div>
@@ -103,12 +107,14 @@
                         <td class="uk-visible@s">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-auto">
-                                    <img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40"
-                                         alt="">
+                                    <a><img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40"
+                                            alt="" id="summary-{{ c.id }}" onclick="openModal(this.id)"></a>
                                 </div>
                                 <div class="uk-width-expand">
 
-                                    <h4 class="uk-margin-remove-bottom">{{ c.nickname }}</h4>
+                                    <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                           onclick="openModal(this.id)">{{ c.nickname }}</a>
+                                    </h4>
                                     <p class="uk-text-meta uk-margin-remove-top">{{ c.report_time }}</p>
                                 </div>
                             </div>
@@ -116,7 +122,8 @@
                         <td class="nowrap uk-visible@s">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-expand">
-                                    <h4 class="uk-margin-remove-bottom">{{ c.position }}</h4>
+                                    <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                           onclick="openModal(this.id)">{{ c.position }}</a></h4>
                                     <p class="uk-text-meta uk-margin-remove-top">{{ c.coordinate }}</p>
                                 </div>
                             </div>

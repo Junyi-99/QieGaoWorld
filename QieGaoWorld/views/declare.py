@@ -69,17 +69,21 @@ def upload_building_picture(request, upload_type):
             im = Image.open(tmp_file)
             width, height = im.size
 
-            if width < height:
-                print("resize")
-                out = im.resize((width, width), Image.ANTIALIAS)
-                out.save(tmp_file)
-            else:
-                out = im.resize((height, height), Image.ANTIALIAS)
-                out.save(tmp_file)
+            # resize 一下，破坏PE文件后面的附属信息（防止被当作图床）
+            out = im.resize((width - 1, width - 1), Image.ANTIALIAS)
+            out.save(tmp_file)
+
+            # if width < height:
+            #     print("resize")
+            #     out = im.resize((width, width), Image.ANTIALIAS)
+            #     out.save(tmp_file)
+            # else:
+            #     out = im.resize((height, height), Image.ANTIALIAS)
+            #     out.save(tmp_file)
 
         except Exception as e:
             logging.error(e)
-            return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
+            return HttpResponse(dialog('failed', 'danger', '文件类型错误，请联系管理员'))
 
         return HttpResponse(dialog('ok', 'success', '修改成功', {'url': "static\\media\\%s" % save_path}))
     else:
@@ -145,6 +149,16 @@ def animals_change_status(request):
         return HttpResponse(dialog('failed', 'danger', '这个动物并不属于你'))
 
 
+# 创建缩略图 pic 为原始图片地址, path_ 为目标缩略图存放地址
+def make_thumb(pic_, path_):
+    try:
+        im = Image.open(pic_)
+        out = im.resize((40, 40), Image.ANTIALIAS)  # 缩略图大小为40x40
+        out.save(path_)
+    except Exception as e:
+        logging.error(e)
+
+
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
 @check_login
 @check_post
@@ -165,7 +179,16 @@ def buildings_list(request, operation):
         buildings[i].predict_start_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].predict_start_time))
         buildings[i].predict_end_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].predict_end_time))
 
-        buildings[i].logo = buildings[i].concept
+        # 设置logo为缩略图的路径
+        logo = buildings[i].concept
+        pos = logo.rfind(".")
+        if pos == -1:
+            return []
+        buildings[i].logo = logo[:pos] + '_thumb' + logo[pos:]
+
+        # 如果缩略图不存在，我们创建
+        if not os.path.exists(buildings[i].logo):
+            make_thumb(buildings[i].concept, buildings[i].logo)
 
         if buildings[i].status == 0:
             buildings[i].status_label = 'uk-label-warning'

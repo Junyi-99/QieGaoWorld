@@ -33,9 +33,11 @@
                         <td>
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-auto">
-                                    <img class="uk-preserve-width uk-border-circle"
-                                         src="{{ b.logo }}"
-                                         width="40" alt="">
+                                    <a>
+                                        <img class="uk-preserve-width uk-border-circle"
+                                             src="{{ b.logo }}" width="40" alt="" id="building{{ b.id }}"
+                                             onclick="buildingDetail(this.id)">
+                                    </a>
                                 </div>
                                 <div class="uk-width-expand">
                                     <h4 class="uk-margin-remove-bottom"><a id="building{{ b.id }}" class="uk-link-reset"
@@ -56,7 +58,9 @@
                         <td class="nowrap uk-visible@m">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-expand">
-                                    <h4 class="uk-margin-remove-bottom">{{ b.summary }}</h4>
+                                    <h4 class="uk-margin-remove-bottom"><a id="building{{ b.id }}" class="uk-link-reset"
+                                                                           onclick="buildingDetail(this.id)">{{ b.summary }}</a>
+                                    </h4>
                                     <p class="uk-text-truncate uk-text-meta uk-margin-remove-top">
                                         {{ b.detail }}</p>
                                 </div>
@@ -65,10 +69,13 @@
                         <td class="nowrap uk-visible@l">
                             <div class="uk-grid-small uk-flex-middle" uk-grid>
                                 <div class="uk-width-expand">
-                                    <p class="uk-text-meta uk-margin-remove-bottom uk-margin-remove-top">
-                                        开工：{{ b.predict_start_time }}</p>
-                                    <p class="uk-text-meta uk-margin-remove-bottom uk-margin-remove-top">
-                                        结束：{{ b.predict_end_time }}</p>
+                                    <a id="building{{ b.id }}" class="uk-link-reset"
+                                       onclick="buildingDetail(this.id)">
+                                        <p class="uk-text-meta uk-margin-remove-bottom uk-margin-remove-top">
+                                            开工：{{ b.predict_start_time }}</p>
+                                        <p class="uk-text-meta uk-margin-remove-bottom uk-margin-remove-top">
+                                            结束：{{ b.predict_end_time }}</p>
+                                    </a>
                                 </div>
                             </div>
                         </td>
