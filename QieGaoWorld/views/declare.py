@@ -262,7 +262,7 @@ def buildings_add(request):
         for l in lis:
             if len(str(lis[l])) == 0:
                 return HttpResponse(dialog('failed', 'danger', '%s为空！请检查！' % l))
-
+        lis['pic_perspective']=str(request.POST.get('pic_perspective', '')).strip()
         obj = DeclareBuildings(
             declare_time=lis['declare_time'],
             username=lis['username'],
