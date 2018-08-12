@@ -251,7 +251,7 @@ def animals_list(request, operation):
 def buildings_add(request):
     try:
         arg_list = {'name', 'english_name', 'summary', 'detail', 'coordinate', 'area', 'predict_start_time',
-                    'predict_end_time', 'type', 'pic_concept', 'pic_plan', 'pic_perspective'}
+                    'predict_end_time', 'type', 'pic_concept', 'pic_plan'}
 
         lis = {key: str(request.POST.get(key, '')).strip() for key in arg_list}
         print(lis)
