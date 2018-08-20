@@ -1,4 +1,5 @@
 import os
+import uuid
 import logging
 from PIL import Image
 from django.core.files.base import ContentFile
@@ -60,19 +61,23 @@ def upload_building_picture(request, upload_type):
 
     if flag:
         try:
-            save_path = "buildings/%s/%s_%d_%s" % (
-                upload_type, request.session.get('username', 'N/A'), int(time.time()), file_name)
+            save_path = "buildings/%s/%s" % (upload_type, str(uuid.uuid1()) + ".png")
+            thumb_path = "buildings/%s/%s_thumb" % (upload_type, str(uuid.uuid1()) + ".png")
 
             path = default_storage.save(save_path, ContentFile(file_obj.read()))
+            path_thu = default_storage.save(thumb_path, ContentFile(file_obj.read()))
+
             tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+            thu_file = os.path.join(settings.MEDIA_ROOT, path_thu)
 
             im = Image.open(tmp_file)
             width, height = im.size
 
             # resize 一下，破坏PE文件后面的附属信息（防止被当作图床）
-            out = im.resize((width - 1, width - 1), Image.ANTIALIAS)
+            out = im.resize((width - 1, height - 1), Image.ANTIALIAS)
             out.save(tmp_file)
 
+            make_thumb(tmp_file, thu_file)
             # if width < height:
             #     print("resize")
             #     out = im.resize((width, width), Image.ANTIALIAS)
@@ -262,7 +267,7 @@ def buildings_add(request):
         for l in lis:
             if len(str(lis[l])) == 0:
                 return HttpResponse(dialog('failed', 'danger', '%s为空！请检查！' % l))
-        lis['pic_perspective']=str(request.POST.get('pic_perspective', '')).strip()
+        lis['pic_perspective'] = str(request.POST.get('pic_perspective', '')).strip()
         obj = DeclareBuildings(
             declare_time=lis['declare_time'],
             username=lis['username'],
