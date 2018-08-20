@@ -61,8 +61,9 @@ def upload_building_picture(request, upload_type):
 
     if flag:
         try:
-            save_path = "buildings/%s/%s" % (upload_type, str(uuid.uuid1()) + ".png")
-            thumb_path = "buildings/%s/%s_thumb" % (upload_type, str(uuid.uuid1()) + ".png")
+            u = str(uuid.uuid1())
+            save_path = "buildings/%s/%s" % (upload_type, u + ".png")
+            thumb_path = "buildings/%s/%s_thumb" % (upload_type, u + ".png")
 
             path = default_storage.save(save_path, ContentFile(file_obj.read()))
             path_thu = default_storage.save(thumb_path, ContentFile(file_obj.read()))
