@@ -67,3 +67,9 @@ class Announcement(models.Model):
     content = models.CharField(max_length=512)  # 公告内容
     type = models.IntegerField(default=0)  # 公告类型（0:通知, 1:重要, 2:严重）
     visible = models.BooleanField(default=True)  # 公告是否可见
+
+#
+class Logs(models.Model):
+    code=models.CharField(max_length=50) 
+    text = models.TextField()
+

@@ -7,11 +7,13 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
 
+from QieGaoWorld import parameter
 from QieGaoWorld import settings
 from QieGaoWorld.models import User
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.dialog import dialog
-
+from django.db import connection
+from QieGaoWorld import common
 
 # ajax (ensure csrf cookie)
 @ensure_csrf_cookie
@@ -35,28 +37,22 @@ def login_verify(request):
 
     logging.debug("Login Verify: [%s] [%s]" % (username, password))
     if ON_SERVER:
-        with open("../plugins/WhiteList/config.yml", "r") as f:
+        with open(parameter.SPIGOT_PATH + "/plugins/WhiteList/config.yml", "r") as f:
             plays = f.read()
             if "- " + username.lower() not in plays:
                 return HttpResponse(dialog('failed', 'danger', '您不在白名单'))
-        with open("../banned-players.json", "r") as f:
+        with open(parameter.SPIGOT_PATH + "/banned-players.json", "rb") as f:
             plays = json.loads(f.read())
             s = "%"
             for b in plays:
                 s += b['name'] + "%"
             if "%" + username + "%" in s:
                 return HttpResponse(dialog('failed', 'danger', '登录失败！您的帐号已被此服务器封禁!'))
-        try:
-            user_url = "../plugins/ksptooi/fastlogin/database/"
-            url = os.getcwd() + "/" + user_url
-            with open(url + username.lower() + ".gd", "r") as f:
-                user = f.readline().strip()
-                passwd = f.readline().strip()
-            # user = User.objects.filter(username=username, password=password)
-        except IOError:
+        row = common.filter("select * from playertable where playername='"+username+"'"  )
+        if row ==None:
             return HttpResponse(dialog('failed', 'danger', '该账号不存在'))
 
-        if "playername=" + username != user or "password=" + password != passwd:
+        if  password != row[1]:
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
 
         user = User.objects.filter(username=username, password=password)

@@ -75,10 +75,23 @@ WSGI_APPLICATION = 'QieGaoWorld.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'qiegaoshijie',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'OPTIONS': {
+          'autocommit': True,
+        },
     }
 }
+
+
+# my.cnf
+# [client]
+# database = NAME
+# user = USER
+# password = PASSWORD
+# default-character-set = utf8
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -130,7 +143,7 @@ DEFAULT_PERMISSIONS = '%police_cases_watch%police_cases_add%declaration_animals%
                       '%declaration_watch% '
 OP_PERMISSIONS = '%publish_announcement%announcement_delete%police_cases_watch%police_cases_add%police_cases_modify' \
                  '%declaration_animals%declaration_buildings%declaration_watch%declaration_animals_modify' \
-                 '%declaration_buildings_modify% '
+                 '%declaration_buildings_modify%whitelist%'
 
 DEFAULT_FACE = os.path.join(BASE_DIR, 'static\\media\\face\\default.jpg')
 BUILDING_CONCEPT_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/concept')
@@ -138,3 +151,5 @@ BUILDING_PLAN_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/plan')
 BUILDING_PERSPECTIVE_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/perspective')
 
 PROJECT_VERSION = '2.0 Beta (180725)'
+
+
