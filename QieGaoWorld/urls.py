@@ -19,7 +19,7 @@ from django.urls import path
 from . import view
 from .views import login, logout
 from .views import avatar, police
-from .views import declare, register,ops
+from .views import declare, register
 from .views import announcement
 
 urlpatterns = [
@@ -52,7 +52,6 @@ urlpatterns = [
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),
     path("declare/<str:s>", declare.url),
-    path("ops/<str:s>", ops.url),
 
     url(r"^animals_add$", declare.animals_add),
     url(r"^animals_change_status$", declare.animals_change_status),
