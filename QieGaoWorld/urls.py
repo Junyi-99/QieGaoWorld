@@ -19,7 +19,9 @@ from django.urls import path
 from . import view
 from .views import login, logout
 from .views import avatar, police
+
 from .views import declare, register,ops,system,wenjuan,skull
+
 from .views import announcement
 
 urlpatterns = [
@@ -56,6 +58,7 @@ urlpatterns = [
     path("ops/<str:s>", ops.url),
     path("system/<str:s>", system.url),
     path("wenjuan/<str:s>", wenjuan.url),
+
 
     url(r"^animals_add$", declare.animals_add),
     url(r"^animals_change_status$", declare.animals_change_status),

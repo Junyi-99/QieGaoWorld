@@ -10,11 +10,13 @@ from .views.declare import animals_list, buildings_list
 from .views.decorator import check_login, check_post
 from .views.police import page_police_hall
 from .views.settings import page_settings
+
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
 from QieGaoWorld import parameter as Para 
 from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize
 from QieGaoWorld import common
+
 
 from QieGaoWorld.views.police import username_get_nickname
 
@@ -43,9 +45,9 @@ def handle_uploaded_file(f):
 def user_center(request):
     try:
         from mcstatus import MinecraftServer
-        server = MinecraftServer.lookup(Para.MC_SERVER)
+        server_address = 'mc.qiegaoshijie.club:21182'
+        server = MinecraftServer.lookup(server_address)
         status = server.status()
-        common.logs(status)
 
         mot = status.description['text']
         motd = str(mot)
@@ -62,7 +64,6 @@ def user_center(request):
             for e in status.players.sample:
                 user.append({'name': e.name, 'id': e.id,"nickname":username_get_nickname(e.name)})
 
-
         announcements = announcement_list(request)
 
         na = len(DeclareAnimals.objects.all())
@@ -71,7 +72,7 @@ def user_center(request):
 
         context = {
             'favicon': fav,
-            'server_address': Para.MC_SERVER,
+            'server_address': server_address,
             'online_players_list': user,
             'online_players_number': opn,
             'number_buildings': nb,
@@ -171,22 +172,14 @@ def page_rookies(request):
 def dashboard(request):
     context = {
         'avatar': request.session['avatar'],
+
         'nickname': request.session['nickname'],
         'permissions': request.session['permissions'],
         "menu":Menu.objects.filter(status=True)
+
     }
 
     return render(request, "dashboard/dashboard.html", context)
-@check_login
-def page_whitelist(request):
-    white_list=whitelist(request)
-    context = {
-        'list': white_list,
-        'permissions': request.session['permissions'],
-        'len':len(white_list)
-    }
-
-    return render(request, "dashboard/ops/whitelist.html", context)
 
 @check_login
 def system_menu(request):
@@ -278,6 +271,7 @@ def dashboard_page(request):
 
     if request.POST.get("page", None) == "settings":
         return page_settings(request)
+
     if request.POST.get("page", None) == "whitelist":
         return page_whitelist(request)
     if request.POST.get("page", None) == "system_menu":
@@ -286,5 +280,6 @@ def dashboard_page(request):
         return page_wenjuan(request)
     if request.POST.get("page", None) == "skull":
         return page_skull(request)
+
 
     return HttpResponse("Response: " + request.POST.get("page", None))
