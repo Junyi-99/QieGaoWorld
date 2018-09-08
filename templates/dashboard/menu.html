@@ -48,5 +48,26 @@
             <!-- <li class="nav" data-page="settings"><a href="#">账号设置</a></li> -->
         </ul>
     </li>
-    {% endif %}
+    {% endif %} 
+</ul>
+<ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
+    <li class="uk-nav-header" style="font-size: 12px">DASHBOARD</li>
+    <hr class="uk-margin-remove">
+    {% for m in menu %} 
+
+        {% if m.type == 0 %} 
+            <li class="uk-parent">
+                <a href="#">{{m.name}}</a>
+                <ul class="uk-nav-sub">
+            {% for n in menu %} 
+                {% if n.parent == m.id %} 
+                <li class="nav" data-page="{{n.url}}"><a href="#">{{n.name}}</a></li>
+                {% endif %} 
+            {% endfor %} 
+                </ul>
+            </li>
+        {% elif m.parent == 0 %} 
+            <li class="nav" data-page="{{m.url}}"><a href="#">{{m.name}}</a></li>
+        {% endif %} 
+    {% endfor %}
 </ul>

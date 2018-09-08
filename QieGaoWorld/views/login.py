@@ -12,7 +12,6 @@ from QieGaoWorld import settings
 from QieGaoWorld.models import User
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.dialog import dialog
-from django.db import connection
 from QieGaoWorld import common
 
 # ajax (ensure csrf cookie)
@@ -80,6 +79,7 @@ def login_verify(request):
     request.session['nickname'] = user.nickname
     request.session['qqnumber'] = user.qqnumber
     request.session['usrgroup'] = user.usrgroup
+    request.session['id'] = user.id
     request.session['register_time'] = user.register_time
     request.session['avatar'] = user.avatar
     request.session.set_expiry(3600)  # 1小时有效期

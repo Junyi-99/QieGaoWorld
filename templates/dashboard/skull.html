@@ -1,0 +1,159 @@
+<h2>头颅定制
+    <small style="color: #666666; font-size: medium">Skull Customize</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
+            uk-toggle="target: #animal-box">新定制
+    </button>
+</h2>
+<hr class="uk-margin"/>
+<p class="uk-text-meta">下面显示的是你定制的所有头颅</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <thead>
+    <tr>
+          
+        <!-- <th class="uk-table-expand">申请人</th> -->
+          
+        
+        <th class="uk-visible@s">自定义名称</th>
+        <th class="uk-visible@s uk-table-expand">数量</th>
+        <th class="uk-table-small">状态</th>
+        <th class="uk-width-small uk-visible@s">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for a in skull %}
+        <tr>
+            <td class="uk-text-truncate">{{ a.name }}</td>
+            <td class="uk-visible@s">{{ a.number }}</td>
+            <td><span class="uk-text-truncate uk-label {{ a.status_class }}">{{ a.status_text }}</span></td>
+            <td class="uk-visible@s">
+                <a class="uk-icon-link del" id="{{a.id}}" style="color:red" uk-icon="trash"></a>
+            </td>
+
+            <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
+            <td></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<div id="animal-box" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">头颅定制</h2>
+        </div>
+        <div class="uk-modal-body">
+                <h3>如何进行定制？</h3>
+            <p class="uk-text-meta"></p>
+            <p class="uk-text-meta">1. 访问头颅数据库网站FreshCoal Heads [ <a target="_blak" href="https://freshcoal.com/maincollection">地址一</a> ][ <a target="_blak" href="https://freshcoal.com/usercollection.php?pn=1&rows=200&view=&sort=&sort1=&category=all">地址二</a> ]</p>
+            <p class="uk-text-meta">在网站中查找你要的头颅，并单击一下你要的图标复制代码</p>
+            <p class="uk-text-meta">将复制的代码粘贴到下方【头颅代码】格中</p>
+            <p class="uk-text-meta">填写头颅名称，数量，前往游戏使用切糕工具箱领取</p>
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">自定义名称</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="name" type="text" placeholder="切糕">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">数量</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                                <input class="uk-input" id="number" type="text" placeholder="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">头颅代码</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <textarea name="" id="content" cols="30" rows="10" placeholder="粘贴你选择头颅的代码"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(
+        $(function () {
+
+
+            $("#save").click(function () {
+
+                var name = $("#name").val();
+                var number = $("#number").val();
+                var content = $("#content").val();
+
+                $.post("skull/skull_add?_=" + Date.parse(new Date()), {
+                    "name": name,
+                    "number": number,
+                    "content": content,
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#animal-box").hide();
+
+                        // 清空上次的输入
+                        window.location.reload()
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".del").click(function() {
+                var id = $(this).attr("id");
+                var _this = $(this);
+
+                $.post("skull/skull_del?_=" + Date.parse(new Date()), {
+                    "id": id,
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parents("tr").remove();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+        })
+    );
+</script>

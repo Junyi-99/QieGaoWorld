@@ -1,0 +1,315 @@
+{% load static %}
+<style>
+        .beizhu::after {
+            content: "";
+            width: 28px;
+            height: 28px;
+            float: right;
+            background-image: url(data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2213%22%20height%3D%2213…22%20height%3D%2213%22%20x%3D%226%22%20y%3D%220%22%20%2F%3E%0A%3C%2Fsvg%3E);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            opacity: 0;
+        }
+</style>
+<h2>问卷管理
+    <small style="color: #666666; font-size: medium">Questionnaire Manage</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top" id="dryedit" uk-toggle="target: #dry-box">添加
+    </button>
+    <button style="display:none" id="add" uk-toggle="target: #answer-box">添加
+    </button>
+</h2>
+<hr class="uk-margin" />
+<p class="uk-text-meta">问卷列表</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<ul uk-accordion="multiple: true" uk-sortable="group: sortable-group">
+    {% for m in wenjuan %} 
+    
+    
+    
+    <li class="uk-padding-small uk-box-shadow-small {% if m.type == 4 %} uk-background-muted {% endif %}" style=" {% if m.status == 0 %}color: darkgrey{% endif %} " data-dry="{{m.dry}}" data-type="{{m.type_text}}" data-id="{{m.id}}" >
+        <input type="hidden" name="list[]" value="{{m.id}}">
+        {% if m.type == 4 %}
+                <div class="uk-text-break uk-width-1-1 beizhu"    uk-grid href="#">
+                    <div class="uk-width-expand" style="white-space:pre-wrap">{{m.dry}}</div>
+        
+                <span class="uk-width-auto " >
+                    <a class="uk-icon-link dryedit" uk-icon="file-edit"></a> 
+                    <a class=" uk-icon-link star" data-status="{{n.status}}" {% if n.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a>
+                    <a class="uk-icon-link drydel" data-id="{{m.id}}" style="color:red" uk-icon="trash"></a>
+                    <a class="uk-margin-small-right" uk-icon="move" title="移动"></a>
+                </span>
+        </div>
+        <div class="uk-accordion-title " href="#" style="display:none" ></div>
+        <div class="uk-accordion-content" style="display:none"></div>
+        {% else %}
+        <div class="uk-accordion-title uk-width-1-1" style="display: inline-flex;" uk-grid href="#">
+            
+            <div class="uk-width-expand" >{{m.dry}}    <span class="uk-margin-small-left" uk-icon="tag"></span><span style="font-size:14px" >{{m.type_text}}</span> </div>
+            <span class="uk-width-auto">
+                <a class="uk-icon-link dryedit" uk-icon="file-edit"></a> 
+                <a class=" uk-icon-link star" data-status="{{n.status}}" {% if n.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a>
+                <a class="uk-icon-link drydel" style="color:red" data-id="{{m.id}}" uk-icon="trash"></a>
+                <a class="uk-margin-small-right" uk-icon="move" title="移动"></a>
+            </span>
+        </div>
+            <div class="uk-accordion-content">
+                <div>
+                    <ul id="{{m.id}}" class="uk-list">
+                        {% for l in m.option %}
+                        <li id="{{l.id}}" data-content="{{l.content}}">{{l.content}} <span style="float:right">
+                            <a class="uk-icon-link answeredit" uk-icon="file-edit"></a> 
+                            <a class="uk-icon-link star" data-status="{{n.status}}" {% if n.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a>
+                            <a class="uk-icon-link answerdel" style="color:red" uk-icon="trash"></a>
+                        </span></li>
+                            
+                            {% endfor %}
+                            <li><a class="uk-icon-link add"> <span uk-icon="plus-circle"></span> 新增</a> </li>
+                        </ul>
+                    </div>
+                    <div >{{m.answer}}</div>
+                    <hr>
+                </div>
+                {% endif %}
+            </li>
+            {% endfor %}
+
+</ul>
+
+
+<div id="dry-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">编辑题干</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">类型</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <div id="dry-s" uk-switcher="animation: uk-animation-fade;connect:.inp">
+                                {% for t in type %}
+                                <button class="uk-button uk-button-default uk-padding-remove-vertical uk-padding-small drytyoe" data-type="{{t}}" type="button">{{t}}</button>
+                                
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    {% comment %} <label for="{{t}}" class="uk-button uk-button-default uk-padding-small uk-padding-remove-vertical">{{t}}</label>
+                    <input type="radio" style="display:none" name="type" id="{{t}}">  {% endcomment %}
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-1-5@s">
+                        <label class="uk-form-label" for="form-horizontal-text">题干</label>
+                    </div>
+                    <div class="uk-width-4-5@s">
+                        <ul class="uk-switcher uk-margin inp">
+                            {% for t in type %}
+                                {% if t == "备注说明" %}
+                                    <li>
+                                        <textarea class="uk-textarea" name="name" data-type="{{t}}" id="" cols="30" rows="10"></textarea>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <input type="text" class="uk-input" data-type="{{t}}" name="name" id="">
+                                    </li>
+                                {% endif %}
+                                
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                    
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <input type="hidden" id="id">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary save" type="button" id="">确认</button>
+        </div>
+    </div>
+</div>
+<div id="answer-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">编辑选项</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">内容</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="content" type="text" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <input type="hidden" id="an-id">
+            <input type="hidden" id="dry-id">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary save" type="button" id="">确认</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(
+        $(function() {
+            $("#dry-box .save").click(function() {
+                var name = $(".uk-active [name=name]").val();
+                var type =$("button.uk-active").data('type');
+                var id= $("#id").val();
+
+                $.post("wenjuan/problem_edit?_=" + Date.parse(new Date()), {
+                    "name": name,
+                    "type":type,
+                    "id":id
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#dry-box").hide();
+                        window.location.reload();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $("#answer-box .save").click(function() {
+                var content = $("#content").val();
+                var an_id =$("#an-id").val();
+                var dry_id= $("#dry-id").val();
+
+                $.post("wenjuan/answer_edit?_=" + Date.parse(new Date()), {
+                    "content": content,
+                    "an_id":an_id,
+                    "dry_id":dry_id
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#answer-box").hide();
+                        window.location.reload();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".add").click(function(){
+                $("#add").click();
+                $("#content").val("");
+                $("#dry-id").val($(this).parents('ul').attr("id"))
+            });
+            $(".answeredit").click(function(){
+                $("#add").click();
+                $("#content").val($(this).parents("li").data("content"));
+                $("#an-id").val($(this).parents('li').attr("id"));
+            });
+            $(".dryedit").click(function(){
+                $("#dry-s button[data-type='"+$(this).parents('li').data("type")+"']").click();
+                $(".inp [data-type='"+$(this).parents('li').data("type")+"']").val($(this).parents("li").data("dry"));
+                $("#id").val($(this).parents('li').data("id"));
+                $("#dryedit").click();
+                return false;
+            });
+            $(".answerdel").click(function() {
+                var id = $(this).parents('li').attr("id");
+                var _this = $(this);
+
+                $.post("wenjuan/option_del?_=" + Date.parse(new Date()), {
+                    "id": id,
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parent().parent().remove();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".drydel").click(function() {
+                var id = $(this).data("id");
+                var _this = $(this);
+
+                $.post("wenjuan/problem_del?_=" + Date.parse(new Date()), {
+                    "id": id,
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parents("li").remove();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+        })
+    );
+    var util = UIkit.util;
+
+    util.ready(function () {
+
+        util.on(document.body, 'stop', function (e, sortable, el) {
+            $.post("/wenjuan/sort?_"+ Date.parse(new Date()),$('[name="list[]"]').serialize(),function(obj){
+                if (obj.status === "ok") {
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            },"json")
+        });
+
+    });
+</script>

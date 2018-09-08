@@ -1,4 +1,4 @@
-import logging
+import logging,json
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -11,8 +11,9 @@ from .views.decorator import check_login, check_post
 from .views.police import page_police_hall
 from .views.settings import page_settings
 from .views.ops import whitelist
+from .views.wenjuan import problem_list
 from QieGaoWorld import parameter as Para 
-from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases
+from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize
 from QieGaoWorld import common
 
 from QieGaoWorld.views.police import username_get_nickname
@@ -172,6 +173,7 @@ def dashboard(request):
         'avatar': request.session['avatar'],
         'nickname': request.session['nickname'],
         'permissions': request.session['permissions'],
+        "menu":Menu.objects.filter(status=True)
     }
 
     return render(request, "dashboard/dashboard.html", context)
@@ -185,6 +187,48 @@ def page_whitelist(request):
     }
 
     return render(request, "dashboard/ops/whitelist.html", context)
+
+@check_login
+def system_menu(request):
+    context = {
+        'permissions': request.session['permissions'],
+        "menu":Menu.objects.all()
+    }
+
+    return render(request, "dashboard/system/menu.html", context)
+@check_login
+def page_wenjuan(request):
+
+    _type=Conf.objects.get(key="wenjuan_type")
+    context = {
+        'permissions': request.session['permissions'],
+        "wenjuan":problem_list(request),
+        "type":json.loads(_type.content)
+    }
+
+    return render(request, "dashboard/wenjuan/wenjuan.html", context)
+
+
+@check_login
+def page_skull(request):
+    #TODO op列表
+
+    skull=SkullCustomize.objects.filter(user_id=request.session['id'])
+    for i in range(0,len(skull)) :
+        if skull[i].status:
+            skull[i].status_class="uk-label-success"
+            skull[i].status_text="已取货"
+        else:
+            skull[i].status_class=""
+            skull[i].status_text="未取货"
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "skull":skull
+    }
+
+    return render(request, "dashboard/skull.html", context)
+
 
 
 @ensure_csrf_cookie
@@ -236,5 +280,11 @@ def dashboard_page(request):
         return page_settings(request)
     if request.POST.get("page", None) == "whitelist":
         return page_whitelist(request)
+    if request.POST.get("page", None) == "system_menu":
+        return system_menu(request)
+    if request.POST.get("page", None) == "wenjuan":
+        return page_wenjuan(request)
+    if request.POST.get("page", None) == "skull":
+        return page_skull(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))
