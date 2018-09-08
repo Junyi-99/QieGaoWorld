@@ -41,11 +41,10 @@ def handle_uploaded_file(f):
 
 @check_login
 def user_center(request):
-    try:
+    try:  
         from mcstatus import MinecraftServer
         server = MinecraftServer.lookup(Para.MC_SERVER)
         status = server.status()
-        common.logs(status)
 
         mot = status.description['text']
         motd = str(mot)
