@@ -135,7 +135,8 @@ def save(request):
             continue
         sql+="("+p[0]+","+id+",'"+p[1]+"'),"
         pass
-    
+    if sql == None:
+        return HttpResponse(dialog('ok', 'success', '请填写问卷内容'))
     
     common.filter("INSERT INTO qiegaoworld_wenjuanlog (`problem_id`,`user_id`,`content`) values"+sql[0:len(sql)-1])
     return HttpResponse(dialog('ok', 'success', '提交成功！'))
