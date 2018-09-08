@@ -77,8 +77,8 @@ DATABASES = {
     'default': {
         'NAME': 'qiegaoshijie',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'web',
-        'PASSWORD': 'CL0WDZeOOWJ4eiY8',
+        'USER': 'root',
+        'PASSWORD': 'root',
         'OPTIONS': {
           'autocommit': True,
         },
@@ -135,7 +135,7 @@ DEFAULT_PERMISSIONS = '%police_cases_watch%police_cases_add%declaration_animals%
                       '%declaration_watch% '
 OP_PERMISSIONS = '%publish_announcement%announcement_delete%police_cases_watch%police_cases_add%police_cases_modify' \
                  '%declaration_animals%declaration_buildings%declaration_watch%declaration_animals_modify' \
-                 '%declaration_buildings_modify% '
+                 '%declaration_buildings_modify%whitelist%op%'
 
 DEFAULT_FACE = os.path.join(BASE_DIR, 'static\\media\\face\\default.jpg')
 BUILDING_CONCEPT_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/concept')
