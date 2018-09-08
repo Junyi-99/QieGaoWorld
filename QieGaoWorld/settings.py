@@ -75,12 +75,9 @@ WSGI_APPLICATION = 'QieGaoWorld.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'qiegaoshijie',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'root',
         'OPTIONS': {
-          'autocommit': True,
+            'read_default_file': os.path.join(BASE_DIR, "QieGaoWorld/my.conf"),
         },
     }
 }
