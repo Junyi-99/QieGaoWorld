@@ -7,7 +7,7 @@ class User(models.Model):
     username = models.CharField(max_length=100)  # 用户名
     password = models.CharField(max_length=100)  # 密码
     nickname = models.CharField(max_length=100, default='没有昵称')  # 昵称
-    uuid = models.CharField(max_length=32, default='')  # uuid
+    uuid = models.CharField(max_length=40, default='')  # uuid
     qqnumber = models.IntegerField(default=0)  # QQ号
     usrgroup = models.IntegerField(default=0)  # 用户组
     register_time = models.IntegerField(default=0)  # 注册时间
