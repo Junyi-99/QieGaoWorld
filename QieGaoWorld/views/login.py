@@ -48,7 +48,6 @@ def login_verify(request):
             if "%" + username + "%" in s:
                 return HttpResponse(dialog('failed', 'danger', '登录失败！您的帐号已被此服务器封禁!'))
         row = common.filter("select * from playertable where playername='"+username+"'"  )
-        common.logs("select * from playertable where playername='"+username+"'")
         if row ==None:
             return HttpResponse(dialog('failed', 'danger', '该账号不存在'))
 
@@ -64,6 +63,7 @@ def login_verify(request):
         uuid_ = get_uuid_from_name(username)  # 这里uuid_防止与uuid库名字冲突
         nickname = get_nickname_from_uuid(uuid_)
         user.uuid = uuid_
+        common.logs(user.uuid)
         user.nickname = nickname
         user.save()
     else:
