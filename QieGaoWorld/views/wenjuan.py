@@ -123,6 +123,7 @@ def problem_del(requerst):
 def save(request):
     username=request.POST.get("id",None)
     user = User.objects.filter(username=username)
+    sql=''
     if len(user) == 0:
         obj = User(username=username, register_time=int(time.time()))
         id=obj.save()
