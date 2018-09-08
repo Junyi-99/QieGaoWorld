@@ -50,6 +50,7 @@
     </li>
     {% endif %} 
 </ul>
+{% if '%whitelist%' in permissions %}
 <ul class="uk-nav-default uk-nav-parent-icon" uk-nav="multiple: true">
     <li class="uk-nav-header" style="font-size: 12px">DASHBOARD</li>
     <hr class="uk-margin-remove">
@@ -71,3 +72,4 @@
         {% endif %} 
     {% endfor %}
 </ul>
+{% endif %} 
