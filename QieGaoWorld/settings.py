@@ -77,8 +77,8 @@ DATABASES = {
     'default': {
         'NAME': 'qiegaoshijie',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': 'web',
+        'PASSWORD': 'CL0WDZeOOWJ4eiY8',
         'OPTIONS': {
           'autocommit': True,
         },
