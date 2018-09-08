@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>切糕世界 - 登录</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link href="{% static "favicon.ico" %}" rel="shortcut icon">
+    <link rel="stylesheet" href="{% static "assets/css/uikit.min.css" %}"/>
+    <script src="{% static "assets/js/jquery-3.2.1.js" %}"></script>
+    <script src="{% static "assets/js/csrf.js" %}"></script>
+    <script src="{% static "assets/js/uikit.min.js" %}"></script>
+    <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
+</head>
+<body>
+    <div class="uk-container uk-container-center uk-margin-top">
+        <div class="uk-align-center ">
+            <img  class="uk-align-center " src="{% static 'assets/images/bg1.jpg' %}" alt="">
+            <h2  class="uk-text-center@m" >切糕世界服务器新人指南</h2>
+            <hr class="uk-margin" />
+            <div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+                <a class="uk-alert-close" uk-close></a>
+                <p></p>
+            </div>
+            <form id="wenjuan">
+            {% csrf_token %}
+            <ul  class="uk-list">
+                {% for m in wenjuan %} 
+
+                        <li class="uk-padding-small"  >
+                            {% if m.type == 4 %}
+                            <dl class="uk-description-list">
+                                    <dd style="white-space:pre-wrap">{{m.dry}}</dd>
+                                    
+                                </dl>
+                                <hr>
+                            {% else %}
+                                    <div class="uk-padding-small uk-box-shadow-small">
+                                <dl>
+                                        <dt><p class="" href="#">{{m.list}}、{{m.dry}}    <span class="uk-margin-small-left" uk-icon="tag"></span><span style="font-size:14px" >{{m.type_text}}</span> </p></dt>
+                                    
+                                            {% if m.type == 0 %}
+                                                <dd>
+                                                    <input type="text" class="uk-input" name="{{m.id}}" id="">
+                                                </dd>
+                                            {% elif m.type == 1 %}
+                                                {% for l in m.option %}
+                                                    <dd>  <input type="radio" class="uk-radio" name="{{m.id}}" id="{{l.id}}" value="{{l.id}}"> <label for="{{l.id}}">{{l.content}}</label></dd>
+                                                {% endfor %}
+                                            {% elif m.type == 2 %}
+                                                {% for l in m.option %}
+                                                <dd>  <input type="checkbox" class="uk-checkbox" name="{{m.id}}" id="{{l.id}}" value="{{l.id}}"> <label for="{{l.id}}">{{l.content}}</label></dd>
+                                                {% endfor %}
+                                            {% else %}
+                                                <dd><textarea name="{{m.id}}" id="" class="uk-textarea" cols="30" rows="10"></textarea></dd>
+                                            {% endif %}
+                                                
+                                        </dl>
+                                    </div>
+                                {% endif %}
+                                
+                            
+                        </li>
+                {% endfor %}
+                <li class="uk-padding-small">
+                        <dt><p class="" href="#">你的英文游戏id是： </p></dt>
+                        <dd>
+                            <input type="text" class="uk-input" name="id" id="">
+                        </dd>
+                </li>
+            </ul>
+            </form>
+            <p class="text-button"> <button id="save" class="uk-button-primary uk-button">提交</button></p>
+
+            <script>
+                $(document).ready(
+                    $(function() {
+                        $("#save").click(function() {
+                            
+
+                            $.post("/wenjuan/save?_=" + Date.parse(new Date()), $("#wenjuan").serialize(), function(obj) {
+                                if (obj.status === "ok") {
+                                    UIkit.notification({
+                                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                                        status: 'success',
+                                        timeout: 2000
+                                    });
+                                    UIkit.modal("#dry-box").hide();
+                                    window.location.reload();
+                                } else {
+                                    UIkit.notification({
+                                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                                        status: 'danger',
+                                        timeout: 2000
+                                    })
+                                }
+                            }, "json")
+                        });
+                    })
+                );
+            </script>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,206 @@
+{% load static %}
+<h2>菜单管理
+    <small style="color: #666666; font-size: medium">Menu Manage</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top" uk-toggle="target: #menu-box" onclick='$("#select_type").show();'>添加
+    </button>
+</h2>
+<hr class="uk-margin" />
+<p class="uk-text-meta">菜单列表 </p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+
+<ul uk-accordion="multiple: true">
+{% for m in menu %} 
+
+        {% if m.type == 0 %} 
+            <li class="uk-open">
+                <a class="uk-accordion-title" href="#">{{m.name}}</a>
+                <div class="uk-accordion-content">
+                        <div uk-sortable="group: sortable-group">
+            {% for n in menu %} 
+                {% if n.parent == m.id %} 
+                <table class="uk-table">
+
+                    <tr ik-icon="move" {% if n.status == 0 %}style="color: darkgrey"{% endif %} data-id="{{n.id}}" data-name="{{n.name}}" data-url="{{n.url}}">  <td ><span class="uk-margin-small-left" uk-icon="menu"></span>{{n.name}}</td>    <td ><span class="uk-margin-small-left" uk-icon="link"></span>{{n.url}}</td> 
+                        <td style="float:right">
+                            <a href="" class="uk-margin-small-right uk-icon-link" uk-icon="file-edit" title="编辑"></a>
+                            <a class="uk-margin-small-right uk-icon-link star" data-status="{{n.status}}" {% if n.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a>
+                            <a href="" class="uk-margin-small-right uk-icon-link del" style="color:red" uk-icon="trash" title="删除"></a>
+                            
+                        <a class="uk-margin-small-right" uk-icon="move" title="移动"></a></td></tr>
+                </table>
+                {% endif %} 
+            {% endfor %} 
+                        </div></div>
+            </li>
+        {% elif m.parent == 0 %} 
+        <div uk-sortable="group: sortable-group">
+                <table class="uk-table">
+
+                        <tr ik-icon="move" {% if m.status == 0 %}style="color: darkgrey"{% endif %} data-id="{{m.id}}" data-name="{{m.name}}" data-url="{{m.url}}">  <td ><span class="uk-margin-small-left" uk-icon="menu"></span>{{m.name}}</td>    <td ><span class="uk-margin-small-left" uk-icon="link"></span>{{m.url}}</td> 
+                            <td style="float:right">
+                                <a  class="uk-margin-small-right uk-icon-link" uk-icon="file-edit" title="编辑"></a>
+                                <a class="uk-margin-small-right uk-icon-link star" data-status="{{m.status}}" {% if m.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a>
+                                <a  class="uk-margin-small-right uk-icon-link del" style="color:red" uk-icon="trash" title="删除"></a>
+                                
+                            <a class="uk-margin-small-right" uk-icon="move" title="移动"></a></td></tr>
+                    </table>
+        </div>
+        {% endif %} 
+    {% endfor %}
+
+</ul>
+<div id="menu-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+        <div class="uk-modal-dialog uk-margin-auto-vertical">
+    
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div class="uk-modal-header">
+                <h2 class="uk-modal-title">编辑菜单</h2>
+            </div>
+            <div class="uk-modal-body">
+                <form class="uk-form-horizontal" name="info">
+                    {% csrf_token %}
+                    <div class="uk-margin">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">菜单名称</label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <input class="uk-input" id="name" type="text" placeholder="如：菜单管理">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">菜单链接</label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <input class="uk-input" id="url" type="text" placeholder="如：system_menu">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-margin" id="select_type">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">菜单类型</label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <select name="" id="type">
+                                    <option value="0">目录</option>
+                                    <option value="1">菜单</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="uk-modal-footer uk-text-right  ">
+                <input type="hidden" id="id">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+                <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+            </div>
+        </div>
+    </div>
+<script>
+        $(document).ready(
+            $(function() {
+                $("#save").click(function() {
+                    var name = $("#name").val();
+                    var url =$("#url").val();
+                    var id=$("#id").val();
+                    var type=$("#type").val();
+    
+                    $.post("system/menu_edit?_=" + Date.parse(new Date()), {
+                        "name": name,
+                        "url":url,
+                        "id":id,
+                        "type":type
+                    }, function(obj) {
+                        if (obj.status === "ok") {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                                status: 'success',
+                                timeout: 2000
+                            });
+                            UIkit.modal("#menu-box").hide();
+                        } else {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                                status: 'danger',
+                                timeout: 2000
+                            })
+                        }
+                    }, "json")
+                });
+                $(".star").click(function() {
+                    var status = $(this).data("status");
+                    var _this = $(this);
+                    var id=_this.parents("tr").data('id');
+                    var title=_this.attr("title");
+                    $.post("system/menu_star?_=" + Date.parse(new Date()), {
+                        "status": status,
+                        "id":id
+                    }, function(obj) {
+                        if (obj.status === "ok") {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: check\'></span> ' + title+"成功！",
+                                status: 'success',
+                                timeout: 2000
+                            });
+                            if(status=="True"){
+                                _this.css("color","");
+                                _this.parents("tr").css("color","darkgrey");
+                                _this.data("status","False");
+                                _this.attr("title","启用")
+                            }else{
+                                _this.css("color","royalblue");
+                                _this.parents("tr").css("color","");
+                                _this.data("status","True");
+                                _this.attr("title","停用")
+                            }
+                        } else {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                                status: 'danger',
+                                timeout: 2000
+                            })
+                        }
+                    }, "json")
+                });
+                $(".del").click(function() {
+                    var _this = $(this);
+                    var id=_this.parents("tr").data('id');
+                    $.post("system/menu_del?_=" + Date.parse(new Date()), {
+                        "id":id
+                    }, function(obj) {
+                        if (obj.status === "ok") {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                                status: 'success',
+                                timeout: 2000
+                            });
+                            _this.parents("tr").remove();
+                        } else {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                                status: 'danger',
+                                timeout: 2000
+                            })
+                        }
+                    }, "json")
+                });
+                $(".edit").click(function(){
+                    _patent=$(this).parents("tr");
+                    $("#id").val(_patent.data("id"));
+                    $("#name").val(_patent.data("name"));
+                    $("#url").val(_patent.data("url"));
+                    $("#select_type").hide();
+                    $("#menu-box").show();
+                    return false;
+                });
+            })
+        );
+    </script>

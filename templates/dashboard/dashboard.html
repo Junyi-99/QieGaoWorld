@@ -94,11 +94,18 @@
     }
 
     $(document).ready(function () {
+        var url=window.location.href;
+        var page=url.split("#")[1];
+        if(page ==undefined){
+            page="user_center";
+        }
+        console.log(page);
         ajax = $.ajax(
+
             {
                 url: "/dashboard/page?_=" + Date.parse(new Date()),
                 type: "post",
-                data: {page: 'user_center'},
+                data: {page: page},
                 success: function (res) {
                     $("#main_content").html(res);
                 }

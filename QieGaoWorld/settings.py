@@ -75,8 +75,13 @@ WSGI_APPLICATION = 'QieGaoWorld.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'qiegaoshijie',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'web',
+        'PASSWORD': 'CL0WDZeOOWJ4eiY8',
+        'OPTIONS': {
+          'autocommit': True,
+        },
     }
 }
 

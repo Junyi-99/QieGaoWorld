@@ -2,6 +2,8 @@
 
 基于 Django 2.0, Python 3.6
 
+针对1.13版本优化，有特定的插件要求。
+
 前端框架：
 [UIKit](https://getuikit.com/docs/introduction)
 

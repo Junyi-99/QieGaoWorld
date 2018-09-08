@@ -67,3 +67,45 @@ class Announcement(models.Model):
     content = models.CharField(max_length=512)  # 公告内容
     type = models.IntegerField(default=0)  # 公告类型（0:通知, 1:重要, 2:严重）
     visible = models.BooleanField(default=True)  # 公告是否可见
+
+#
+class Logs(models.Model):
+    code=models.CharField(max_length=50) 
+    text = models.TextField()
+
+class Problem(models.Model):
+    dry =models.CharField(max_length=500) #题干
+    answer =models.CharField(max_length=200) #答案
+    type =models.IntegerField()  #类型(0:填空，1：单选，2：多选，3：简答)
+    status  =models.BooleanField(default=True) #是否启用
+    list =models.IntegerField(default=0)
+
+class ProblemInfo(models.Model):
+    problem_id=models.IntegerField()
+    content=models.TextField()
+    status=models.BooleanField(default=True)
+
+
+class Menu(models.Model):
+    name=models.CharField(max_length=50)
+    type=models.IntegerField() #类型（0：目录，1：菜单）
+    url=models.CharField(max_length=100)
+    status=models.BooleanField(default=True)
+    parent=models.IntegerField()
+class WenjuanLog(models.Model):
+    user_id=models.IntegerField()
+    problem_id=models.IntegerField()
+    content=models.TextField()
+class Conf(models.Model):
+    key=models.CharField(max_length=50)
+    content=models.TextField()
+    
+class SkullCustomize(models.Model):
+    user_id=models.IntegerField()
+    content=models.TextField()
+    number=models.IntegerField()
+    status=models.BooleanField()
+    name=models.CharField(max_length=50)
+    
+    
+    

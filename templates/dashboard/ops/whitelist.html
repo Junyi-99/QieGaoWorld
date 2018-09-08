@@ -1,0 +1,124 @@
+{% load static %}
+<h2>白名单
+    <small style="color: #666666; font-size: medium">white list</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top" uk-toggle="target: #whitelist-box">添加
+    </button>
+</h2>
+<hr class="uk-margin" />
+<p class="uk-text-meta">下面显示的是所有白名单用户 (当前白名单人数：{{ len }})</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <caption></caption>
+    <thead>
+        <tr>
+            <th class="uk-width-medium">用户id</th>
+            {% if '%whitelist%' in permissions %}
+            <th class="uk-width-small uk-visible@s">操作</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in list %}
+        <tr>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b }}</span>
+            </td>
+            {% if '%whitelist%' in permissions %}
+            <td class="uk-visible@s">
+                <label>
+                        <button class="uk-button uk-button-small uk-button-danger uk-align-right uk-margin-small-top del" _id="{{ b }}" >删除
+                            </button>
+                    </label>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<div id="whitelist-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">添加用户</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">用户id(小写字母+数字)</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="name" type="text" placeholder="如：novatang">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(
+        $(function() {
+            $("#save").click(function() {
+                var name = $("#name").val();
+
+                $.post("ops/whitelist_add?_=" + Date.parse(new Date()), {
+                    "name": name,
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#whitelist-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".del").click(function() {
+                var id = $(this).attr("_id");
+                var _this = $(this);
+
+                $.post("ops/whitelist_del?_=" + Date.parse(new Date()), {
+                    "name": id,
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parents("tr").remove();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+        })
+    );
+</script>
