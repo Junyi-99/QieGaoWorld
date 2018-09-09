@@ -47,11 +47,17 @@ def login_verify(request):
                 s += b['name'] + "%"
             if "%" + username + "%" in s:
                 return HttpResponse(dialog('failed', 'danger', '登录失败！您的帐号已被此服务器封禁!'))
-        row = common.filter("select * from playertable where playername='"+username+"'"  )
-        if row ==None:
+        try:
+            user_url = "../plugins/ksptooi/fastlogin/database/"
+            url = os.getcwd() + "/" + user_url
+            with open(url + username.lower() + ".gd", "r") as f:
+                user = f.readline().strip()
+                passwd = f.readline().strip()
+            # user = User.objects.filter(username=username, password=password)
+        except IOError:
             return HttpResponse(dialog('failed', 'danger', '该账号不存在'))
 
-        if  password != row[1]:
+        if "playername=" + username != user or "password=" + password != passwd:
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
 
         user = User.objects.filter(username=username, password=password)
