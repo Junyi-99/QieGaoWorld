@@ -160,7 +160,7 @@ def make_thumb(pic_, path_):
         out = im.resize((40, 40), Image.ANTIALIAS)  # 缩略图大小为40x40
         out.save(path_)
     except Exception as e:
-        logging.basicConfig(filename='log.log')
+        logging.basicConfig(filename=os.getcwd()+'/log.log')
         logging.error(traceback.format_exc())
 
 
