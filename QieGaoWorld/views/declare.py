@@ -16,6 +16,7 @@ from QieGaoWorld.models import DeclareAnimals, DeclareBuildings
 from QieGaoWorld import settings,common
 import time
 
+logger=logging.getLogger("file")
 
 def url(request, s):
     return eval(s)(request)
@@ -160,8 +161,7 @@ def make_thumb(pic_, path_):
         out = im.resize((40, 40), Image.ANTIALIAS)  # 缩略图大小为40x40
         out.save(path_)
     except Exception as e:
-        logging.basicConfig(filename='/tmp/log.log')
-        logging.error(traceback.format_exc())
+        logger.error(traceback.format_exc())
 
 
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
@@ -192,8 +192,7 @@ def buildings_list(request, operation):
         buildings[i].logo = logo[:pos] + '_thumb' + logo[pos:]
 
         # 如果缩略图不存在，我们创建
-        logging.basicConfig(filename='/tmp/log.log')
-        logging.error(os.path.exists(buildings[i].logo))
+        logger.error(os.path.exists(buildings[i].logo))
         if not os.path.exists(buildings[i].logo):
             make_thumb(buildings[i].concept, buildings[i].logo)
 
