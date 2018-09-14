@@ -69,7 +69,6 @@ def login_verify(request):
         uuid_ = get_uuid_from_name(username)  # 这里uuid_防止与uuid库名字冲突
         nickname = get_nickname_from_uuid(uuid_)
         user.uuid = uuid_
-        common.logs(user.uuid)
         user.nickname = nickname
         user.save()
     else:

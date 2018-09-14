@@ -162,7 +162,7 @@ def make_thumb(pic_, path_):
         out = im.resize((40, 40), Image.ANTIALIAS)  # 缩略图大小为40x40
         out.save(path_)
     except Exception as e:
-        common.logs("缩略图生成错误")
+        common.logs("缩略图生成错误"+e.text)
         logging.error(e)
 
 
