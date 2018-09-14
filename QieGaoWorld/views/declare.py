@@ -192,6 +192,8 @@ def buildings_list(request, operation):
         buildings[i].logo = logo[:pos] + '_thumb' + logo[pos:]
 
         # 如果缩略图不存在，我们创建
+        logging.basicConfig(filename=os.getcwd()+'/log.log')
+        logging.error(os.path.exists(buildings[i].logo))
         if not os.path.exists(buildings[i].logo):
             make_thumb(buildings[i].concept, buildings[i].logo)
 
