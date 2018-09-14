@@ -48,8 +48,8 @@ def login_verify(request):
             if "%" + username + "%" in s:
                 return HttpResponse(dialog('failed', 'danger', '登录失败！您的帐号已被此服务器封禁!'))
         try:
-            user_url = "../plugins/ksptooi/fastlogin/database/"
-            url = os.getcwd() + "/" + user_url
+            user_url = "/plugins/ksptooi/fastlogin/database/"
+            url = parameter.SPIGOT_PATH + user_url
             with open(url + username.lower() + ".gd", "r") as f:
                 user = f.readline().strip()
                 passwd = f.readline().strip()

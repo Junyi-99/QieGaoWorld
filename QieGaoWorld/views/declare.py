@@ -15,7 +15,7 @@ from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld.views.police import username_get_nickname
 from QieGaoWorld.models import DeclareAnimals, DeclareBuildings
-from QieGaoWorld import settings
+from QieGaoWorld import settings,common
 import time
 
 
@@ -63,7 +63,7 @@ def upload_building_picture(request, upload_type):
         try:
             u = str(uuid.uuid1())
             save_path = "buildings/%s/%s" % (upload_type, u + ".png")
-            thumb_path = "buildings/%s/%s_thumb" % (upload_type, u + ".png")
+            thumb_path = "buildings/%s/%s_thumb" % (upload_type, u )+ ".png"
 
             path = default_storage.save(save_path, ContentFile(file_obj.read()))
             path_thu = default_storage.save(thumb_path, ContentFile(file_obj.read()))
@@ -162,6 +162,7 @@ def make_thumb(pic_, path_):
         out = im.resize((40, 40), Image.ANTIALIAS)  # 缩略图大小为40x40
         out.save(path_)
     except Exception as e:
+        common.logs("缩略图生成错误")
         logging.error(e)
 
 
