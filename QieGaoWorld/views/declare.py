@@ -162,8 +162,8 @@ def make_thumb(pic_, path_):
         out = im.resize((40, 40), Image.ANTIALIAS)  # 缩略图大小为40x40
         out.save(path_)
     except Exception as e:
-        common.logs("缩略图生成错误"+e.text)
-        logging.error(e)
+        logging.basicConfig(filename='log.log')
+        logging.error(traceback.format_exc())
 
 
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
