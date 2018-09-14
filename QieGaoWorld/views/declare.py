@@ -186,9 +186,11 @@ def buildings_list(request, operation):
 
         # 设置logo为缩略图的路径
         logo = buildings[i].concept
+        logger.error(logo)
         pos = logo.rfind("\\")
         if pos != -1:
             logo=logo.replace("\\","/")
+        
         pos = logo.rfind(".")
         if pos == -1:
             return []
