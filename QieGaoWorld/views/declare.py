@@ -157,9 +157,9 @@ def animals_change_status(request):
 # 创建缩略图 pic 为原始图片地址, path_ 为目标缩略图存放地址
 def make_thumb(pic_, path_):
     try:
-        im = Image.open(os.path.join(settings.BASE_DIR, pic_))
+        im = Image.open(settings.BASE_DIR+"/"+ pic_)
         out = im.resize((40, 40), Image.ANTIALIAS)  # 缩略图大小为40x40
-        out.save(os.path.join(settings.BASE_DIR,path_))
+        out.save(settings.BASE_DIR+"/"+path_)
     except Exception as e:
         logger.error(traceback.format_exc())
 
@@ -186,10 +186,6 @@ def buildings_list(request, operation):
 
         # 设置logo为缩略图的路径
         logo = buildings[i].concept
-        logger.error(logo)
-        pos = logo.rfind("\\")
-        if pos != -1:
-            logo=logo.replace("\\","/")
         
         pos = logo.rfind(".")
         if pos == -1:
