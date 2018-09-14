@@ -16,7 +16,6 @@ from QieGaoWorld.models import DeclareAnimals, DeclareBuildings
 from QieGaoWorld import settings,common
 import time
 
-logger=logging.getLogger("file")
 
 def url(request, s):
     return eval(s)(request)
@@ -161,7 +160,7 @@ def make_thumb(pic_, path_):
         out = im.resize((40, 40), Image.ANTIALIAS)  # 缩略图大小为40x40
         out.save(settings.BASE_DIR+"/"+path_)
     except Exception as e:
-        logger.error(traceback.format_exc())
+        logging.error(e)
 
 
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
