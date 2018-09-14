@@ -1,6 +1,4 @@
-import os
-import uuid
-import logging
+import os,traceback,uuid,logging
 from PIL import Image
 from django.core.files.base import ContentFile
 
