@@ -90,7 +90,7 @@ def upload_building_picture(request, upload_type):
             logging.error(e)
             return HttpResponse(dialog('failed', 'danger', '文件类型错误，请联系管理员'))
 
-        return HttpResponse(dialog('ok', 'success', '修改成功', {'url': "static\\media\\%s" % save_path}))
+        return HttpResponse(dialog('ok', 'success', '修改成功', {'url': "static/media/%s" % save_path}))
     else:
         return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
 
@@ -186,13 +186,16 @@ def buildings_list(request, operation):
 
         # 设置logo为缩略图的路径
         logo = buildings[i].concept
+        pos = logo.rfind("\\")
+        if pos != -1:
+            logo=logo.replace("\\","/")
         pos = logo.rfind(".")
         if pos == -1:
             return []
         buildings[i].logo = logo[:pos] + '_thumb' + logo[pos:]
 
         # 如果缩略图不存在，我们创建
-        logger.error(os.path.exists(buildings[i].logo))
+        
         if not os.path.exists(buildings[i].logo):
             make_thumb(buildings[i].concept, buildings[i].logo)
 
