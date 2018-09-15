@@ -104,14 +104,15 @@ def buildings_change_status(request):
 
     try:
         obj = DeclareBuildings.objects.get(id=id_)
-        # 判断id为id_的动物是否属于当前用户，如果不属于，检查其是否是管理员
-        if obj.username != username and '%declaration_buildings_modify%' \
-                not in request.session.get('permissions', '%default%'):
+        # 1、检查是否是当前用户的状态为“审核通过”的建筑，再检查修改状态是否为“正在建设”和“完工”  如果不是，检查是否是管理员
+        if (obj.username != username or obj.status != 3 or new_status not in [4,5]) and '%declaration_buildings_modify%' not in request.session.get('permissions', '%default%')  :
             return HttpResponse(dialog('failed', 'danger', '权限不足'))
 
         if 0 <= new_status <= 5:
+            old_status=obj.status
             obj.status = new_status
             obj.save()
+            common.logs("用户:%d 将建筑申请：%s(id:%s,user:%s)状态由%s更改为%s" % (request.session['id'],obj.name,obj.id,obj.username,old_status,str(new_status)),"建筑申报管理")
             return HttpResponse(dialog('ok', 'success', '更新建筑申报信息成功！刷新页面生效！'))
         else:
             return HttpResponse(dialog('failed', 'danger', '状态值错误'))
@@ -119,8 +120,29 @@ def buildings_change_status(request):
         logging.error(e)
         return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
     except ObjectDoesNotExist:
-        return HttpResponse(dialog('failed', 'danger', '可能这个动物不属于你！'))
+        return HttpResponse(dialog('failed', 'danger', '可能这个建筑不属于你！'))
 
+def buildings_del(request):
+    try:
+        id_ = int(request.POST.get('id', None))
+        username = request.session.get('username', None)
+    except ValueError:
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
+
+    try:
+        obj = DeclareBuildings.objects.get(id=id_)
+        # 1、检查是否是当前用户的状态为“审核不通过”的建筑
+        if  (obj.username != username or obj.status != 2 ) :
+            return HttpResponse(dialog('failed', 'danger', '权限不足'))
+
+        obj.delete()
+        common.logs("用户:%d 删除建筑申请：%s(id:%s,user:%s)" % (request.session['id'],obj.name,obj.id,obj.username),"建筑申报管理")
+        return HttpResponse(dialog('ok', 'success', '更新建筑申报信息成功！刷新页面生效！'))
+    except MultipleObjectsReturned as e:
+        logging.error(e)
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
+    except ObjectDoesNotExist:
+        return HttpResponse(dialog('failed', 'danger', '可能这个建筑不属于你！'))
 
 @ensure_csrf_cookie
 @check_login
@@ -141,8 +163,10 @@ def animals_change_status(request):
             return HttpResponse(dialog('failed', 'danger', '这个动物并不属于你'))
 
         if 0 <= new_status <= 3:
+            old_status=obj.status
             obj.status = new_status
             obj.save()
+            common.logs("用户:%d 将动物信息：%s(id:%s,user:%s)状态由%s更改为%s" % (request.session['id'],obj.license,obj.id,obj.username,old_status,str(new_status)),"动物申报管理")
             return HttpResponse(dialog('ok', 'success', '更新动物信息成功！刷新页面生效！'))
         else:
             return HttpResponse(dialog('failed', 'danger', '状态值错误'))
@@ -284,7 +308,7 @@ def buildings_add(request):
             predict_start_time=time.mktime(time.strptime(lis['predict_start_time'], "%Y-%m-%d")),
             predict_end_time=time.mktime(time.strptime(lis['predict_end_time'], "%Y-%m-%d")),
             actually_end_time=0,
-            status=0,
+            status=1,
             type=int(str(lis['type'])),
         )
         obj.save()

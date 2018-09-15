@@ -72,21 +72,21 @@
                             <span class="uk-label {{ b.status_label }}"
                                   style="vertical-align: middle">{{ b.status_text }}</span>
             </td>
-            {% if '%declaration_buildings_modify%' in permissions %}
-                <td class="uk-visible@s">
+            <td class="uk-visible@s">
+            {% if b.status == 3 %}
                     <label>
                         <select class="uk-select building_options" _id="{{ b.id }}">
                             <option value="-1">...</option>
-                            <option value="0">申报挂起</option>
-                            <option value="1">正在审核</option>
-                            <option value="2">审核不通过</option>
-                            <option value="3">审核通过</option>
                             <option value="4">正在建设</option>
                             <option value="5">完工</option>
                         </select>
                     </label>
+                    {% endif %}
+            {% if b.status == 2 %}
+            <a  class="uk-margin-small-right uk-icon-link del" _id="{{ b.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+                    {% endif %}
+
                 </td>
-            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
@@ -260,7 +260,7 @@
     }
     $(document).ready(
         $(function () {
-            $(".options").change(function () {
+            $(".building_options").change(function () {
                 $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
                     "id": $(this).attr('_id'),
                     "status": $(this).val()
@@ -328,6 +328,27 @@
             });
         })
     );
+    $(".del").click(function() {
+        var _this = $(this);
+        $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
+            "id":_this.attr("_id")
+        }, function(obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+                _this.parents("tr").remove();
+            } else {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+        }, "json")
+    });
 
     var bar_concept = document.getElementById('progress_concept');
     var bar_perspective = document.getElementById('progress_perspective');
