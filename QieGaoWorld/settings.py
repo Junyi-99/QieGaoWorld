@@ -48,23 +48,52 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+DEFAULT_LOGS = '/tmp/default.log'
+stamdard_format = '[%(asctime)s][%(threadName)s:%(thread)d]' + \
+                  '[task_id:%(name)s][%(filename)s:%(lineno)d] ' + \
+                  '[%(levelname)s]- %(message)s'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/tmp/debug.log',
+    'formatters': {
+        'standard': {  # 详细
+            'format': stamdard_format
         },
     },
+    'handlers': {
+        'default': { 
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': DEFAULT_LOGS,
+            'maxBytes': 1024 * 1024 * 100,  # 5 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        }
+    },
     'loggers': {
-        'file': {
-            'handlers': ['file'],
+        'default': {  # default日志，存放于log中
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'file': {  # default日志，存放于log中
+            'handlers': ['default'],
+            'level': 'DEBUG',
+        },
+        'django.db': {  # 打印SQL语句到console，方便开发
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
-    },
+        'django.request': {  # 打印错误信息到console，方便开发
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    }
 }
 
 ROOT_URLCONF = 'QieGaoWorld.urls'

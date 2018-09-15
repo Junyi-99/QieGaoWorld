@@ -72,6 +72,7 @@ class Announcement(models.Model):
 class Logs(models.Model):
     code=models.CharField(max_length=50) 
     text = models.TextField()
+    time =models.IntegerField(default=0)
 
 class Problem(models.Model):
     dry =models.CharField(max_length=500) #题干
