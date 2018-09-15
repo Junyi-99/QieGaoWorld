@@ -73,7 +73,7 @@
                                   style="vertical-align: middle">{{ b.status_text }}</span>
             </td>
             <td class="uk-visible@s">
-            {% if b.status == 3 %}
+            {% if b.status == 3 or b.status == 4 %}
                     <label>
                         <select class="uk-select building_options" _id="{{ b.id }}">
                             <option value="-1">...</option>
