@@ -21,11 +21,26 @@ def index(request):
     for i in range(0,len(wenjuan)):
         wenjuan[i].option=option_list(wenjuan[i].id)
         n=problem_list.index(str(wenjuan[i].id))
-        if wenjuan[i].type != 4:
+        if wenjuan[i].type not in [4,5]:
             wenjuan[i].list=j
             j+=1
         wj.insert(n,wenjuan[i])
-    return render(request, "dashboard/wenjuan/index.html", {"wenjuan":wj})
+    
+    _name=Problem(dry="你的英文游戏id是：",id="name",type=0)
+    _name.list=j
+    wj.insert(len(wenjuan)+1,_name)
+    w=[]
+    tmp=[]
+    page=1
+    for j in range(0,len(wj)):
+        if wj[j].type == 5:
+            w.append({"page":page,"list":tmp})
+            tmp=[]
+            page +=1
+        else:
+            tmp.append(wj[j])
+    w.append({"page":page,"list":tmp})
+    return render(request, "dashboard/wenjuan/index.html", {"wenjuan":w,"count":len(w)})
 
 
 @check_login
@@ -62,7 +77,7 @@ def getoption(id,_type):
 
 def problem_edit(request):
     id=request.POST.get("id",None)
-    name=request.POST.get("name",None)
+    name=request.POST.get("name","分页符")
     _type=request.POST.get("type",None)
     type_list=Conf.objects.get(key="wenjuan_type")
     type_list=json.loads(type_list.content)

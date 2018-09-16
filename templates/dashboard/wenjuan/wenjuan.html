@@ -44,6 +44,19 @@
         </div>
         <div class="uk-accordion-title " href="#" style="display:none" ></div>
         <div class="uk-accordion-content" style="display:none"></div>
+        {% elif m.type == 5 %}
+        <div class="uk-text-break uk-width-1-1 beizhu"    uk-grid href="#">
+            <div class="uk-width-expand" style="">
+                <div class="uk-margin-small-top" style="border-top:dashed 1px #aaaaaa;height:0"></div>
+            </div>
+
+        <span class="uk-width-auto " >
+            <a class="uk-icon-link drydel" data-id="{{m.id}}" style="color:red" uk-icon="trash"></a>
+            <a class="uk-margin-small-right" uk-icon="move" title="移动"></a>
+        </span>
+</div>
+<div class="uk-accordion-title " href="#" style="display:none" ></div>
+<div class="uk-accordion-content" style="display:none"></div>
         {% else %}
         <div class="uk-accordion-title uk-width-1-1" style="display: inline-flex;" uk-grid href="#">
             
@@ -117,6 +130,7 @@
                                     <li>
                                         <textarea class="uk-textarea" name="name" data-type="{{t}}" id="" cols="30" rows="10"></textarea>
                                     </li>
+                                {% elif t == "分页符" %}
                                 {% else %}
                                     <li>
                                         <input type="text" class="uk-input" data-type="{{t}}" name="name" id="">

@@ -12,6 +12,12 @@
     <script src="{% static "assets/js/csrf.js" %}"></script>
     <script src="{% static "assets/js/uikit.min.js" %}"></script>
     <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
+    <style>
+        .page li button{
+            border: blue 1px solid;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="uk-container uk-container-center uk-margin-top">
@@ -25,9 +31,12 @@
             </div>
             <form id="wenjuan">
             {% csrf_token %}
+            {% for wj in wenjuan %} 
+            <div class="uk-padding-small uk-box-shadow-small page" data-page="{{wj.page}}" id="page{{wj.page}}" {% if wj.page != 1 %}
+              style="display:none"
+            {% endif %}>
             <ul  class="uk-list">
-                {% for m in wenjuan %} 
-
+                    {% for m in wj.list %} 
                         <li class="uk-padding-small"  >
                             {% if m.type == 4 %}
                             <dl class="uk-description-list">
@@ -62,43 +71,80 @@
                                 
                             
                         </li>
+                        {% endfor %}
+                        </ul>
+                        <ul class="uk-pagination uk-flex-center" uk-margin>
+                            {% if  wj.page != 1 %}
+                            
+                            <li><button class="uk-button uk-button-default " data-page="{{wj.page}}" data-type="prev">上一页</button></li>
+                            
+                            {% endif %}
+                            {% if  wj.page < count %}
+                            <li><button class="uk-button uk-button-default " data-page="{{wj.page}}" data-type="next">下一页</button></li>
+                              
+                              
+                            {% endif %}
+                            
+                        </ul>
+                        {% if wj.page == count %}
+              
+                        <p class="text-button"> <button id="save" class="uk-button-primary uk-button">提交</button></p>
+                        
+                        {% endif %}
+                    </div>
+                    
                 {% endfor %}
-                <li class="uk-padding-small">
-                        <dt><p class="" href="#">你的英文游戏id是： </p></dt>
-                        <dd>
-                            <input type="text" class="uk-input" name="id" id="">
-                        </dd>
-                </li>
+                <ul>
+                
             </ul>
             </form>
-            <p class="text-button"> <button id="save" class="uk-button-primary uk-button">提交</button></p>
+            
+            
 
             <script>
-                $(document).ready(
-                    $(function() {
-                        $("#save").click(function() {
-                            
+                var count={{count}};
+                $(function() {
+                    $("#save").click(function() {
+                        
 
-                            $.post("/wenjuan/save?_=" + Date.parse(new Date()), $("#wenjuan").serialize(), function(obj) {
-                                if (obj.status === "ok") {
-                                    UIkit.notification({
-                                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
-                                        status: 'success',
-                                        timeout: 2000
-                                    });
-                                    UIkit.modal("#dry-box").hide();
-                                    window.location.reload();
-                                } else {
-                                    UIkit.notification({
-                                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
-                                        status: 'danger',
-                                        timeout: 2000
-                                    })
-                                }
-                            }, "json")
-                        });
-                    })
-                );
+                        $.post("/wenjuan/save?_=" + Date.parse(new Date()), $("#wenjuan").serialize(), function(obj) {
+                            if (obj.status === "ok") {
+                                UIkit.notification({
+                                    message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                                    status: 'success',
+                                    timeout: 2000
+                                });
+                                UIkit.modal("#dry-box").hide();
+                                window.location.reload();
+                            } else {
+                                UIkit.notification({
+                                    message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                                    status: 'danger',
+                                    timeout: 2000
+                                })
+                            }
+                        }, "json")
+                    });
+                    $(".page button").click(function(){
+                        var type=$(this).data('type');
+                        if(type==undefined)return false;
+                        var page=$(this).data("page");
+                        if(type=="prev" && page>1){
+                            $(".page").css("display","none")
+                            $("#page"+(page-1)).css("display","block")
+                        }else if(type=="next" && page<count){
+                            $(".page").css("display","none")
+                            $("#page"+(page+1)).css("display","block")
+                        }else{
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: close\'></span> 操作错误' ,
+                                status: 'danger',
+                                timeout: 2000
+                            })
+                        }
+                        return false;
+                    });
+                });
             </script>
         </div>
     </div>
