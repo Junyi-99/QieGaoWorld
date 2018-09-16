@@ -125,7 +125,7 @@ def option_del(request):
 
 def problem_del(requerst):
     id=requerst.POST.get("id",None)
-    ProblemInfo.objects.get(problem_id=id).delete()
+    ProblemInfo.objects.filter(problem_id=id).delete()
     Problem.objects.get(id=id).delete()
     problem_list_obj=Conf.objects.get(key="problem_list")
     problem_list=json.loads(problem_list_obj.content)
