@@ -99,13 +99,18 @@
         if(page ==undefined){
             page="user_center";
         }
+        var b;
+        if((b= page.indexOf("?"))!=-1){
+            var _get=page.substring(b+1)
+            page=page.substring(0,b)
+        }
         console.log(page);
         ajax = $.ajax(
 
             {
                 url: "/dashboard/page?_=" + Date.parse(new Date()),
                 type: "post",
-                data: {page: page},
+                data: {page: page,_get:_get},
                 success: function (res) {
                     $("#main_content").html(res);
                 }

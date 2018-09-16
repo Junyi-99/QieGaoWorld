@@ -1,0 +1,41 @@
+{% load static %}
+<h2>日志管理
+    <small style="color: #666666; font-size: medium">Menu Manage</small>
+</h2>
+<hr class="uk-margin" />
+<p class="uk-text-meta">日志列表 </p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+        <caption></caption>
+        <thead>
+            <tr>
+                <th class="uk-width-medium">模块</th>
+                <th class="uk-width-small uk-visible@s">内容</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in list %}
+            <tr>
+                <td>
+                    <span class="" style="vertical-align: middle">{{ b.code }}</span>
+                </td>
+                <td>
+                    <span class="" style="vertical-align: middle">{{ b.text }}</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% autoescape off %}
+      
+    {{ page }}
+    {% endautoescape %}
+      
+<script>
+            $(function() {
+               
+            })
+    </script>

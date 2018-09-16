@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
-from QieGaoWorld.models import Menu
+from QieGaoWorld.models import Menu,Logs
 
 @check_login
 @check_post
@@ -16,7 +16,7 @@ def url(request, s):
 
 
 def menu_list(request,status=True):
-    wenjuan=Menu.object.order_by(status)
+    wenjuan=Menu.objects.order_by(status)
 
     return wenjuan 
 
@@ -56,3 +56,9 @@ def menu_edit(request):
 
     menu.save()
     return HttpResponse(dialog('ok', 'success', '编辑成功!'))
+
+def logs_list(request,start=0,end=1):
+    from django.db.models.expressions import RawSQL
+    _list=Logs.objects.annotate(val=RawSQL("select * from logs where code != %s order by %s limit %d,%d", ("info",time,start,end,)))
+
+    return _list 

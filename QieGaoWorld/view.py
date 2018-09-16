@@ -12,12 +12,14 @@ from .views.police import page_police_hall
 from .views.settings import page_settings
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
+from .views import system
 from QieGaoWorld import parameter as Para 
-from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize
+from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs
 from QieGaoWorld import common
 
 from QieGaoWorld.views.police import username_get_nickname
 
+from django.db.models import Count
 # 使用协议
 def agreement(request):
     return render(request, "agreement.html", {})
@@ -228,6 +230,30 @@ def page_skull(request):
 
     return render(request, "dashboard/skull.html", context)
 
+@check_login
+def page_logs(request):
+    
+    _get=request.POST.get("_get",None)
+    if(_get == None):
+        page=1
+    else:
+        try:
+            page=int(_get)
+        except ValueError as e:
+            page=1
+    size=30
+    # _list=system.logs_list(request,,page*size)
+    _list=Logs.objects.exclude(code="info").order_by("-time")[(page-1)*size:page*size]
+    _count=Logs.objects.annotate(count=Count("id")).exclude(code ="info").values("count")[0:1]
+    _count=_count[0]['count']/size +1
+    context = {
+        'permissions': request.session['permissions'],
+        "list":_list,
+        "page":common.page("logs",_count,page)
+    }
+
+    return render(request, "dashboard/system/logs.html", context)
+
 
 
 @ensure_csrf_cookie
@@ -285,5 +311,7 @@ def dashboard_page(request):
         return page_wenjuan(request)
     if request.POST.get("page", None) == "skull":
         return page_skull(request)
+    if request.POST.get("page", None) == "logs":
+        return page_logs(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

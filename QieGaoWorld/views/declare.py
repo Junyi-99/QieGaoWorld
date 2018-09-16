@@ -112,7 +112,7 @@ def buildings_change_status(request):
             old_status=obj.status
             obj.status = new_status
             obj.save()
-            common.logs("用户:%d 将建筑申请：%s(id:%s,user:%s)状态由%s更改为%s" % (request.session['id'],obj.name,obj.id,obj.username,old_status,str(new_status)),"建筑申报管理")
+            common.logs("用户:%s(%d) 将建筑申请：%s(id:%s,user:%s)状态由%s更改为%s" % (request.session['username'],request.session['id'],obj.name,obj.id,obj.username,old_status,str(new_status)),"建筑申报管理")
             return HttpResponse(dialog('ok', 'success', '更新建筑申报信息成功！刷新页面生效！'))
         else:
             return HttpResponse(dialog('failed', 'danger', '状态值错误'))
@@ -136,7 +136,7 @@ def buildings_del(request):
             return HttpResponse(dialog('failed', 'danger', '权限不足'))
 
         obj.delete()
-        common.logs("用户:%d 删除建筑申请：%s(id:%s,user:%s)" % (request.session['id'],obj.name,obj.id,obj.username),"建筑申报管理")
+        common.logs("用户:%s(%d) 删除建筑申请：%s(id:%s,user:%s)" % (request.session['username'],request.session['id'],obj.name,obj.id,obj.username),"建筑申报管理")
         return HttpResponse(dialog('ok', 'success', '更新建筑申报信息成功！刷新页面生效！'))
     except MultipleObjectsReturned as e:
         logging.error(e)
@@ -166,7 +166,7 @@ def animals_change_status(request):
             old_status=obj.status
             obj.status = new_status
             obj.save()
-            common.logs("用户:%d 将动物信息：%s(id:%s,user:%s)状态由%s更改为%s" % (request.session['id'],obj.license,obj.id,obj.username,old_status,str(new_status)),"动物申报管理")
+            common.logs("用户:%s(%d) 将动物信息：%s(id:%s,user:%s)状态由%s更改为%s" % (request.session['user'],request.session['id'],obj.license,obj.id,obj.username,old_status,str(new_status)),"动物申报管理")
             return HttpResponse(dialog('ok', 'success', '更新动物信息成功！刷新页面生效！'))
         else:
             return HttpResponse(dialog('failed', 'danger', '状态值错误'))
