@@ -1,0 +1,163 @@
+<h2>参数管理
+    <small style="color: #666666; font-size: medium">Parameter Manage</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
+            uk-toggle="target: #para-box" id="edit">新参数
+    </button>
+</h2>
+<hr class="uk-margin"/>
+<p class="uk-text-meta">系统参数，修改请谨慎</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <thead>
+    <tr>
+          
+        <!-- <th class="uk-table-expand">申请人</th> -->
+          
+        
+        <th class="uk-visible@s">名称</th>
+        <th class="uk-visible@s uk-table-expand">key</th>
+        <th class="uk-table-small">详情</th>
+        <th class="uk-width-small uk-visible@s">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for a in list %}
+        <tr>
+            <td class="uk-visible@s">{{ a.name|truncatechars:10 }}</td>
+            <td class="uk-visible@s">{{ a.key }}</td>
+            <td>{{ a.content|truncatechars:10 }}</td>
+            <td class="uk-visible@s">
+                    <a  class="uk-margin-small-right uk-icon-link edit" uk-icon="file-edit" data-id="{{a.id}}" data-key="{{a.key}}" content="{{a.content}}" data-name="{{a.name}}" title="编辑"></a>
+                <a class="uk-icon-link del" id="{{a.id}}" style="color:red" uk-icon="trash"></a>
+            </td>
+
+            <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
+            <td></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<div id="para-box" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">参数编辑</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">名称</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="name" type="text" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">key</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                                <input class="uk-input" id="key" type="text" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">详情</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <textarea name="" id="content" cols="30" rows="10" placeholder="参数内容"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="id" name="">
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+<script>
+        $(function () {
+
+
+            $("#save").click(function () {
+
+                var name = $("#name").val();
+                var key = $("#key").val();
+                var content = $("#content").val();
+                var id = $("#id").val();
+
+                $.post("system/para_edit?_=" + Date.parse(new Date()), {
+                    "name": name,
+                    "key": key,
+                    "content": content,
+                    "id": id,
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#para-box").hide();
+
+                        // 清空上次的输入
+                        window.location.reload()
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".edit").click(function(){
+                $("#id").val($(this).data("id"));
+                $("#name").val($(this).data("name"));
+                $("#content").html($(this).attr("content"));
+                $("#key").val($(this).data("key"));
+                $("#edit").click();
+                return false;
+            });
+            $(".del").click(function() {
+                var id = $(this).attr("id");
+                var _this = $(this);
+
+                $.post("system/para_del?_=" + Date.parse(new Date()), {
+                    "id": id,
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parents("tr").remove();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+        })
+</script>

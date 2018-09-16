@@ -231,6 +231,16 @@ def page_skull(request):
     return render(request, "dashboard/skull.html", context)
 
 @check_login
+def page_para(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "list":system.para_list(),
+    }
+
+    return render(request, "dashboard/system/parameter.html", context)
+
+@check_login
 def page_logs(request):
     
     _get=request.POST.get("_get",None)
@@ -313,5 +323,7 @@ def dashboard_page(request):
         return page_skull(request)
     if request.POST.get("page", None) == "logs":
         return page_logs(request)
+    if request.POST.get("page", None) == "para":
+        return page_para(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
-from QieGaoWorld.models import Menu,Logs
+from QieGaoWorld.models import Menu,Logs,Conf
 
 @check_login
 @check_post
@@ -57,8 +57,32 @@ def menu_edit(request):
     menu.save()
     return HttpResponse(dialog('ok', 'success', '编辑成功!'))
 
-def logs_list(request,start=0,end=1):
-    from django.db.models.expressions import RawSQL
-    _list=Logs.objects.annotate(val=RawSQL("select * from logs where code != %s order by %s limit %d,%d", ("info",time,start,end,)))
-
+def para_list():
+    _list=Conf.objects.all()
     return _list 
+
+def para_edit(request):
+    id= request.POST.get('id',None)
+    name=request.POST.get('name',None)
+    key=request.POST.get('key',None)
+    content=request.POST.get("content",None)
+    if(id==""):
+        para=Conf.objects.filter(key=key)
+        if(para):
+            return HttpResponse(dialog('failed', 'danger', '该key已被使用!'))
+        para=Conf(name=name,key=key,content=content)
+    else:
+        para=Conf.objects.get(id=id)
+        para.name=name
+        para.key=key
+        para.content=content
+
+    para.save()
+    return HttpResponse(dialog('ok', 'success', '编辑成功!'))
+
+def para_del(request):
+    id=request.POST.get('id',None)
+    para=Conf.objects.get(id=id)
+    
+    para.delete()
+    return HttpResponse(dialog('ok', 'success', '删除成功!'))

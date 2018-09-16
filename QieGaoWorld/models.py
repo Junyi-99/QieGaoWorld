@@ -99,6 +99,7 @@ class WenjuanLog(models.Model):
     content=models.TextField()
 class Conf(models.Model):
     key=models.CharField(max_length=50)
+    name=models.CharField(max_length=50)
     content=models.TextField()
     
 class SkullCustomize(models.Model):
