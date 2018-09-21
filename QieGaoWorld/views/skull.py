@@ -29,7 +29,7 @@ def skull_add(request):
     info=re.search(r'Value:"[\d\w]+',content)
     value=info.group()[7:]
 
-    menu=SkullCustomize(name=name,user_id=int(request.session['id']),number=number,status=False,content='{\"id\":'+id+',\"value\":'+value+'}')
+    menu=SkullCustomize(name=name,user_id=int(request.session['id']),number=number,status=False,content=id+':'+value)
     menu.save()
     return HttpResponse(dialog('ok', 'success', '添加成功!'))
 
