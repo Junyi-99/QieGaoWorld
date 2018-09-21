@@ -10,7 +10,8 @@
 UI设计：
 [Junyi](https://github.com/Military-Doctor)
 
-
+后期开发（鸣谢）：
+[chiaki](https://github.com/difuer-yl)
 
 依赖安装：
 `pip install -r requirements.txt`
