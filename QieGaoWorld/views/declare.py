@@ -122,6 +122,7 @@ def buildings_change_status(request):
     except ObjectDoesNotExist:
         return HttpResponse(dialog('failed', 'danger', '可能这个建筑不属于你！'))
 
+@check_login
 def buildings_del(request):
     try:
         id_ = int(request.POST.get('id', None))
@@ -143,6 +144,29 @@ def buildings_del(request):
         return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
     except ObjectDoesNotExist:
         return HttpResponse(dialog('failed', 'danger', '可能这个建筑不属于你！'))
+
+@check_login
+def animals_del(request):
+    try:
+        id_ = int(request.POST.get('id', None))
+        username = request.session.get('username', None)
+    except ValueError:
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
+
+    try:
+        obj =  DeclareAnimals.objects.get(id=id_)
+        # 1、检查是否是当前用户的状态为“审核不通过”的建筑
+        if  not (obj.username == username or ('%op%' in request.session.get('permissions', '%default%') ) ) :
+            return HttpResponse(dialog('failed', 'danger', '可能这个牌照不属于你！'))
+
+        obj.delete()
+        common.logs("用户:%s(%d) 删除了牌照：%s(id:%s,user:%s)" % (request.session['username'],request.session['id'],obj.license,obj.id,obj.username),"动物牌照管理")
+        return HttpResponse(dialog('ok', 'success', '更新动物牌照成功！刷新页面生效！'))
+    except MultipleObjectsReturned as e:
+        logging.error(e)
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
+    except ObjectDoesNotExist:
+        return HttpResponse(dialog('failed', 'danger', '可能这个牌照不属于你！'))
 
 @ensure_csrf_cookie
 @check_login
@@ -249,8 +273,7 @@ def animals_list(request, operation):
     if 'all' in operation:
         animals = DeclareAnimals.objects.all()
     elif 'user' in operation:
-        animals = DeclareAnimals.objects.filter(
-            username=request.session.get('username', None)) | DeclareAnimals.objects.filter(binding='公共')
+        animals = DeclareAnimals.objects.filter(username=request.session.get('username', None)) 
 
     # 按照时间由新到旧排序
     animals = sorted(animals, key=lambda a: a.declare_time, reverse=True)

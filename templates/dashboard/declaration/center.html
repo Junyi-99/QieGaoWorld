@@ -96,6 +96,7 @@
                                     </select>
                                 </label>
                             </td>
+                            
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -138,6 +139,7 @@
                                         <option value="3" {% if a.status == 3 %} selected {% endif %}>死亡</option>
                                     </select>
                                 </label>
+                                <a  class="uk-margin-small-right uk-icon-link del" _id="{{ a.id }}" style="color:red" uk-icon="trash" title="删除"></a>
                             </td>
                         {% endif %}
                         <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
@@ -193,6 +195,27 @@
                             status: 'success',
                             timeout: 2000
                         });
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".del").click(function() {
+                var _this = $(this);
+                $.post("declare/animals_del?_=" + Date.parse(new Date()), {
+                    "id":_this.attr("_id")
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parents("tr").remove();
                     } else {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
