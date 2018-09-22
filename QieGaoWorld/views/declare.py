@@ -263,7 +263,7 @@ def buildings_list(request, operation):
             buildings[i].status_label = 'uk-label-success'
             buildings[i].status_text = '完工'
         elif buildings[i].status == 6:
-            buildings[i].status_label = 'uk-label-errot'
+            buildings[i].status_label = 'uk-label-danger'
             buildings[i].status_text = '弃坑'
     return buildings
 
