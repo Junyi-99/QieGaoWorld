@@ -44,9 +44,9 @@ def skull_add(request):
 
 def skull_list(request,_all=False):
     if _all:
-        skull=SkullCustomize.objects.filter(user_id=request.session['id'])
-    else:
         skull=SkullCustomize.objects.all()
+    else:
+        skull=SkullCustomize.objects.filter(user_id=request.session['id'])
     for i in range(0,len(skull)) :
         if skull[i].status:
             skull[i].status_class="uk-label-success"
