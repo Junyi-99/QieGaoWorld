@@ -154,6 +154,18 @@ def username_get_nickname(username):
         logging.error(e)
         return 'Internal Error'
 
+def id_get_nickname(id):
+    try:
+        obj = User.objects.filter(id=id)
+        if len(obj) == 0:
+            return 'Unknown Username'
+        return obj[0].nickname
+    except MultipleObjectsReturned:
+        return 'Internal Error'
+    except Exception as e:
+        logging.error(e)
+        return 'Internal Error'
+
 
 def page_police_hall(request):
     my_cases = []
