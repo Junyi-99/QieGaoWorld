@@ -108,7 +108,7 @@ def buildings_change_status(request):
         if (obj.username != username or obj.status != 3 or new_status not in [4,5]) and '%declaration_buildings_modify%' not in request.session.get('permissions', '%default%')  :
             return HttpResponse(dialog('failed', 'danger', '权限不足'))
 
-        if 0 <= new_status <= 5:
+        if 0 <= new_status <= 6:
             old_status=obj.status
             obj.status = new_status
             obj.save()
