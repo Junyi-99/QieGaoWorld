@@ -108,6 +108,17 @@ class SkullCustomize(models.Model):
     number=models.IntegerField()
     status=models.BooleanField()
     name=models.CharField(max_length=50)
-    
-    
+
+class Society(models.Model):
+    name=models.CharField(max_length=50)
+    sortname=models.CharField(max_length=10)
+    abbreviation=models.CharField(max_length=10)
+    type=models.IntegerField()
+    banner = models.CharField(max_length=1024, default='')  
+    detail = models.CharField(max_length=2048, default='')
+    location = models.CharField(max_length=2048, default='')
+    assets =models.TextField()
+    member =models.TextField()
+    manager =models.TextField()
+
     

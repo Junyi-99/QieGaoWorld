@@ -1,0 +1,314 @@
+{% load static %}
+<h2>社团详情
+    <small style="color: #666666; font-size: medium">Society Detail</small>
+</h2>
+<hr class="uk-margin"/>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+{% if s.name %}
+<div>
+        <div class="uk-margin uk-padding">
+            <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-5@s">
+                    <img src="static\media\face\default.jpg" alt="" srcset="">
+                </div>
+                <div class="uk-width-4-5@s uk-padding-left">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-5-5@s uk-margin-auto">
+                                <label class="uk-form-label" for="form-horizontal-text">中文名称：{{s.name}}</label>
+                        </div>
+                        <div class="uk-width-5-5@s uk-margin-auto">
+                                <label class="uk-form-label" for="form-horizontal-text">中文简称：{{s.sortname}}</label>
+                        </div>
+                        <div class="uk-width-5-5@s uk-margin-auto">
+                                <label class="uk-form-label" for="form-horizontal-text">英文简称：{{s.name}}</label>
+                        </div>
+                        <div class="uk-width-5-5@s uk-margin-auto">
+                                <label class="uk-form-label" for="form-horizontal-text">社团类型：{{s.type}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-grid-small" uk-grid>
+                <label class="uk-form-label" for="form-horizontal-text">社团简介：</label>
+                <p>{{s.detail}}</p>
+            </div>
+        </div>
+    </div>
+    <div id="building-box" class="uk-flex-top"  bg-close="false" esc-close="false" uk-modal>
+{% else %}
+{% if edit %}
+
+
+<div>
+    <div class="uk-margin uk-padding ">
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-1-5@s">
+                <img src="static\media\face\default.jpg" alt="" srcset="">
+            </div>
+            <div class="uk-width-4-5@s uk-padding-left">
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-5-5@s uk-margin-auto">
+                            <div class="uk-grid-small" uk-grid>
+                                    <div class="uk-width-1-5@s"><label class="uk-form-label" for="form-horizontal-text">中文名称：</label></div>
+                                    <div class="uk-width-4-5@s"><input type="text" class="uk-input" name="name" value="{{s.name}}"></div>
+                            </div>
+
+                    </div>
+                    <div class="uk-width-5-5@s uk-margin-auto">
+                            <div class="uk-grid-small" uk-grid>
+                                    <div class="uk-width-1-5@s"><label class="uk-form-label" for="form-horizontal-text">中文简称：</label></div>
+                                    <div class="uk-width-4-5@s"><input type="text" class="uk-input" name="sortname" value="{{s.sortname}}"></div>
+                            </div>
+                    </div>
+                    <div class="uk-width-5-5@s uk-margin-auto">
+                            <div class="uk-grid-small" uk-grid>
+                                    <div class="uk-width-1-5@s"><label class="uk-form-label" for="form-horizontal-text">英文简称：</label></div>
+                                    <div class="uk-width-4-5@s"><input type="text" class="uk-input" name="sortname" value="{{s.sortname}}"></div>
+                            </div>
+                    </div>
+                    <div class="uk-width-5-5@s uk-margin-auto">
+                            <div class="uk-grid-small" uk-grid>
+                                    <div class="uk-width-1-5@s"><label class="uk-form-label" for="form-horizontal-text">社团类型：</label></div>
+                                    <div class="uk-width-4-5@s"><select name="" class="uk-select" id=""></select></div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <label class="uk-form-label" for="form-horizontal-text">办公地点：</label>
+            <input type="text" name="location" class="uk-input" id="">
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <label class="uk-form-label" for="form-horizontal-text">社团简介：</label>
+            <textarea class="uk-width" name="detail" id="" cols="30" rows="10"></textarea>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <label class="uk-form-label" for="form-horizontal-text">下属资产：</label>
+            <textarea class="uk-width" name="assets" id="" cols="30" rows="10"></textarea>
+        </div>
+    </div>
+    <div class="uk-modal-footer uk-text-right  ">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+        <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+
+
+
+<script>
+    function buildingDetail(id_) {
+        var id = id_.substring(8);
+        console.log(id);
+        $.get("/buildings_detail", {
+            "id": id
+        }, function (data) {
+            UIkit.modal.dialog(data);
+        });
+    }
+    $(document).ready(
+        $(function () {
+            $(".building_options").change(function () {
+                $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
+                    "id": $(this).attr('_id'),
+                    "status": $(this).val()
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $("#save").click(function () {
+                var name = $("#name").val();
+                var english_name = $("#english_name").val();
+                var summary = $("#summary").val();
+                var detail = $("#detail").val();
+                var coordinate = $("#coordinate").val();
+                var area = $("#area").val();
+                var predict_start_time = $("#predict_start_time").val();
+                var predict_end_time = $("#predict_end_time").val();
+                var type = $("#type").val();
+                var pic_concept = $("#progress_concept").attr('url');
+                var pic_plan = $("#progress_plan").attr('url');
+                var pic_perspective = $("#progress_perspective").attr('url');
+
+                $.post("/buildings_add?_=" + Date.parse(new Date()), {
+                    "name": name,
+                    "english_name": english_name,
+                    "summary": summary,
+                    "detail": detail,
+                    "coordinate": coordinate,
+                    "area": area,
+                    "predict_start_time": predict_start_time,
+                    "predict_end_time": predict_end_time,
+                    "type": type,
+                    "pic_concept": pic_concept,
+                    "pic_plan": pic_plan,
+                    "pic_perspective": pic_perspective
+
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+        })
+    );
+    $(".del").click(function() {
+        var _this = $(this);
+        $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
+            "id":_this.attr("_id")
+        }, function(obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+                _this.parents("tr").remove();
+            } else {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+        }, "json")
+    });
+
+    var bar_concept = document.getElementById('progress_concept');
+    var bar_perspective = document.getElementById('progress_perspective');
+    var bar_plan = document.getElementById('progress_plan');
+    {#不会写JS，只能写的这么臃肿了QAQ#}
+    UIkit.upload('.upload_concept', {
+        url: '/upload_building_concept',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_concept.removeAttribute('hidden');
+            bar_concept.removeAttribute('url');
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_concept);
+        }
+    });
+    UIkit.upload('.upload_plan', {
+        url: '/upload_building_plan',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_plan.removeAttribute('hidden');
+            bar_plan.removeAttribute('url');
+            bar_plan.max = e.total;
+            bar_plan.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_plan.max = e.total;
+            bar_plan.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_plan);
+        }
+    });
+    UIkit.upload('.upload_perspective', {
+        url: '/upload_building_perspective',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_perspective.removeAttribute('hidden');
+            bar_perspective.removeAttribute('url');
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_perspective);
+        }
+    });
+
+    function completeAll(responseText, progressBar) {
+        obj = JSON.parse(responseText);
+
+        if (obj.status === "ok") {
+            progressBar.setAttribute('url', obj.url)
+        }
+        else {
+            $("#msg").text("上传失败");
+            UIkit.notification({message: obj.msg, status: 'danger'});
+        }
+
+        setTimeout(function () {
+            progressBar.setAttribute('hidden', 'hidden');
+        }, 5000);
+    }
+</script>

@@ -1,0 +1,459 @@
+{% load static %}
+<h2>社团列表
+    <small style="color: #666666; font-size: medium">Society Manage</small>
+    <a href="#society_info" onclick="window.location.reload()"><button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
+    >新建社团
+    </button></a>
+</h2>
+<hr class="uk-margin"/>
+<p class="uk-text-meta">所有社团列表</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <caption></caption>
+    <thead>
+    <tr>
+        <th class="uk-width-medium">社团名</th>
+        <th class="uk-width-medium uk-visible@s">类型</th>
+        <th class="uk-width-medium uk-visible@m">旗帜</th>
+        <th class="uk-width-medium uk-visible@l">人数</th>
+        <th class="uk-width-small">状态</th>
+        <th class="uk-width-small uk-visible@s">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for b in list %}
+        <tr>
+            <td>
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-auto">
+                        <img class="uk-preserve-width uk-border-circle"
+                             src="{{ b.name }}"
+                             width="40" alt="">
+                    </div>
+                    <div class="uk-width-expand">
+                        <h4 class="uk-margin-remove-bottom">{{ b.name }}</h4>
+                        <p class="uk-text-meta uk-margin-remove-top">{{ b.english_name }}</p>
+                    </div>
+                </div>
+            </td>
+            <td class="nowrap uk-visible@s">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h4 class="uk-margin-remove-bottom">{{ b.area }} M<sup>2</sup></h4>
+                        <p class="uk-text-meta uk-margin-remove-top">XYZ: {{ b.coordinate }}</p>
+                    </div>
+                </div>
+            </td>
+            <td class="nowrap uk-visible@m">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <h4 class="uk-margin-remove-bottom">{{ b.summary }}</h4>
+                        <p class="uk-text-truncate uk-text-meta uk-margin-remove-top">
+                            {{ b.detail }}</p>
+                    </div>
+                </div>
+            </td>
+            <td class="nowrap uk-visible@l">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                        <p class="uk-text-meta uk-margin-remove-bottom uk-margin-remove-top">
+                            开工：{{ b.predict_start_time }}</p>
+                        <p class="uk-text-meta uk-margin-remove-bottom uk-margin-remove-top">
+                            结束：{{ b.predict_end_time }}</p>
+                    </div>
+                </div>
+            </td>
+            <td>
+                            <span class="uk-label {{ b.status_label }}"
+                                  style="vertical-align: middle">{{ b.status_text }}</span>
+            </td>
+            <td class="uk-visible@s">
+            {% if b.status == 3 or b.status == 4 %}
+                    <label>
+                        <select class="uk-select building_options" _id="{{ b.id }}">
+                            <option value="-1">...</option>
+                            <option value="4">正在建设</option>
+                            <option value="5">完工</option>
+                        </select>
+                    </label>
+                    {% endif %}
+            {% if b.status == 2 %}
+            <a  class="uk-margin-small-right uk-icon-link del" _id="{{ b.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+                    {% endif %}
+
+                </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<div id="building-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title"></h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑名</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="name" type="text" placeholder="如 私人住宅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">英文名</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="english_name" type="text" placeholder="如 Private House">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑简介</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="summary" type="text" placeholder="如 市中心第一豪华别墅">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑详细介绍</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="detail" type="text" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑坐标</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="coordinate" type="text"
+                                   placeholder="按照XYZ填写，英文半角逗号加空格分隔 如 1, 2, 3">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑面积</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="area" type="text" placeholder="占地面积，自己加逗号。如 33,496">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">预计开始时间</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="predict_start_time" type="text"
+                                   placeholder="如 2018-7-23 （严格按照格式填写）">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">预计结束时间</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="predict_end_time" type="text"
+                                   placeholder="如 2018-7-25 （严格按照格式填写）">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">示范图</label>
+                        </div>
+                        <div class="uk-width-4-5@s upload_concept" uk-form-custom>
+                            {% csrf_token %}
+                            <input type="file" multiple>
+                            <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
+                            <p>文件格式：jpg jpeg gif png 建议为正方形图像</p>
+                        </div>
+                        <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">位置图</label>
+                        </div>
+                        <div class="uk-width-4-5@s upload_plan" uk-form-custom>
+                            {% csrf_token %}
+                            <input type="file" multiple>
+                            <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
+                        </div>
+                        <progress id="progress_plan" class="uk-progress" value="0" max="100" hidden></progress>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">透视图(选填)</label>
+                        </div>
+                        <div class="uk-width-4-5@s upload_perspective" uk-form-custom>
+                            {% csrf_token %}
+                            <input type="file" multiple>
+                            <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
+                        </div>
+                        <progress id="progress_perspective" class="uk-progress" value="0" max="100" hidden></progress>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑类型</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <select class="uk-select" id="type">
+                                <option value="0">公共建筑</option>
+                                <option value="1">私有建筑</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function buildingDetail(id_) {
+        var id = id_.substring(8);
+        console.log(id);
+        $.get("/buildings_detail", {
+            "id": id
+        }, function (data) {
+            UIkit.modal.dialog(data);
+        });
+    }
+    $(document).ready(
+        $(function () {
+            $(".building_options").change(function () {
+                $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
+                    "id": $(this).attr('_id'),
+                    "status": $(this).val()
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $("#save").click(function () {
+                var name = $("#name").val();
+                var english_name = $("#english_name").val();
+                var summary = $("#summary").val();
+                var detail = $("#detail").val();
+                var coordinate = $("#coordinate").val();
+                var area = $("#area").val();
+                var predict_start_time = $("#predict_start_time").val();
+                var predict_end_time = $("#predict_end_time").val();
+                var type = $("#type").val();
+                var pic_concept = $("#progress_concept").attr('url');
+                var pic_plan = $("#progress_plan").attr('url');
+                var pic_perspective = $("#progress_perspective").attr('url');
+
+                $.post("/buildings_add?_=" + Date.parse(new Date()), {
+                    "name": name,
+                    "english_name": english_name,
+                    "summary": summary,
+                    "detail": detail,
+                    "coordinate": coordinate,
+                    "area": area,
+                    "predict_start_time": predict_start_time,
+                    "predict_end_time": predict_end_time,
+                    "type": type,
+                    "pic_concept": pic_concept,
+                    "pic_plan": pic_plan,
+                    "pic_perspective": pic_perspective
+
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+        })
+    );
+    $(".del").click(function() {
+        var _this = $(this);
+        $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
+            "id":_this.attr("_id")
+        }, function(obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+                _this.parents("tr").remove();
+            } else {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+        }, "json")
+    });
+
+    var bar_concept = document.getElementById('progress_concept');
+    var bar_perspective = document.getElementById('progress_perspective');
+    var bar_plan = document.getElementById('progress_plan');
+    {#不会写JS，只能写的这么臃肿了QAQ#}
+    UIkit.upload('.upload_concept', {
+        url: '/upload_building_concept',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_concept.removeAttribute('hidden');
+            bar_concept.removeAttribute('url');
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_concept);
+        }
+    });
+    UIkit.upload('.upload_plan', {
+        url: '/upload_building_plan',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_plan.removeAttribute('hidden');
+            bar_plan.removeAttribute('url');
+            bar_plan.max = e.total;
+            bar_plan.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_plan.max = e.total;
+            bar_plan.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_plan);
+        }
+    });
+    UIkit.upload('.upload_perspective', {
+        url: '/upload_building_perspective',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_perspective.removeAttribute('hidden');
+            bar_perspective.removeAttribute('url');
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_perspective.max = e.total;
+            bar_perspective.value = e.loaded;
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_perspective);
+        }
+    });
+
+    function completeAll(responseText, progressBar) {
+        obj = JSON.parse(responseText);
+
+        if (obj.status === "ok") {
+            progressBar.setAttribute('url', obj.url)
+        }
+        else {
+            $("#msg").text("上传失败");
+            UIkit.notification({message: obj.msg, status: 'danger'});
+        }
+
+        setTimeout(function () {
+            progressBar.setAttribute('hidden', 'hidden');
+        }, 5000);
+    }
+</script>
