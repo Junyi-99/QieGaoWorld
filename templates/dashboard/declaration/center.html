@@ -7,6 +7,7 @@
 <ul uk-tab>
     <li class="uk-active"><a href="#">建筑申报</a></li>
     <li><a href="#">动物申报</a></li>
+    <li><a href="#">头颅定制</a></li>
 </ul>
 {#TODO: 把这些个表单什么的，分离开，让代码复用率变高。就是把center.html的和buildings.html的#}
 {#TODO: 和animals.html的合起来用一个，比如叫“BuildingList.html” 然后 include这个buildinglist.html#}
@@ -144,6 +145,31 @@
                         {% endif %}
                         <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
                         <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </li>
+    <li>
+        <div class="uk-overflow-auto">
+            <table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+                <thead>
+                <tr>
+                    
+                    <th class="uk-visible@s">自定义名称</th>
+                    <th class="uk-visible@s uk-table-expand">数量</th>
+                    <th class="uk-table-small">状态</th>
+                    <th class="uk-visible@s">申请人</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for a in skull %}
+                    <tr>
+                        <td class="uk-text-truncate">{{ a.name }}</td>
+                        <td class="uk-visible@s">{{ a.number }}</td>
+                        <td><span class="uk-text-truncate uk-label {{ a.status_class }}">{{ a.status_text }}</span></td>
+                        <td class="uk-visible@s">{{ a.nickname }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

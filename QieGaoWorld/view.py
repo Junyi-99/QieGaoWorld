@@ -12,7 +12,7 @@ from .views.police import page_police_hall
 from .views.settings import page_settings
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
-from .views import system
+from .views import system,society,skull
 from QieGaoWorld import parameter as Para 
 from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs
 from QieGaoWorld import common
@@ -108,6 +108,7 @@ def page_declaration_center(request):
     content = {
         'animals': animals,
         'buildings': buildings,
+        'skull': skull.skull_list(request,True),
         'permissions': request.session['permissions'],
     }
     return render(request, "dashboard/declaration/center.html", content)
@@ -213,19 +214,10 @@ def page_wenjuan(request):
 @check_login
 def page_skull(request):
     #TODO op列表
-
-    skull=SkullCustomize.objects.filter(user_id=request.session['id'])
-    for i in range(0,len(skull)) :
-        if skull[i].status:
-            skull[i].status_class="uk-label-success"
-            skull[i].status_text="已取货"
-        else:
-            skull[i].status_class=""
-            skull[i].status_text="未取货"
     
     context = {
         'permissions': request.session['permissions'],
-        "skull":skull
+        "skull":skull.skull_list(request)
     }
 
     return render(request, "dashboard/skull.html", context)
@@ -263,6 +255,16 @@ def page_logs(request):
     }
 
     return render(request, "dashboard/system/logs.html", context)
+
+@check_login
+def page_society(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "list":society.society_list()
+    }
+
+    return render(request, "dashboard/society/list.html", context)
 
 
 
@@ -325,5 +327,9 @@ def dashboard_page(request):
         return page_logs(request)
     if request.POST.get("page", None) == "para":
         return page_para(request)
+    if request.POST.get("page", None) == "society":
+        return page_society(request)
+    if request.POST.get("page", None) == "society_info":
+        return society.society_info(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

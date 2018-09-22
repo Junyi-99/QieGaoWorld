@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
+from QieGaoWorld.views.police import id_get_nickname
 from QieGaoWorld.models import SkullCustomize
 
 @check_login
@@ -41,3 +42,18 @@ def skull_add(request):
     menu.save()
     return HttpResponse(dialog('ok', 'success', '添加成功!'))
 
+def skull_list(request,_all=False):
+    if _all:
+        skull=SkullCustomize.objects.filter(user_id=request.session['id'])
+    else:
+        skull=SkullCustomize.objects.all()
+    for i in range(0,len(skull)) :
+        if skull[i].status:
+            skull[i].status_class="uk-label-success"
+            skull[i].status_text="已取货"
+        else:
+            skull[i].status_class=""
+            skull[i].status_text="未取货"
+        skull[i].nickname=id_get_nickname(skull[i].user_id)
+
+    return skull
