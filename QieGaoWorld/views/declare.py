@@ -105,7 +105,7 @@ def buildings_change_status(request):
     try:
         obj = DeclareBuildings.objects.get(id=id_)
         # 1、检查是否是当前用户的状态为“审核通过”的建筑，再检查修改状态是否为“正在建设”和“完工”  如果不是，检查是否是管理员
-        if (obj.username != username or obj.status != 3 or new_status not in [4,5]) and '%declaration_buildings_modify%' not in request.session.get('permissions', '%default%')  :
+        if (obj.username != username or obj.status not in [3,4] or new_status not in [4,5]) and '%declaration_buildings_modify%' not in request.session.get('permissions', '%default%')  :
             return HttpResponse(dialog('failed', 'danger', '权限不足'))
 
         if 0 <= new_status <= 6:
