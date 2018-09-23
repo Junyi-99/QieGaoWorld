@@ -121,4 +121,8 @@ class Society(models.Model):
     member =models.TextField()
     manager =models.TextField()
 
-    
+class Task(models.Model):
+    title=models.CharField(max_length=200)
+    content=models.TextField()
+    username=models.CharField(max_length=100)
+    status=models.IntegerField()  # 0：悬赏中 1：已完成  2：已结束

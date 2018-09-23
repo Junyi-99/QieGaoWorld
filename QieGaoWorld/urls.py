@@ -19,7 +19,7 @@ from django.urls import path
 from . import view
 from .views import login, logout
 from .views import avatar, police
-from .views import declare, register,ops,system,wenjuan,skull,society
+from .views import declare, register,ops,system,wenjuan,skull,society,task
 from .views import announcement
 
 urlpatterns = [
@@ -52,11 +52,7 @@ urlpatterns = [
     # url(r"^admin$", view.admin),
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),
-    path("declare/<str:s>", declare.url),
-    path("ops/<str:s>", ops.url),
-    path("system/<str:s>", system.url),
-    path("wenjuan/<str:s>", wenjuan.url),
-    path("society/<str:s>", society.url),
+    
 
     url(r"^animals_add$", declare.animals_add),
     url(r"^animals_change_status$", declare.animals_change_status),
@@ -69,4 +65,10 @@ urlpatterns = [
     url(r"^announcement_delete$", announcement.announcement_delete),
     url(r"^test", login.test),
     path("skull/<str:s>", skull.url),
+    path("declare/<str:s>", declare.url),
+    path("ops/<str:s>", ops.url),
+    path("system/<str:s>", system.url),
+    path("wenjuan/<str:s>", wenjuan.url),
+    path("society/<str:s>", society.url),
+    path("task/<str:s>", task.url),
 ]

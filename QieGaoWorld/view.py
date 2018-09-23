@@ -12,7 +12,7 @@ from .views.police import page_police_hall
 from .views.settings import page_settings
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
-from .views import system,society,skull
+from .views import system,society,skull,task
 from QieGaoWorld import parameter as Para 
 from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs
 from QieGaoWorld import common
@@ -213,7 +213,6 @@ def page_wenjuan(request):
 
 @check_login
 def page_skull(request):
-    #TODO op列表
     
     context = {
         'permissions': request.session['permissions'],
@@ -266,7 +265,25 @@ def page_society(request):
 
     return render(request, "dashboard/society/list.html", context)
 
+def page_task_list(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "list":task.task_list(request,True),
+        "type":"list",
+        "title":"任务列表"
+    }
 
+    return render(request, "dashboard/task/list.html", context)
+def page_task(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "list":task.task_list(request),
+        "title":"我的任务"
+    }
+
+    return render(request, "dashboard/task/list.html", context)
 
 @ensure_csrf_cookie
 @check_login
@@ -331,5 +348,9 @@ def dashboard_page(request):
         return page_society(request)
     if request.POST.get("page", None) == "society_info":
         return society.society_info(request)
+    if request.POST.get("page", None) == "task_list":
+        return page_task_list(request)
+    if request.POST.get("page", None) == "task":
+        return page_task(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

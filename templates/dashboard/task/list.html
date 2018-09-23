@@ -1,0 +1,259 @@
+{% load static %}
+<h2>{{title}}
+    <small style="color: #666666; font-size: medium">Construction Declaration</small>
+    {% if type != "list" %}
+      
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
+            uk-toggle="target: #task-add">新任务
+    </button>
+      
+    {% endif %}
+    
+</h2>
+<hr class="uk-margin"/>
+<p class="uk-text-meta">下面显示的是你申报的所有建筑</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <caption></caption>
+    <thead>
+    <tr>
+        <th class="uk-width-medium">任务名称</th>
+        <th class="uk-width-medium uk-visible@s">任务内容</th>
+        <th class="uk-width-medium uk-visible@m">发布人</th>
+        <th class="uk-width-small">状态</th>
+        {% if type != "list" %}
+            <th class="uk-width-small uk-visible@s">操作</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for b in list %}
+        <tr >
+            <td class="title">
+                {{ b.title }}
+            </td>
+            <td class="nowrap uk-visible@s content" data-content="{{ b.content }}" >
+                {{ b.content|truncatechars:20 }}
+            </td>
+            <td class="nowrap uk-visible@m nickname">
+                {{ b.nickname }}
+            </td>
+            <td class="status"><span class="uk-label {{ b.status_label }}" style="vertical-align: middle">{{ b.status_text }}</span>
+            </td>
+            <td class="uk-visible@s">
+            {% if type != "list" and b.status == 0 %}
+                    <label>
+                        <select class="uk-select options" _id="{{ b.id }}">
+                            <option value="-1">...</option>
+                            <option value="1">已完成</option>
+                            <option value="2">已结束</option>
+                        </select>
+                    </label>
+            <a  class="uk-margin-small-right uk-icon-link del" _id="{{ b.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+                    {% endif %}
+
+                </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if type != "list"  %}
+
+<div id="task-add" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">任务发布</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">任务名称</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="title" type="text" placeholder="简要描述项目内容">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">任务详情</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <textarea name="" id="content" cols="30" class="uk-textarea" rows="10" placeholder="详细介绍任务内容。比如：联系人，任务时间，任务内容，报酬"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div id="task-info" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">任务详情</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" id="info">
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">任务名称</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <label class="title"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">发布人</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <label class="nickname"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">状态</label>
+                        </div>
+                        <div class="uk-width-4-5@s status">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">任务详情</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <div class="content"></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">确定</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    $(document).ready(
+        $(function () {
+        
+            $(".content").click(function(){
+                var tr=$(this).parent();
+                var content=$(this).data("content");
+                var title=tr.find(".title").html();
+                var status=tr.find(".status").html();
+                var nickname=tr.find(".nickname").html();
+                $("#info .content").html(content);
+                $("#info .title").html(title);
+                $("#info .status").html(status);
+                $("#info .nickname").html(nickname);
+                UIkit.toggle($("#task-info")).toggle();
+
+            });
+        {% if type != "list"  %}
+            
+            $(".options").change(function () {
+                $.post("task/task_change_status?_=" + Date.parse(new Date()), {
+                    "id": $(this).attr('_id'),
+                    "status": $(this).val()
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+
+            $("#save").click(function () {
+                var title = $("#title").val();
+                var content = $("#content").val();
+
+                $.post("task/task_add?_=" + Date.parse(new Date()), {
+                    "title": title,
+                    "content": content,
+
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#task-add").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".del").click(function() {
+                var _this = $(this);
+                $.post("task/task_del?_=" + Date.parse(new Date()), {
+                    "id":_this.attr("_id")
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parents("tr").remove();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            {% endif %}
+        })
+    );
+    
+      
+    
+    
+    
+    
+</script>
