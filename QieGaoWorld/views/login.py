@@ -60,7 +60,7 @@ def login_verify(request):
         if "playername=" + username != user or "password=" + password != passwd:
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
 
-        user = User.objects.filter(username=username, password=password)
+        user = User.objects.filter(username=username)
         if len(user) == 0:
             obj = User(username=username, password=password, register_time=int(time.time()))
             obj.save()

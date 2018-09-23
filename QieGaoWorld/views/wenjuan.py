@@ -136,6 +136,7 @@ def problem_del(requerst):
 
 @check_post
 def save(request):
+    return HttpResponse(dialog('ok', 'danger', '暂未开放！请前往群公告问卷填写！'))
     username=request.POST.get("id",None)
     user = User.objects.filter(username=username)
     sql=''
