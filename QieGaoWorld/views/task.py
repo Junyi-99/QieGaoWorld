@@ -27,9 +27,9 @@ def task_add(request):
         content=request.POST.get("content",None)
     except ValueError:
         return HttpResponse(dialog('failed', 'danger', '参数错误'))
-    if title=None :
+    if title == None :
         return HttpResponse(dialog('failed', 'danger', '请填写标题'))
-    if content=None :
+    if content == None :
         return HttpResponse(dialog('failed', 'danger', '请填写任务详情'))
 
     menu=Task(title=title,username=(request.session['username']),content=content,status=0)
