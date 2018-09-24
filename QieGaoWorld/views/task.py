@@ -16,7 +16,7 @@ def url(request, s):
 
 def task_del(request):
     id=request.POST.get('id',None)
-    menu=Task.objects.get(id=id,user_id=request.session['id'])
+    menu=Task.objects.get(id=id,username=request.session['id'])
     
     menu.delete()
     return HttpResponse(dialog('ok', 'success', '删除成功!'))
