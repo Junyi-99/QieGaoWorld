@@ -38,7 +38,12 @@
                                   style="vertical-align: middle">{{ b.status_text }}</span>
             </td>
             <td class="uk-visible@s">
-            <a  class="uk-margin-small-right uk-icon-link del" _id="{{ b.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+                {% if not b.status %}
+                  
+                <a  class="uk-margin-small-right uk-icon-link del" _id="{{ b.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+                  
+                {% endif %}
+                
 
                 </td>
         </tr>

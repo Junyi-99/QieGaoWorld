@@ -546,7 +546,7 @@ def maps_add(request):
 @check_post
 def maps_list(request, operation):
     if 'all' in operation:
-        maps = Maps.object.order_by("-id")
+        maps = Maps.objects.order_by("-id")
     elif 'user' in operation:
         maps = Maps.objects.filter(username=request.session.get('username', None)).order_by("-id")
 
