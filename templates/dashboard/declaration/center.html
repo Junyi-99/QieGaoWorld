@@ -8,6 +8,7 @@
     <li class="uk-active"><a href="#">建筑申报</a></li>
     <li><a href="#">动物申报</a></li>
     <li><a href="#">头颅定制</a></li>
+    <li><a href="#">地图定制</a></li>
 </ul>
 {#TODO: 把这些个表单什么的，分离开，让代码复用率变高。就是把center.html的和buildings.html的#}
 {#TODO: 和animals.html的合起来用一个，比如叫“BuildingList.html” 然后 include这个buildinglist.html#}
@@ -175,6 +176,35 @@
                 {% endfor %}
                 </tbody>
             </table>
+        </div>
+    </li>
+    <li>
+        <div class="uk-overflow-auto">
+                <table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+                    <thead>
+                    <tr>
+                        <th class="uk-width-medium">编号</th>
+                        <th class="uk-width-small">定制用户</th>
+                        <th class="uk-width-small">状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for b in maps %}
+                        <tr>
+                            <td class="nowrap uk-visible@m">
+                                {{ b.mapid }}
+                            </td>
+                            <td class="nowrap uk-visible@m">
+                                    {{ b.nickname }}
+                                </td>
+                            <td>
+                                            <span class="uk-label {{ b.status_label }}"
+                                                    style="vertical-align: middle">{{ b.status_text }}</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
         </div>
     </li>
 </ul>

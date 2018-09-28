@@ -12,7 +12,7 @@ from .views.police import page_police_hall
 from .views.settings import page_settings
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
-from .views import system,society,skull,task
+from .views import system,society,skull,task,user,declare
 from QieGaoWorld import parameter as Para 
 from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs
 from QieGaoWorld import common
@@ -109,6 +109,7 @@ def page_declaration_center(request):
         'animals': animals,
         'buildings': buildings,
         'skull': skull.skull_list(request,True),
+        'maps': declare.maps_list(request,"all"),
         'permissions': request.session['permissions'],
     }
     return render(request, "dashboard/declaration/center.html", content)
@@ -222,6 +223,16 @@ def page_skull(request):
     return render(request, "dashboard/skull.html", context)
 
 @check_login
+def page_maps(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "list":declare.maps_list(request,"user")
+    }
+
+    return render(request, "dashboard/declaration/maps.html", context)
+
+@check_login
 def page_para(request):
     
     context = {
@@ -284,6 +295,23 @@ def page_task(request):
     }
 
     return render(request, "dashboard/task/list.html", context)
+def page_user_list(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "list":user.user_list(request),
+        "group":user.group_list(request),
+    }
+
+    return render(request, "dashboard/system/user.html", context)
+def page_group_list(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "list":user.group_list(request),
+    }
+
+    return render(request, "dashboard/system/group.html", context)
 
 @ensure_csrf_cookie
 @check_login
@@ -340,6 +368,8 @@ def dashboard_page(request):
         return page_wenjuan(request)
     if request.POST.get("page", None) == "skull":
         return page_skull(request)
+    if request.POST.get("page", None) == "maps":
+        return page_maps(request)
     if request.POST.get("page", None) == "logs":
         return page_logs(request)
     if request.POST.get("page", None) == "para":
@@ -352,5 +382,9 @@ def dashboard_page(request):
         return page_task_list(request)
     if request.POST.get("page", None) == "task":
         return page_task(request)
+    if request.POST.get("page", None) == "user_list":
+        return page_user_list(request)
+    if request.POST.get("page", None) == "group_list":
+        return page_group_list(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

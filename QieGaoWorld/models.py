@@ -1,12 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 from QieGaoWorld import settings
 
 
-class User(models.Model):
-    username = models.CharField(max_length=100)  # 用户名
+
+class User(AbstractUser):
+    username = models.CharField(max_length=100,unique=True)  # 用户名
     password = models.CharField(max_length=100)  # 密码
-    nickname = models.CharField(max_length=100, default='没有昵称')  # 昵称
+    nickname = models.CharField(max_length=100)  # 昵称
     uuid = models.CharField(max_length=40, default='')  # uuid
     qqnumber = models.IntegerField(default=0)  # QQ号
     usrgroup = models.IntegerField(default=0)  # 用户组
@@ -14,6 +16,12 @@ class User(models.Model):
     avatar = models.CharField(max_length=1024, default='static\\media\\face\\default.jpg')  # 头像
     permissions = models.CharField(max_length=2048,
                                    default=settings.DEFAULT_PERMISSIONS)  # 权限
+    USERNAME_FIELD="username"
+
+    class Meta:
+        permissions =(('all', u"查看所有列表"),
+                      ('edit',u"编辑所有"),
+                      )
 
 
 # 报案记录
@@ -126,3 +134,7 @@ class Task(models.Model):
     content=models.TextField()
     username=models.CharField(max_length=100)
     status=models.IntegerField()  # 0：悬赏中 1：已完成  2：已结束
+class Maps(models.Model):
+    username=models.CharField(max_length=100)
+    mapid=models.IntegerField()
+    status=models.BooleanField()

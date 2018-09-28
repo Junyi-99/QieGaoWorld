@@ -1,0 +1,184 @@
+{% load static %}
+<h2>地图画定制
+    <small style="color: #666666; font-size: medium">Maps Customize</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
+            uk-toggle="target: #building-box">新定制
+    </button>
+</h2>
+<hr class="uk-margin"/>
+<p class="uk-text-meta">下面显示的是定制的所有地图画</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <caption></caption>
+    <thead>
+    <tr>
+        <th class="uk-width-medium">编号</th>
+        
+        <th class="uk-width-small">状态</th>
+            <th class="uk-width-small uk-visible@s">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for b in list %}
+        <tr>
+            <td class="nowrap uk-visible@m">
+                {{ b.mapid }}
+            </td>
+            
+            <td>
+                            <span class="uk-label {{ b.status_label }}"
+                                  style="vertical-align: middle">{{ b.status_text }}</span>
+            </td>
+            <td class="uk-visible@s">
+            <a  class="uk-margin-small-right uk-icon-link del" _id="{{ b.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+
+                </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<div id="building-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">地图画定制</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info" action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">大小</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <div class="uk-grid-small" uk-grid>
+                                <div class="uk-width-auto" style="height:40px;line-height:40px">宽
+                                </div>
+                                <div class="uk-width-2-5@s">
+                                    <input class="uk-input" name="length" type="text" placeholder="如 1">
+                                </div>
+                                <div class="uk-width-auto" style="height:40px;line-height:40px">高
+                                </div>
+                                <div class="uk-width-2-5@s">
+                                    
+                                    <input class="uk-input" name="width" type="text" placeholder="如 1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">图片</label>
+                        </div>
+                        <div class="uk-width-4-5@s upload_concept" >
+                            <div class="js-upload uk-placeholder uk-text-center">
+                                <span uk-icon="icon: cloud-upload"></span>
+                                <span class="uk-text-middle">上传你需要使用的图案</span>
+                                <br>
+                                <div uk-form-custom>
+                                    <input type="file" name="file" accept="image/*">
+                                    <span class="uk-link">选择图片</span>
+                                </div>
+                                <br>
+                                <span>建议长宽均为128px倍数</span>
+                            </div>
+                        </div>
+                        <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(
+        $(function () {
+            $(".building_options").change(function () {
+                $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
+                    "id": $(this).attr('_id'),
+                    "status": $(this).val()
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $("#save").click(function () {
+                $.ajax({
+                    url: '/declare/maps_add',
+                    type: 'POST',
+                    cache: false,
+                    data: new FormData($('[name=info]')[0]),
+                    dataType :"json",
+                    processData: false,
+                    contentType: false,
+                    success: function (obj) {
+                        if (obj.status === "ok") {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                                status: 'success',
+                                timeout: 2000
+                            });
+                            UIkit.modal("#building-box").hide();
+                        } else {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                                status: 'danger',
+                                timeout: 2000
+                            })
+                        }
+                    }
+                    
+                });
+            });
+        })
+    );
+    $(".del").click(function() {
+        var _this = $(this);
+        $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
+            "id":_this.attr("_id")
+        }, function(obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+                _this.parents("tr").remove();
+            } else {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+        }, "json")
+    });
+
+    
+</script>

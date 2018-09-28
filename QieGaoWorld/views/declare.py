@@ -7,12 +7,16 @@ from django.shortcuts import render
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.files.storage import default_storage
+
+from nbt import nbt
+from nbt.nbt import *
+import  os, json
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld.views.police import username_get_nickname
-from QieGaoWorld.models import DeclareAnimals, DeclareBuildings
+from QieGaoWorld.models import DeclareAnimals, DeclareBuildings,Conf,Maps
 from QieGaoWorld import settings,common
 import time
 
@@ -455,3 +459,107 @@ def buildings_detail(request):
         return HttpResponse(error_msg % "内部错误，请联系管理员！")
     except ObjectDoesNotExist:
         return HttpResponse(error_msg % "建筑不存在！")
+
+def maps_add(request):
+    
+    if len(request.FILES) == 0:
+        return HttpResponse(dialog('failed', 'danger', '请上传图片'))
+    try:
+        _width=int(request.POST.get("length",1))
+        _height=int(request.POST.get("width",1))
+    except ValueError:
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
+
+    file_obj = request.FILES["file"]
+    file_name = str(file_obj)
+    # save_path = ("tmp/%s" % uuid.uuid1()) + ".png"
+    # path = default_storage.save(save_path, ContentFile(file_obj.read()))
+
+    # path="buildings/perspective/299af52e-b836-11e8-a85b-e82a448ab4b0.png"
+    # tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+    # im = Image.open(tmp_file)
+    # width, height = im.size
+
+    # # resize 一下，破坏PE文件后面的附属信息（防止被当作图床）
+    # out = im.resize((width - 1, height - 1), Image.ANTIALIAS)
+    # out.save(tmp_file)
+    # print(tmp_file)
+    # nbt =NBTFile(tmp_file)
+    # buffer=None
+    # if file_obj.multiple_chunks():
+    #     buffer += file_obj.chunks()
+    # else:
+    #     buffer =file_obj.read()
+    
+
+    path = file_name.rfind(".")
+    if path == -1:
+        return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
+
+    suffix = file_name[path:]  # 取出后缀名
+
+    allowed_type = [".jpg", ".png", ".jpeg", ".gif"]
+    for eachType in allowed_type:
+        if suffix.lower() == eachType:
+            flag = True
+            break
+    conf=Conf.objects.get(key="maps_path")
+    if conf == None:
+        return HttpResponse(dialog('failed', 'danger', '请联系管理员配置地图路径'))
+    path=conf.content
+    conf=Conf.objects.get(key="maps_default_number")
+    if conf == None:
+        return HttpResponse(dialog('failed', 'danger', '请联系管理员配置基础编号'))
+    
+    number=int(conf.content)
+    if not os.path.exists(path+"map_%d.dat"%number):
+        return HttpResponse(dialog('failed', 'danger', '基础地图不存在，请联系管理员修改'))
+    nbt =NBTFile(path+"map_%d.dat"%number)
+    img=Image.open(file_obj,"r")
+    width, height = img.size
+    
+    __height=height/_height
+    __width=width/_width
+    print(_width,_height)
+    for i in range(0,_width):
+        for j in range(0,_height):
+            print(i,j)
+            im=img.crop((i*__width,j*__height,(i+1)*__width,(j+1)*__height))
+            nbt['data']['colors'].value=common.imagetonbt(im)
+            number=get_map_id(path,number)
+            if not number:
+                return HttpResponse(dialog('failed', 'success', '编号生成失败'))
+            print(path+"map_%d.dat"%number)
+            nbt.write_file(path+"map_%d.dat"%number)
+            maps=Maps(username=request.session['username'],mapid=number,status=False)
+            maps.save()
+            
+    return HttpResponse(dialog('ok', 'success', '添加成功'))
+
+@check_login
+@check_post
+def maps_list(request, operation):
+    if 'all' in operation:
+        maps = Maps.objects.all()
+    elif 'user' in operation:
+        maps = Maps.objects.filter(username=request.session.get('username', None)) 
+
+    for i in range(0, len(maps)):
+        maps[i].nickname = username_get_nickname(maps[i].username)
+
+        if maps[i].status:
+            maps[i].status_label = 'uk-label-success'
+            maps[i].status_text = '已领取'
+        else:
+            maps[i].status_label = ''
+            maps[i].status_text = '未领取'
+
+    return maps
+    
+def get_map_id(path,number):
+    while os.path.exists(path+"map_%d.dat"%number):
+        number+=1
+        if number >9999:
+            return false
+
+    return number
