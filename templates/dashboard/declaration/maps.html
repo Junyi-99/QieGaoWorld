@@ -101,6 +101,13 @@
             <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
             <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
         </div>
+        <div style="display:none" id="overlay">
+            <div class="uk-overlay-default uk-position-cover"></div>
+            <div class="uk-overlay uk-position-bottom uk-dark">
+                <p>地图生成中，请不要刷新页面</p>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -129,6 +136,7 @@
                 }, "json")
             });
             $("#save").click(function () {
+                $("#overlay").css("display","black");
                 $.ajax({
                     url: '/declare/maps_add',
                     type: 'POST',
@@ -152,6 +160,15 @@
                                 timeout: 2000
                             })
                         }
+                        $("#overlay").css("display","none");
+                    },
+                    error: function(){
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> 内部错误，请联系管理员' ,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                        $("#overlay").css("display","none");
                     }
                     
                 });
