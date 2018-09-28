@@ -503,15 +503,15 @@ def maps_add(request):
         if suffix.lower() == eachType:
             flag = True
             break
-    conf=Conf.objects.get(key="maps_path")
-    if conf == None:
+    conf=Conf.objects.filter(key="maps_path")
+    if len(conf) == 0:
         return HttpResponse(dialog('failed', 'danger', '请联系管理员配置地图路径'))
-    path=conf.content
-    conf=Conf.objects.get(key="maps_default_number")
-    if conf == None:
+    path=conf[0].content
+    conf=Conf.objects.filter(key="maps_default_number")
+    if len(conf) == 0:
         return HttpResponse(dialog('failed', 'danger', '请联系管理员配置基础编号'))
     
-    number=int(conf.content)
+    number=int(conf[0].content)
     if not os.path.exists(path+"map_%d.dat"%number):
         return HttpResponse(dialog('failed', 'danger', '基础地图不存在，请联系管理员修改'))
     nbt =NBTFile(path+"map_%d.dat"%number)
