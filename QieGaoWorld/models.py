@@ -138,3 +138,4 @@ class Maps(models.Model):
     username=models.CharField(max_length=100)
     mapid=models.IntegerField()
     status=models.BooleanField()
+    img=models.CharField(max_length=100)

@@ -16,6 +16,7 @@
     <thead>
     <tr>
         <th class="uk-width-medium">编号</th>
+        <th class="uk-width-medium">缩略图</th>
         
         <th class="uk-width-small">状态</th>
             <th class="uk-width-small uk-visible@s">操作</th>
@@ -26,6 +27,10 @@
         <tr>
             <td class="nowrap uk-visible@m">
                 {{ b.mapid }}
+            </td>
+            <td class="nowrap uk-visible@m">
+                <img src="{{ b.img }}" alt="">
+                
             </td>
             
             <td>
@@ -177,7 +182,7 @@
     );
     $(".del").click(function() {
         var _this = $(this);
-        $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
+        $.post("declare/maps_del?_=" + Date.parse(new Date()), {
             "id":_this.attr("_id")
         }, function(obj) {
             if (obj.status === "ok") {

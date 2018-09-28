@@ -520,18 +520,24 @@ def maps_add(request):
     
     __height=height/_height
     __width=width/_width
-    print(_width,_height)
     for i in range(0,_width):
         for j in range(0,_height):
-            print(i,j)
             im=img.crop((i*__width,j*__height,(i+1)*__width,(j+1)*__height))
+            im=im.resize((128,128))
             nbt['data']['colors'].value=common.imagetonbt(im)
             number=get_map_id(path,number)
             if not number:
                 return HttpResponse(dialog('failed', 'success', '编号生成失败'))
-            print(path+"map_%d.dat"%number)
+            im2=Image.new("RGB",(128,128))
+            im2.putdata(common.genimage(nbt['data']['colors'].value))
+            if not os.path.exists(os.path.join(settings.MEDIA_ROOT, "maps")):
+                os.mkdir(os.path.join(settings.MEDIA_ROOT, "maps"))
+            im2=im2.resize((64,64))
+            im2.save(os.path.join(settings.MEDIA_ROOT, "maps/maps_%d.jpg"%number),"JPEG")
+
             nbt.write_file(path+"map_%d.dat"%number)
-            maps=Maps(username=request.session['username'],mapid=number,status=False)
+            
+            maps=Maps(username=request.session['username'],mapid=number,status=False,img="static/media/maps/maps_%d.jpg"%number)
             maps.save()
             
     return HttpResponse(dialog('ok', 'success', '添加成功'))
@@ -540,10 +546,11 @@ def maps_add(request):
 @check_post
 def maps_list(request, operation):
     if 'all' in operation:
-        maps = Maps.objects.all()
+        maps = Maps.object.order_by("-id")
     elif 'user' in operation:
-        maps = Maps.objects.filter(username=request.session.get('username', None)) 
+        maps = Maps.objects.filter(username=request.session.get('username', None)).order_by("-id")
 
+    # maps=sorted(maps, key=lambda a: a.declare_time, reverse=True)
     for i in range(0, len(maps)):
         maps[i].nickname = username_get_nickname(maps[i].username)
 
@@ -563,3 +570,27 @@ def get_map_id(path,number):
             return false
 
     return number
+
+@check_login
+def maps_del(request):
+    try:
+        id_ = int(request.POST.get('id', None))
+        username = request.session.get('username', None)
+    except ValueError:
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
+
+    try:
+        obj =  Maps.objects.get(id=id_)
+        # 1、检查是否是当前用户的状态为“审核不通过”的建筑
+        if  not (obj.username == username or ('%op%' in request.session.get('permissions', '%default%') ) ) :
+            return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
+        if obj.status:
+            return HttpResponse(dialog('failed', 'danger', '已领取地图画无法删除！'))
+        obj.delete()
+        common.logs("用户:%s(%d) 删除了地图画：%s(id:%s,user:%s)" % (request.session['username'],request.session['id'],obj.mapid,obj.id,obj.username),"地图画管理")
+        return HttpResponse(dialog('ok', 'success', '删除地图画成功'))
+    except MultipleObjectsReturned as e:
+        logging.error(e)
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
+    except ObjectDoesNotExist:
+        return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))

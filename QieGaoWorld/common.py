@@ -29,7 +29,7 @@ def page(url,count,index=1):
 
 def imagetonbt(img,approximate1=True,optimized=True,lookupindex=10):
     img.convert("RGB")
-    img=img.resize((128,128))
+    
     rgbdata = img.getdata()
     try:
         if approximate1:
@@ -62,6 +62,10 @@ def colordifference(testcolor,comparecolor):
             (testcolor[1]-comparecolor[1])**2+
             (testcolor[2]-comparecolor[2])**2)
     return d
+
+def genimage(colordata):
+    rgbdata = [allcolors[v] for v in colordata]
+    return rgbdata
 
 alphacolor = (0,0,0)
 

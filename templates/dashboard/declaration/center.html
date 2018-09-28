@@ -184,6 +184,7 @@
                     <thead>
                     <tr>
                         <th class="uk-width-medium">编号</th>
+                        <th class="uk-width-medium">缩略图</th>
                         <th class="uk-width-small">定制用户</th>
                         <th class="uk-width-small">状态</th>
                     </tr>
@@ -195,8 +196,11 @@
                                 {{ b.mapid }}
                             </td>
                             <td class="nowrap uk-visible@m">
-                                    {{ b.nickname }}
-                                </td>
+                                {{ b.nickname }}
+                            </td>
+                            <td class="nowrap uk-visible@m">
+                                <img src="{{ b.img }}" alt="">
+                            </td>
                             <td>
                                             <span class="uk-label {{ b.status_label }}"
                                                     style="vertical-align: middle">{{ b.status_text }}</span>
