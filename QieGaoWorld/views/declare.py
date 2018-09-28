@@ -586,6 +586,7 @@ def maps_del(request):
             return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
         if obj.status:
             return HttpResponse(dialog('failed', 'danger', '已领取地图画无法删除！'))
+        os.unlink(os.path.join(os.getcwd(),obj.img))
         obj.delete()
         common.logs("用户:%s(%d) 删除了地图画：%s(id:%s,user:%s)" % (request.session['username'],request.session['id'],obj.mapid,obj.id,obj.username),"地图画管理")
         return HttpResponse(dialog('ok', 'success', '删除地图画成功'))
@@ -594,3 +595,4 @@ def maps_del(request):
         return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
     except ObjectDoesNotExist:
         return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
+
