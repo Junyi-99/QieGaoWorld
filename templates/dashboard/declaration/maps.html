@@ -1,4 +1,9 @@
 {% load static %}
+<style>
+    #img img{
+        margin: 5px;
+    }
+</style>
 <h2>地图画定制
     <small style="color: #666666; font-size: medium">Maps Customize</small>
     <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
@@ -102,6 +107,25 @@
                                 <span>建议长宽均为128px倍数</span>
                             </div>
                         </div>
+                        
+                        <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">预览</label>
+                        </div>
+                        <div class="uk-width-4-5@s upload_concept" >
+                            <p class="uk-text-meta uk-text-small">该预览为原图预览，与实际地图效果有误差，仅供参考</p>
+                            <p class="uk-text-meta uk-text-small">一切以提交后产生缩略图为准</p>
+                            <p class="uk-text-meta uk-text-small">缩略图生成较慢，请耐心等待或直接提交</p>
+                                <div id="img">
+                                        <img src="" id="file-show" alt="">
+                                    </div>
+                                    <div ><img style="display:none" id="file-old" src="" alt=""></div>
+                        </div>
+                        
                         <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
                     </div>
                 </div>
@@ -205,7 +229,115 @@
                 })
             }
         }, "json")
-    });
 
+        
+    });
+    $("[name=length]").change(function(){
+        changeImg();
+    });
+    $("[name=width]").change(function(){
+        changeImg();
+    });;
+    var oFileReader = new FileReader(); // 创建一个FileReader对象
+    var rFilter = /^(?:image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i; // 验证图片的正则
+    var oPreview = $("#file-show")[0]; // 预览图
+    var data="";
+    
+    oFileReader.onload = function (event) {
+        
+        data=event.target.result;
+        $("#file-old").css("display","block");
+        width=height=0;
+        changeImg()
+    }
+    $("[name=file]").change(function() {
+        
+        var oFile = $(this)[0].files[0];
+        console.log(oFile)
+        if (oFile == undefined) {
+            console.log("请选择图片")
+            return ;
+        }
+        if (!rFilter.test(oFile.type)) {
+            console.log("请选择图片")
+            return ;
+        }
+    
+        if (window.FileReader) {
+            /*
+            读取指定的Blob对象或File对象中的内容。
+            当读取操作完成时，会自动尝试去调用onloadend事件。
+            同时，result属性将包含一个data:URL表示读取的文件的内容。
+             */
+            oFileReader.readAsDataURL(oFile);
+        } else if (navigator.appName === 'Microsoft Internet Explorer') { // IE浏览器
+            // IE10以下版本不支持FileReader()构造函数，利用滤镜兼容旧版本的IE
+            oPreview.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)';
+            oPreview.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).value;
+        }
+    })
+    
+    var width=height=1;
+    var isrun=false;
+    function changeImg(){
+        isrun=false;
+        $("#img").empty();
+        
+        if(data=="") return false; 
+        var w=$("[name=length]").val()
+        var h=$("[name=width]").val()
+        if(w==undefined || h==undefined) return false;
+        if(w <=0 || h<=0) return false;
+        if(w ==width && h == width) return false;
+        console.log("缩略图生成中")
+        width=w;height=h;
+        var img=document.createElement("img");
+    
+        img.src=data;
+        $("#file-old").attr("src",img.src);
+        canvas = document.createElement("canvas"),
+        context = canvas.getContext("2d");
+        var _img=$("#file-old");
+        canvas.width = _img.width();
+        canvas.height = _img.height();
+        context.drawImage(img,0,0,canvas.width,canvas.height);
+        _width=canvas.width/width;
+        _height=canvas.height/height;
+        isrun=true;
+        for(var j=0;j<height;j++){
+            
+            for( var i=0;i<width;i++){
+                if(!isrun)return;
+                canvas1 = document.createElement("canvas"),
+                context1 = canvas1.getContext("2d");
+                canvas1.width=_width;
+                canvas1.height=_width;
+                context1.putImageData(context.getImageData(i*_width,j*_height,(i+1)*_width,(j+1)*_height),0,0);
+                $("#img").append("<img style='width:"+(($("#img").width()-width*10)/width)+"px;' src='"+canvas1.toDataURL()+"' />")
+            }
+        }
+        $("#file-old").css("display","none");
+
+    }
+
+    /*var canvas = document.createElement("canvas"),
+			    context = canvas.getContext("2d");
+			canvas.width = div.clientWidth;
+			canvas.height = div.clientHeight;
+			// 将 img1 加入画布
+			context.drawImage(img1,0,0,canvas.width,canvas.height);
+			// 将 img2 加入画布
+			context.drawImage(img2,200,200,180,180);
+			context.drawImage(img4,100,120,60,60);
+			context.fillStyle = 'red';  
+	        context.font = '28px Adobe Ming Std';  
+	        context.fillText(text1,100,200);  
+	        context.stroke();  
+			// 将画布内容导出
+			// canvas.toDataURL()就是把图片转换成base64 然后用JQ的attr插进去
+			var src = canvas.toDataURL("image/png");
+			
+			img3.src = src;
+            */
     
 </script>
