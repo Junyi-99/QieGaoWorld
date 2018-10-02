@@ -139,3 +139,9 @@ class Maps(models.Model):
     mapid=models.IntegerField()
     status=models.BooleanField()
     img=models.CharField(max_length=100)
+class Signin(models.Model):
+    username=models.CharField(max_length=100)
+    day=models.IntegerField()
+    year=models.IntegerField()
+    month=models.IntegerField()
+    reward=models.CharField(max_length=100)
