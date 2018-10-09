@@ -5,11 +5,11 @@
 <hr class="uk-margin"/>
 <p class="uk-text-meta">各位村民，这里是申报大厅，你可以查看所有玩家的申报项目。</p>
 <ul uk-tab>
-    <li class="uk-active"><a href="#">建筑申报</a></li>
-    <li><a href="#">动物申报</a></li>
+    <li class="uk-active"><a href="#">建筑申报({{ buildings|length}}) </a></li>
+    <li><a href="#">动物申报({{ animals|length}}) </a></li>
     {% if '%op%' in permissions %}
-    <li><a href="#">头颅定制</a></li>
-    <li><a href="#">地图定制</a></li>
+    <li><a href="#">头颅定制({{ skull|length}})</a></li>
+    <li><a href="#">地图定制({{ maps|length}})</a></li>
     {% endif %}
 </ul>
 {#TODO: 把这些个表单什么的，分离开，让代码复用率变高。就是把center.html的和buildings.html的#}

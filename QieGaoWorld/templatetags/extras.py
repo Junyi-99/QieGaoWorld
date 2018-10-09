@@ -19,3 +19,7 @@ def option(value,args):
         option +='<option value="%s"%s>%s</option>' % (str(v.id),select,str(v.value))
     
     return option
+
+@register.filter
+def length(value,args):
+    return len(value)
