@@ -1,9 +1,4 @@
 {% load static %}
-<style>
-    #img img{
-        margin: 5px;
-    }
-</style>
 <h2>地图画定制
     <small style="color: #666666; font-size: medium">Maps Customize</small>
     <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
@@ -70,28 +65,6 @@
                 <div class="uk-margin">
                     <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-1-5@s">
-                            <label class="uk-form-label" for="form-horizontal-text">大小</label>
-                        </div>
-                        <div class="uk-width-4-5@s">
-                            <div class="uk-grid-small" uk-grid>
-                                <div class="uk-width-auto" style="height:40px;line-height:40px">宽
-                                </div>
-                                <div class="uk-width-2-5@s">
-                                    <input class="uk-input" name="length" type="text" placeholder="如 1">
-                                </div>
-                                <div class="uk-width-auto" style="height:40px;line-height:40px">高
-                                </div>
-                                <div class="uk-width-2-5@s">
-                                    
-                                    <input class="uk-input" name="width" type="text" placeholder="如 1">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-margin">
-                    <div class="uk-grid-small" uk-grid>
-                        <div class="uk-width-1-5@s">
                             <label class="uk-form-label" for="form-horizontal-text">图片</label>
                         </div>
                         <div class="uk-width-4-5@s upload_concept" >
@@ -114,6 +87,29 @@
                 <div class="uk-margin">
                     <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">大小</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <div class="uk-grid-small" uk-grid>
+                                <div class="uk-width-auto" style="height:40px;line-height:40px">宽
+                                </div>
+                                <div class="uk-width-2-5@s">
+                                    <input class="uk-input" name="length" type="text" placeholder="如 1">
+                                </div>
+                                <div class="uk-width-auto" style="height:40px;line-height:40px">高
+                                </div>
+                                <div class="uk-width-2-5@s">
+                                    
+                                    <input class="uk-input" name="width" type="text" placeholder="如 1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
                             <label class="uk-form-label" for="form-horizontal-text">预览</label>
                         </div>
                         <div class="uk-width-4-5@s upload_concept" >
@@ -121,9 +117,11 @@
                             <p class="uk-text-meta uk-text-small">一切以提交后产生缩略图为准</p>
                             <p class="uk-text-meta uk-text-small">缩略图生成较慢，请耐心等待或直接提交</p>
                                 <div id="img">
-                                        <img src="" id="file-show" alt="">
                                     </div>
-                                    <div ><img style="display:none" id="file-old" src="" alt=""></div>
+                                    <div >
+                                        <canvas id="canvas_full" style="display: none;" width="128" height="128"></canvas>
+                                        <canvas id="canvas" style="display: none;" width="128" height="128"></canvas>
+                                        <img id="original_img" style="display:none" width="256" height="256">
                         </div>
                         
                         <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
@@ -171,6 +169,58 @@
             });
             $("#save").click(function () {
                 $("#overlay").css("display","block");
+                var time_start = new Date();
+      
+                var xcenter =  '0';
+                var zcenter = '0';
+                var dim =  '0';
+            
+            
+                var randomid = "";
+            
+                var responses ="";
+                var responses_count = 0;
+                if (all_maps_data) {
+                for (var i = 0; i < width; i++) {
+                    for (var j = 0; j < height; j++) {
+                        map_item = [];
+                        var co;
+                        for (var k = 0; k < 128; k++) {
+                            for (var l = 0; l < 128; l++) {
+                            co = all_maps_data[((j * width * 128 * 128) + i * 128) +
+                                l + width * 128 * k];
+                            if (co > 127) {
+                                co = co - 256;
+                            }
+                            map_item.push(co);
+                            }
+                        }
+                        
+                        responses+=(i*width+j)+":"+JSON.stringify(map_item)+";";
+                    
+                    }
+                }
+                
+                    $.post("/declare/maps_add",{data:(responses),width:width,height:height},function(obj){
+                        if (obj.status === "ok") {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                                status: 'success',
+                                timeout: 2000
+                            });
+                            UIkit.modal("#building-box").hide();
+                        } else {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                                status: 'danger',
+                                timeout: 2000
+                            })
+                        }
+                        $("#overlay").css("display","none");
+                    },"json");
+                }
+                
+                return false;
                 $.ajax({
                     url: '/declare/maps_add',
                     type: 'POST',
@@ -238,106 +288,144 @@
     $("[name=width]").change(function(){
         changeImg();
     });;
-    var oFileReader = new FileReader(); // 创建一个FileReader对象
-    var rFilter = /^(?:image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i; // 验证图片的正则
-    var oPreview = $("#file-show")[0]; // 预览图
-    var data="";
-    
-    oFileReader.onload = function (event) {
-        
-        data=event.target.result;
-        $("#file-old").css("display","block");
-        width=height=0;
-        changeImg()
-    }
+
+    var img,all_maps_data,canvas_full = document.getElementById('canvas_full'),
+    ctx_full = document.getElementById('canvas_full').getContext('2d'),
+    ctx = document.getElementById('canvas').getContext('2d'),
+    canvas = document.getElementById('canvas');
     $("[name=file]").change(function() {
-        
-        var oFile = $(this)[0].files[0];
-        console.log(oFile)
-        if (oFile == undefined) {
-            console.log("请选择图片")
-            return ;
-        }
-        if (!rFilter.test(oFile.type)) {
-            console.log("请选择图片")
-            return ;
-        }
-    
-        if (window.FileReader) {
-            /*
-            读取指定的Blob对象或File对象中的内容。
-            当读取操作完成时，会自动尝试去调用onloadend事件。
-            同时，result属性将包含一个data:URL表示读取的文件的内容。
-             */
-            oFileReader.readAsDataURL(oFile);
-        } else if (navigator.appName === 'Microsoft Internet Explorer') { // IE浏览器
-            // IE10以下版本不支持FileReader()构造函数，利用滤镜兼容旧版本的IE
-            oPreview.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)';
-            oPreview.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).value;
+        url = window.URL || window.webkitURL;
+        var f = $(this)[0].files[0];
+        img = new Image();
+        src = url.createObjectURL(f);
+        original_img = document.getElementById('original_img')
+
+        img.src = src;
+        original_img.src = src;
+        img.onload = function() {
+
+            url.revokeObjectURL(src);
+            changeImg()
         }
     })
     
-    var width=height=1;
+    var width=height=0;
     var isrun=false;
     function changeImg(){
-        isrun=false;
-        $("#img").empty();
         
-        if(data=="") return false; 
+        
+        if(img==undefined)return false;
         var w=$("[name=length]").val()
         var h=$("[name=width]").val()
         if(w==undefined || h==undefined) return false;
         if(w <=0 || h<=0) return false;
         if(w ==width && h == width) return false;
-        console.log("缩略图生成中")
+        $("#img").empty();
+        $("#overlay").css("display","block");
         width=w;height=h;
-        var img=document.createElement("img");
-    
-        img.src=data;
-        $("#file-old").attr("src",img.src);
-        canvas = document.createElement("canvas"),
-        context = canvas.getContext("2d");
-        var _img=$("#file-old");
-        canvas.width = _img.width();
-        canvas.height = _img.height();
-        context.drawImage(img,0,0,canvas.width,canvas.height);
-        _width=canvas.width/width;
-        _height=canvas.height/height;
-        isrun=true;
-        for(var j=0;j<height;j++){
-            
-            for( var i=0;i<width;i++){
-                if(!isrun)return;
-                canvas1 = document.createElement("canvas"),
-                context1 = canvas1.getContext("2d");
-                canvas1.width=_width;
-                canvas1.height=_width;
-                context1.putImageData(context.getImageData(i*_width,j*_height,(i+1)*_width,(j+1)*_height),0,0);
-                $("#img").append("<img style='width:"+(($("#img").width()-width*10)/width)+"px;' src='"+canvas1.toDataURL()+"' />")
-            }
-        }
-        $("#file-old").css("display","none");
 
+        var canvasCopy = document.createElement("canvas");
+        var copyContext = canvasCopy.getContext("2d");
+        var maxWidth = 128 * width,
+        maxHeight = 128 * height;
+
+        var ratio = 1;
+        var spaceW = 0;
+        var spaceH = 0;
+
+        if (img.width > img.height) {
+            ratio = maxWidth / img.width;
+        } else {
+            ratio = maxHeight / img.height;
+        }
+
+        canvasCopy.width = img.width;
+        canvasCopy.height = img.height;
+        copyContext.drawImage(img, 0, 0);
+
+        spaceH = (maxHeight - (img.height * ratio)) / 2;
+        spaceW = (maxWidth - (img.width * ratio)) / 2;
+
+        canvas_full.width = 128 * width;
+        canvas_full.height = 128 * height;
+
+        canvas_full.style.width = canvas_full.width * 2;
+        canvas_full.style.height = canvas_full.height * 2;
+
+        ctx_full.imageSmoothingEnabled = true;
+        ctx_full.drawImage(canvasCopy, 0, 0,
+            canvasCopy.width, canvasCopy.height,
+            0, 0, canvas_full.width , canvas_full.height );
+
+
+        selected_ratio = width / height;
+        map_x = 0;
+        map_y = 0;
+
+
+
+        reducecolors()
+        
     }
 
-    /*var canvas = document.createElement("canvas"),
-			    context = canvas.getContext("2d");
-			canvas.width = div.clientWidth;
-			canvas.height = div.clientHeight;
-			// 将 img1 加入画布
-			context.drawImage(img1,0,0,canvas.width,canvas.height);
-			// 将 img2 加入画布
-			context.drawImage(img2,200,200,180,180);
-			context.drawImage(img4,100,120,60,60);
-			context.fillStyle = 'red';  
-	        context.font = '28px Adobe Ming Std';  
-	        context.fillText(text1,100,200);  
-	        context.stroke();  
-			// 将画布内容导出
-			// canvas.toDataURL()就是把图片转换成base64 然后用JQ的attr插进去
-			var src = canvas.toDataURL("image/png");
-			
-			img3.src = src;
-            */
-    
+    function reducecolors(ev) {
+        var selected_ratio = width / height;
+
+        var ct= document.getElementById('canvas_full');
+        var ctx = ct.getContext('2d');
+
+        var pixelData = ctx.getImageData(0, 0,ct.width,ct.height);
+
+        
+        var worker = new Worker("static/assets/js/reduce_colors_worker.js");
+        
+        worker.postMessage({pixelData: pixelData,
+            new_colors:  '181',
+            colourSpace:  'rgba',
+            dithering:  'no',
+            transparency:  '50'
+        });
+        
+        var time_start = new Date();
+        var duration = 0;
+        
+        worker.onmessage = function(oEvent) {
+            if (oEvent.data.step == 'finished') {
+            ctx.putImageData(oEvent.data.pixelData, 0, 0);
+            all_maps_data = oEvent.data.all_maps_data;
+        
+        
+            for(var y=0;y<height;y++){
+                for (var x=0;x<width;x++){
+
+                    drawCanvas(x, y);
+                }
+            }
+        
+        
+            duration = Math.abs(time_start - new Date()) / 1000;
+            } else if (oEvent.data.step == 'percentage') {
+            $('#reducecolors_progress').html(oEvent.data.percentage + '% complete.');
+            } else if (oEvent.data.step == 'debug') {
+            console.log(oEvent.data.message);
+            }
+        };
+        
+    }
+    function drawCanvas(x, y) {
+        var canvas1 = document.createElement("canvas");
+        var ctx2 = canvas1.getContext("2d");
+        canvas1.height = 128;
+        canvas1.width = 128;
+        $(canvas1).width(($("#img").width()-width*2)/width);
+        $(canvas1).css("margin","1px");
+        
+        ctx2.clearRect(0, 0, canvas1.width, canvas1.height);
+        
+        ctx2.drawImage(canvas_full, 128 * x, 128 * y, 128, 128,
+            0, 0, 128, 128);
+        ctx2.scale(4, 4);
+        $("#img").append($(canvas1))
+        $("#overlay").css("display","none");
+    }
 </script>

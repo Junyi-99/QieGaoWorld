@@ -8,9 +8,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.files.storage import default_storage
 
-from nbt import nbt
+# from nbt import nbt
 from nbt.nbt import *
-import  os, json
+import   json
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
@@ -461,48 +461,20 @@ def buildings_detail(request):
         return HttpResponse(error_msg % "建筑不存在！")
 
 def maps_add(request):
-    
-    if len(request.FILES) == 0:
+
+    data=request.POST.get("data",None)
+    _height=int(request.POST.get("height",1))
+    _width=int(request.POST.get("width",1))
+    if data == None:
         return HttpResponse(dialog('failed', 'danger', '请上传图片'))
-    try:
-        _width=int(request.POST.get("length",1))
-        _height=int(request.POST.get("width",1))
-    except ValueError:
-        return HttpResponse(dialog('failed', 'danger', '参数错误'))
-
-    file_obj = request.FILES["file"]
-    file_name = str(file_obj)
-    # save_path = ("tmp/%s" % uuid.uuid1()) + ".png"
-    # path = default_storage.save(save_path, ContentFile(file_obj.read()))
-
-    # path="buildings/perspective/299af52e-b836-11e8-a85b-e82a448ab4b0.png"
-    # tmp_file = os.path.join(settings.MEDIA_ROOT, path)
-    # im = Image.open(tmp_file)
-    # width, height = im.size
-
-    # # resize 一下，破坏PE文件后面的附属信息（防止被当作图床）
-    # out = im.resize((width - 1, height - 1), Image.ANTIALIAS)
-    # out.save(tmp_file)
-    # print(tmp_file)
-    # nbt =NBTFile(tmp_file)
-    # buffer=None
-    # if file_obj.multiple_chunks():
-    #     buffer += file_obj.chunks()
-    # else:
-    #     buffer =file_obj.read()
     
-
-    path = file_name.rfind(".")
-    if path == -1:
-        return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
-
-    suffix = file_name[path:]  # 取出后缀名
-
-    allowed_type = [".jpg", ".png", ".jpeg", ".gif"]
-    for eachType in allowed_type:
-        if suffix.lower() == eachType:
-            flag = True
-            break
+    maps=data.split(";")
+    map=[]
+    for m in maps:
+        a=m.split(":")
+        if len(a)<2:
+            continue
+        map.insert(int(a[0]),json.loads(a[1]))
     conf=Conf.objects.filter(key="maps_path")
     if len(conf) == 0:
         return HttpResponse(dialog('failed', 'danger', '请联系管理员配置地图路径'))
@@ -515,30 +487,36 @@ def maps_add(request):
     if not os.path.exists(path+"map_%d.dat"%number):
         return HttpResponse(dialog('failed', 'danger', '基础地图不存在，请联系管理员修改'))
     nbt =NBTFile(path+"map_%d.dat"%number)
-    img=Image.open(file_obj,"r")
-    width, height = img.size
-    
-    __height=height/_height
-    __width=width/_width
-    for i in range(0,_width):
-        for j in range(0,_height):
-            im=img.crop((i*__width,j*__height,(i+1)*__width,(j+1)*__height))
-            im=im.resize((128,128))
-            nbt['data']['colors'].value=common.imagetonbt(im)
-            number=get_map_id(path,number)
-            if not number:
-                return HttpResponse(dialog('failed', 'success', '编号生成失败'))
-            im2=Image.new("RGB",(128,128))
-            im2.putdata(common.genimage(nbt['data']['colors'].value))
-            if not os.path.exists(os.path.join(settings.MEDIA_ROOT, "maps")):
-                os.mkdir(os.path.join(settings.MEDIA_ROOT, "maps"))
-            im2=im2.resize((64,64))
-            im2.save(os.path.join(settings.MEDIA_ROOT, "maps/maps_%d.jpg"%number),"JPEG")
+    for a in map:
+        all_maps_data=a
+        map_item=[]
+        for k in range(0,128):
+            for l in range(0,128):
+                co = all_maps_data[l +  128 * k]
+                if (co<0) :
+                    co = co + 256
+                map_item.append(co)
 
-            nbt.write_file(path+"map_%d.dat"%number)
+        nbt['data']['colors'].value=(map_item)
+        
+        number=get_map_id(path,number)
+        if not number:
+            return HttpResponse(dialog('failed', 'success', '编号生成失败'))
+        im2=Image.new("RGB",(128,128))
+        
+        
             
-            maps=Maps(username=request.session['username'],mapid=number,status=False,img="static/media/maps/maps_%d.jpg"%number)
-            maps.save()
+        
+        im2.putdata(common.genimage(map_item),0,0)
+        if not os.path.exists(os.path.join(settings.MEDIA_ROOT, "maps")):
+            os.mkdir(os.path.join(settings.MEDIA_ROOT, "maps"))
+        im2=im2.resize((64,64))
+        im2.save(os.path.join(settings.MEDIA_ROOT, "maps/maps_%d.jpg"%number),"JPEG")
+
+        nbt.write_file(path+("map_%d.dat"%number))
+        
+        maps=Maps(username=request.session['username'],mapid=number,status=False,img="static/media/maps/maps_%d.jpg"%number)
+        maps.save()
             
     return HttpResponse(dialog('ok', 'success', '添加成功'))
 

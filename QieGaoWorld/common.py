@@ -48,10 +48,15 @@ def imagetonbt(img,approximate1=True,optimized=True,lookupindex=10):
     # Image.new("RGB",(self.width,self.height))
 
 def approximate(color,lookupindex=10):
+    uselookupdict = False
+
     try:
         return allcolorsinversemap[color]
     except KeyError:
-        if  lookupindex in estimationlookup:
+
+        if uselookupdict and lookupindex in estimationlookupdict:
+            returnestimationlookupdict[lookupindex][(color[0]*lookupindex//255,color[1]*lookupindex//255,color[2]*lookupindex//255)]
+        elif not uselookupdict and lookupindex in estimationlookup:
             return estimationlookup[lookupindex][color[0]*lookupindex//255][color[1]*lookupindex//255][color[2]*lookupindex//255]
         else:
             color = min(allcolors,key=partial(colordifference,color))
