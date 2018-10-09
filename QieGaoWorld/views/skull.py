@@ -43,8 +43,7 @@ def skull_add(request):
     return HttpResponse(dialog('ok', 'success', '添加成功!'))
 
 def skull_list(request,_all=False):
-    # if _all:
-    if '%op%' not in request.session.get('permissions', ''):
+    if _all:
         skull=SkullCustomize.objects.all()
     else:
         skull=SkullCustomize.objects.filter(user_id=request.session['id'])

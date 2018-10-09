@@ -12,7 +12,7 @@ from .views.police import page_police_hall
 from .views.settings import page_settings
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
-from .views import system,society,skull,task,user,declare
+from .views import system,society,skull,task,user,declare,signin
 from QieGaoWorld import parameter as Para 
 from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs
 from QieGaoWorld import common
@@ -105,13 +105,20 @@ def page_announcement(request):
 def page_declaration_center(request):
     animals = animals_list(request, 'all')
     buildings = buildings_list(request, 'all')
-    content = {
-        'animals': animals,
-        'buildings': buildings,
-        'skull': skull.skull_list(request,True),
-        'maps': declare.maps_list(request,"all"),
-        'permissions': request.session['permissions'],
-    }
+    if '%op%'  in request.session.get('permissions', ''):
+        content = {
+            'animals': animals,
+            'buildings': buildings,
+            'skull': skull.skull_list(request,True),
+            'maps': declare.maps_list(request,"all"),
+            'permissions': request.session['permissions'],
+        }
+    else:
+        content = {
+            'animals': animals,
+            'buildings': buildings,
+            'permissions': request.session['permissions'],
+        }
     return render(request, "dashboard/declaration/center.html", content)
 
 
@@ -312,6 +319,14 @@ def page_group_list(request):
     }
 
     return render(request, "dashboard/system/group.html", context)
+def page_rawerd(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+        "list":signin.reward_list(request),
+    }
+
+    return render(request, "dashboard/signin/reward.html", context)
 
 @ensure_csrf_cookie
 @check_login
@@ -386,5 +401,7 @@ def dashboard_page(request):
         return page_user_list(request)
     if request.POST.get("page", None) == "group_list":
         return page_group_list(request)
+    if request.POST.get("page", None) == "reward":
+        return page_rawerd(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))
