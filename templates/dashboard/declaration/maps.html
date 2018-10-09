@@ -428,4 +428,18 @@
         $("#img").append($(canvas1))
         $("#overlay").css("display","none");
     }
+    
+    $("#img ").on("click","canvas", function(){
+        if($(this).hasClass("active")){
+            $("#img canvas").css("display","");
+            $(this).css("width",($("#img").width()-width*2)/width);
+            $(this).removeClass("active");
+        }else{
+            $("#img canvas").css("display","none");
+            $(this).css("width",$("#img").width());
+            $(this).addClass("active");
+            $(this).css("display","block");
+        }
+        
+    })
 </script>

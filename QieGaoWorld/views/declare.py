@@ -523,7 +523,8 @@ def maps_add(request):
 @check_login
 @check_post
 def maps_list(request, operation):
-    if 'all' in operation:
+    if '%op%' not in request.session.get('permissions', ''):
+    # if 'all' in operation:
         maps = Maps.objects.order_by("-id")
     elif 'user' in operation:
         maps = Maps.objects.filter(username=request.session.get('username', None)).order_by("-id")
