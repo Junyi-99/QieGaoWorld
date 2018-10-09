@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 from QieGaoWorld import settings
 
-
+import django.utils.timezone as timezone
 
 class User(AbstractUser):
     username = models.CharField(max_length=100,unique=True)  # 用户名
@@ -145,3 +145,21 @@ class Signin(models.Model):
     year=models.IntegerField()
     month=models.IntegerField()
     reward=models.CharField(max_length=100)
+
+class Reward(models.Model):
+    name=models.CharField(max_length=100)
+    status=models.BooleanField(default=True)
+    time=models.DateTimeField(default=timezone.now)
+    start_time=models.CharField(max_length=20)
+    end_time=models.CharField(max_length=20)
+    type=models.CharField(max_length=20) # skull:头颅，map：地图
+    mode=models.CharField(max_length=20)
+    reward_id=models.TextField()
+
+class RewardMx(models.Model):
+    
+    
+    number=models.IntegerField()
+    
+    reward_id=models.IntegerField(default=0)
+
