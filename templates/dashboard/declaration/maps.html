@@ -50,7 +50,10 @@
     {% endfor %}
     </tbody>
 </table>
-
+{% autoescape off %}
+      
+    {{ page }}
+    {% endautoescape %}
 
 <div id="building-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
@@ -136,6 +139,7 @@
         <div style="display:none" id="overlay">
             <div class="uk-overlay-default uk-position-cover"></div>
             <div class="uk-overlay uk-position-bottom uk-dark">
+                <progress id="js-progressbar" class="uk-progress" value="0" max="100"></progress>
                 <p>地图生成中，请不要刷新页面</p>
             </div>
 
@@ -180,85 +184,77 @@
             
                 var responses ="";
                 var responses_count = 0;
+                $("#js-progressbar").attr("max",width*height);
                 if (all_maps_data) {
-                for (var i = 0; i < width; i++) {
-                    for (var j = 0; j < height; j++) {
-                        map_item = [];
-                        var co;
-                        for (var k = 0; k < 128; k++) {
-                            for (var l = 0; l < 128; l++) {
-                            co = all_maps_data[((j * width * 128 * 128) + i * 128) +
-                                l + width * 128 * k];
-                            if (co > 127) {
-                                co = co - 256;
+                    for (var i = 0; i < width; i++) {
+                        for (var j = 0; j < height; j++) {
+                            map_item = [];
+                            var co;
+                            for (var k = 0; k < 128; k++) {
+                                for (var l = 0; l < 128; l++) {
+                                co = all_maps_data[((j * width * 128 * 128) + i * 128) +
+                                    l + width * 128 * k];
+                                if (co > 127) {
+                                    co = co - 256;
+                                }
+                                map_item.push(co);
+                                }
                             }
-                            map_item.push(co);
+                            
+                            responses+=(i*height+j)+":"+JSON.stringify(map_item)+";";
+                            if(i*width+j!=0 && (i*height+j)%20==0){
+                                tijiao(responses,(i*height+j));
+                                responses="";
+                                _status[(i*height+j)]=false;
                             }
                         }
-                        
-                        responses+=(i*width+j)+":"+JSON.stringify(map_item)+";";
-                    
                     }
-                }
-                
-                    $.post("/declare/maps_add",{data:(responses),width:width,height:height},function(obj){
-                        if (obj.status === "ok") {
-                            UIkit.notification({
-                                message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
-                                status: 'success',
-                                timeout: 2000
-                            });
-                            UIkit.modal("#building-box").hide();
-                        } else {
-                            UIkit.notification({
-                                message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
-                                status: 'danger',
-                                timeout: 2000
-                            })
-                        }
-                        $("#overlay").css("display","none");
-                    },"json");
+                    tijiao(responses,(i*height+j));
+                    _status[(i*height+j)]=false;
+                    max=true;
+                    
                 }
                 
                 return false;
-                $.ajax({
-                    url: '/declare/maps_add',
-                    type: 'POST',
-                    cache: false,
-                    data: new FormData($('[name=info]')[0]),
-                    dataType :"json",
-                    processData: false,
-                    contentType: false,
-                    success: function (obj) {
-                        if (obj.status === "ok") {
-                            UIkit.notification({
-                                message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
-                                status: 'success',
-                                timeout: 2000
-                            });
-                            UIkit.modal("#building-box").hide();
-                        } else {
-                            UIkit.notification({
-                                message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
-                                status: 'danger',
-                                timeout: 2000
-                            })
-                        }
-                        $("#overlay").css("display","none");
-                    },
-                    error: function(){
-                        UIkit.notification({
-                            message: '<span uk-icon=\'icon: close\'></span> 内部错误，请联系管理员' ,
-                            status: 'danger',
-                            timeout: 2000
-                        })
-                        $("#overlay").css("display","none");
-                    }
-                    
-                });
+                
             });
         })
     );
+    var _status=[];
+    var max=false;
+    function tijiao(responses,num){
+        $.post("/declare/maps_add",{data:(responses)},function(obj){
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+                UIkit.modal("#building-box").hide();
+                status[num]=true;
+            } else {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+            if(num>$("#js-progressbar").attr("value")){
+
+                $("#js-progressbar").attr("value",num);
+            }
+            if(max){
+                _status.forEach(function(value){
+                    if(value==false){
+                        return false;
+                    }
+                });
+                $("#overlay").css("display","none");
+                window.location.reload();
+            }
+        },"json");
+    }
+
     $(".del").click(function() {
         var _this = $(this);
         $.post("declare/maps_del?_=" + Date.parse(new Date()), {
