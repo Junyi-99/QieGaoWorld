@@ -172,6 +172,7 @@
                 }, "json")
             });
             $("#save").click(function () {
+                if(w <=0 || h<=0) return false;
                 $("#overlay").css("display","block");
                 var time_start = new Date();
       
