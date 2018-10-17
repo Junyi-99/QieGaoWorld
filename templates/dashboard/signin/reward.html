@@ -1,0 +1,278 @@
+{% load static %}
+<h2>奖励管理
+    <small style="color: #666666; font-size: medium">Reward Manage</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top "
+            uk-toggle="target: #info-box" onclick='$("[name=info]")[0].reset()'>新奖励
+    </button>
+    <button class=" add" style="display:none"
+            uk-toggle="target: #info-box" >新奖励
+    </button>
+</h2>
+<hr class="uk-margin" />
+<p class="uk-text-meta">奖励列表 </p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+        <caption></caption>
+        <thead>
+            <tr>
+                <th class="uk-width-medium">奖励名称</th>
+                <th class="uk-width-small uk-visible@s">抽奖方式</th>
+                <th class="uk-width-small uk-visible@s">有效日期</th>
+                <th class="uk-width-small uk-visible@s">奖励内容</th>
+                <!-- <th class="uk-width-small uk-visible@s">数量</th> -->
+                <th class="uk-width-small uk-visible@s">发放时间</th>
+                <th class="uk-width-small "></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in list %}
+            <tr>
+                <td>
+                    <span class="" >{{ b.name }}</span>
+                </td>
+                <td>
+                    <span class="" >{{ b.mode_text }}</span>
+                </td>
+                <td>
+                    <span class="" >
+                        {% if b.start_time == '' %}
+                          长期有效
+                        {% else  %}
+                            {{ b.start_time }} - {{ b.end_time }}
+
+                        {% endif %}
+                        
+                    </span>
+                </td>
+                <td>
+                    <span class="" >{{ b.reward_id }}</span>
+                </td>
+                <!-- <td>
+                    <span class="" >{{ b.number }}</span>
+                </td> -->
+                <td>
+                        <span class="" title="{{ b.release_mode_text }}{{ b.release_time }}" >{{ b.release_mode_text }}{{ b.release_time|truncatechars:10 }}</span>
+                    </td>
+                <td>
+                    <a class="uk-icon-link dryedit edit" id="{{ b.id }}" data-number="{{ b.number}}" data-rew="{{b.reward_id}}" data-mode="{{b.mode}}" data-start="{{b.start_time}}" data-end="{{b.end_time}}" data-relemode="{{b.release_mode}}" data-reletime="{{b.release_time}}" data-name="{{b.name}}" uk-icon="file-edit"></a> 
+                    <a class=" uk-icon-link star" data-status="{{b.status}}" data-id="{{b.id}}" {% if b.status  %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a>
+                    <a class="uk-icon-link del" data-id="{{b.id}}" style="color:red" uk-icon="trash"></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% autoescape off %}
+      
+    {% endautoescape %}
+    <div id="info-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+        <div class="uk-modal-dialog uk-margin-auto-vertical">
+    
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div class="uk-modal-header">
+                <h2 class="uk-modal-title">签到奖励</h2>
+            </div>
+            <div class="uk-modal-body">
+                <form class="uk-form-horizontal" name="info" action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="uk-margin">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">名称</label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <input type="text" name="name" id="" class="uk-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">生效时间 <br> <small>永久有效请留空</small></label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <div class="uk-grid-small" uk-grid>
+                                    
+                                    <div class="uk-width-2-5@s">
+                                        <input class="uk-input" name="start" type="date" placeholder="如 1">
+                                    </div>
+                                    <span style="line-height: 40px;">——</span>
+                                    <div class="uk-width-2-5@s">
+                                        
+                                        <input class="uk-input" name="end" type="date" placeholder="如 1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="uk-margin">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">数量 <br> <small>0表示无限制</small></label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <input class="uk-input" name="number" type="text" >
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="uk-margin">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">抽取方式</label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <select name="mode" class="uk-select" id="">
+                                    <option value="0">无限制</option>
+                                    <option value="1">单人去重</option>
+                                    <option value="2">全局去重</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">奖品id </label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <input class="uk-input" name="reid" type="text" >
+                                <small>多个id用(,)隔开，连续id用(-)连接</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-grid-small" uk-grid>
+                            <div class="uk-width-1-5@s">
+                                <label class="uk-form-label" for="form-horizontal-text">发放时间 <br></label>
+                            </div>
+                            <div class="uk-width-4-5@s">
+                                <div class="uk-grid-small" uk-grid>
+                                    
+                                    <div class="uk-width-2-5@s">
+                                        <select name="release_mode" id="" class="uk-select">
+                                            <option value="0">每天</option>
+                                            <option value="1">每周</option>
+                                            <option value="2">每月</option>
+                                            <option value="4">周累计</option>
+                                            <option value="5">月累计</option>
+                                            <option value="7">总累计</option>
+                                            <option value="8">自定义</option>
+                                        </select>
+                                    </div>
+                                    <div class="uk-width-3-5@s">
+                                        
+                                        <input class="uk-input" name="release_time" type="text" placeholder="">
+                                        <small>多个日期用(,)隔开</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id">
+                </form>
+            </div>
+            <div class="uk-modal-footer uk-text-right  ">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+                <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+            </div>
+            
+        </div>
+    </div>
+<script>
+    $(function() {
+        $("#save").click(function(){
+            $.post("/signin/reward_add",$("[name=info]").serialize(),function(obj){
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                    UIkit.modal("#info-box").hide();
+                    window.location.reload()
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            },"json")
+        });
+        $(".edit").click(function(){
+            $("[name=name]").val($(this).data("name"));
+            $("[name=id]").val($(this).attr("id"));
+            $("[name=start]").val($(this).data("start"));
+            $("[name=end]").val($(this).data("end"));
+            $("[name=number]").val($(this).data("number"));
+            $("[name=mode]").val($(this).data("mode"));
+            $("[name=reid]").val($(this).data("rew"));
+            $("[name=release_mode]").val($(this).data("relemode"));
+            $("[name=release_time]").val($(this).data("reletime"));
+            $(".add").click()
+        });
+        $(".del").click(function() {
+            var id = $(this).data("id");
+            var _this = $(this);
+
+            $.post("signin/reward_del?_=" + Date.parse(new Date()), {
+                "id": id,
+
+            }, function(obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                    _this.parents("tr").remove();
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            }, "json")
+        });
+        $(".star").click(function() {
+            var status = $(this).data("status");
+            var _this = $(this);
+            var id=_this.data('id');
+            var title=_this.attr("title");
+            $.post("signin/reward_status?_=" + Date.parse(new Date()), {
+                "status": status,
+                "id":id
+            }, function(obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + title+"成功！",
+                        status: 'success',
+                        timeout: 2000
+                    });
+                    if(status=="True"){
+                        _this.css("color","");
+                        _this.parents("tr").css("color","darkgrey");
+                        _this.data("status","False");
+                        _this.attr("title","启用")
+                    }else{
+                        _this.css("color","royalblue");
+                        _this.parents("tr").css("color","");
+                        _this.data("status","True");
+                        _this.attr("title","停用")
+                    }
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            }, "json")
+        });
+    })
+</script>

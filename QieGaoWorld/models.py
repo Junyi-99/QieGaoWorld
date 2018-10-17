@@ -145,6 +145,11 @@ class Signin(models.Model):
     year=models.IntegerField()
     month=models.IntegerField()
     reward=models.CharField(max_length=100)
+    time=models.IntegerField(default=0)
+    month_total=models.IntegerField(default=0)
+    total=models.IntegerField(default=0)
+    continuous=models.IntegerField(default=0)
+    supplement=models.IntegerField(default=0)
 
 class Reward(models.Model):
     name=models.CharField(max_length=100)
@@ -154,7 +159,10 @@ class Reward(models.Model):
     end_time=models.CharField(max_length=20)
     type=models.CharField(max_length=20) # skull:头颅，map：地图
     mode=models.CharField(max_length=20)
+    number=models.IntegerField(default=0)
     reward_id=models.TextField()
+    release_mode =models.IntegerField(default=0)
+    release_time =models.TextField()
 
 class RewardMx(models.Model):
     

@@ -1,6 +1,7 @@
 import os,traceback,uuid,logging
 from PIL import Image
 from django.core.files.base import ContentFile
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -527,7 +528,9 @@ def maps_list(request, operation):
         maps = Maps.objects.order_by("-id")
     elif 'user' in operation:
         maps = Maps.objects.filter(username=request.session.get('username', None)).order_by("-id")
-
+    page=request.POST.get("_get",1)
+    paginator = Paginator(maps, 25)
+    maps=paginator.get_page(page)
     # maps=sorted(maps, key=lambda a: a.declare_time, reverse=True)
     for i in range(0, len(maps)):
         maps[i].nickname = username_get_nickname(maps[i].username)
@@ -564,7 +567,8 @@ def maps_del(request):
             return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
         if obj.status:
             return HttpResponse(dialog('failed', 'danger', '已领取地图画无法删除！'))
-        os.unlink(os.path.join(os.getcwd(),obj.img))
+        if  os.path.exists(os.path.join(os.getcwd(),obj.img)):
+            os.unlink(os.path.join(os.getcwd(),obj.img))
         obj.delete()
         common.logs("用户:%s(%d) 删除了地图画：%s(id:%s,user:%s)" % (request.session['username'],request.session['id'],obj.mapid,obj.id,obj.username),"地图画管理")
         return HttpResponse(dialog('ok', 'success', '删除地图画成功'))
