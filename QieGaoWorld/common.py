@@ -12,11 +12,14 @@ def filter(sql):
     row = cursor.fetchone()
     return row
 
-def page(url,_list):
+def page(url,_list,type=None):
     if _list.paginator.num_pages == 1:
         return ""
 
     li=""
+    other=""
+    if type != None:
+        other +=" data-type='%s' "%type
     for i in range(1,_list.paginator.num_pages+1):
         # if(i==1):
         #      _type="uk-pagination-previous"
@@ -29,7 +32,7 @@ def page(url,_list):
             lc="disabled"
         else:
             lc=""
-        li+='<li ><button %s class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d"  style="border-radius:5px" >%d</button></li>' % (lc,url,i,i)
+        li+='<li ><button %s class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >%d</button></li>' % (lc,url,i,other,i)
         
     return '<ul class="uk-pagination uk-flex-center" id="page" uk-margin>%s</ul>' % li
 

@@ -221,7 +221,7 @@ def make_thumb(pic_, path_):
 @check_post
 def buildings_list(request):
     # global buildings
-    operation="all"
+    operation=request.POST.get("type","user")
     if 'all' in operation:
         buildings = DeclareBuildings.objects.order_by("-declare_time").all()
     elif 'user' in operation:
@@ -274,7 +274,7 @@ def buildings_list(request):
             buildings[i].status_label = 'uk-label-danger'
             buildings[i].status_text = '弃坑'
     # return buildings
-    return render(request, 'dashboard/declaration/building_list.html', {'permissions': request.session['permissions'],'buildings': buildings,"page":common.page("declare/buildings_list",buildings)})
+    return render(request, 'dashboard/declaration/building_list.html', {'permissions': request.session['permissions'],'buildings': buildings,"page":common.page("declare/buildings_list",buildings,operation)})
 
 
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
@@ -282,7 +282,7 @@ def buildings_list(request):
 @check_post
 def animals_list(request):
     global animals
-    operation='all'
+    operation=request.POST.get("type","user")
     if 'all' in operation:
         animals = DeclareAnimals.objects.order_by("-declare_time").all()
     elif 'user' in operation:
@@ -310,7 +310,7 @@ def animals_list(request):
             animals[i].status_label = 'uk-label-danger'
             animals[i].status_text = '死亡'
 
-    return render(request, 'dashboard/declaration/animals_list.html', {'permissions': request.session['permissions'],'animals': animals,"page":common.page("declare/animals_list",animals)})
+    return render(request, 'dashboard/declaration/animals_list.html', {'permissions': request.session['permissions'],'animals': animals,"page":common.page("declare/animals_list",animals,operation)})
     
 
 
@@ -535,8 +535,10 @@ def maps_add(request):
 def maps_list(request):
     operation=request.POST.get("type","user");
     if 'all' in operation and "%op%" in request.session.get("permissions",""):
+        _type="all"
         maps = Maps.objects.order_by("-id")
-    elif 'user' in operation:
+    else:
+        _type="user"
         maps = Maps.objects.filter(username=request.session.get('username', None)).order_by("-id")
     page=request.POST.get("page",1)
     paginator = Paginator(maps, 25)
@@ -552,7 +554,7 @@ def maps_list(request):
             maps[i].status_label = ''
             maps[i].status_text = '未领取'
 
-    return render(request, 'dashboard/declaration/maps_list.html', {'permissions': request.session['permissions'],'list': maps,"page":common.page("declare/maps_list",maps)})
+    return render(request, 'dashboard/declaration/maps_list.html', {'permissions': request.session['permissions'],'list': maps,"page":common.page("declare/maps_list",maps,_type)})
     
 def get_map_id(path,number):
     while os.path.exists(path+"map_%d.dat"%number):
@@ -619,9 +621,12 @@ def skull_add(request):
     return HttpResponse(dialog('ok', 'success', '添加成功!'))
 
 def skull_list(request,_all=False):
-    if _all:
+    __type=request.POST.get("type","user")
+    if __type in "all" and  "%op%" in request.session.get("permissions",""):
+        _type="all"
         skull=SkullCustomize.objects.all()
     else:
+        _type="user"
         skull=SkullCustomize.objects.filter(user_id=request.session['id'])
 
     page=request.POST.get("page",1)
@@ -636,4 +641,4 @@ def skull_list(request,_all=False):
             skull[i].status_text="未取货"
         skull[i].nickname=id_get_nickname(skull[i].user_id)
 
-    return render(request, 'dashboard/declaration/skull_list.html', {'permissions': request.session['permissions'],'list': skull,"page":common.page("declare/skull_list",skull)})
+    return render(request, 'dashboard/declaration/skull_list.html', {'permissions': request.session['permissions'],'list': skull,"page":common.page("declare/skull_list",skull,_type)})

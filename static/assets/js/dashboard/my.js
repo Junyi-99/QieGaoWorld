@@ -34,7 +34,6 @@ function loading(error=false){
 }
 $(function(){
     $("#main_content").on("click",".qg-page",function () {
-        console.log("page")
         var page=$(this).data("page");
         var url=$(this).data("url");
         var type=$(this).data("type");
