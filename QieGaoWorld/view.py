@@ -4,6 +4,8 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 
 from QieGaoWorld.views.announcement import announcement_list
 from .views.declare import animals_list, buildings_list
@@ -103,14 +105,14 @@ def page_announcement(request):
 
 @check_login
 def page_declaration_center(request):
-    animals = animals_list(request, 'all')
-    buildings = buildings_list(request, 'all')
+    # animals = animals_list(request, 'all')
+    # buildings = buildings_list(request, 'all')
     if '%op%'  in request.session.get('permissions', ''):
         content = {
-            'animals': animals,
-            'buildings': buildings,
-            'skull': skull.skull_list(request,True),
-            'maps': declare.maps_list(request,"all"),
+            # 'animals': ,
+            # 'buildings': buildings,
+            # 'skull': skull.skull_list(request,True),
+            # 'maps': declare.maps_list(request,"all"),
             'permissions': request.session['permissions'],
         }
     else:
@@ -129,9 +131,9 @@ def page_call_the_police(request):
 
 @check_login
 def page_declare_animals(request):
-    my_animals = animals_list(request, 'user')
+    # my_animals = animals_list(request, 'user')
     content = {
-        'my_animals': my_animals,
+        # 'my_animals': my_animals,
         'permissions': request.session['permissions'],
     }
     return render(request, "dashboard/declaration/animals.html", content)
@@ -139,9 +141,9 @@ def page_declare_animals(request):
 
 @check_login
 def page_declare_buildings(request):
-    my_building = buildings_list(request, 'user')  # 这里选择获取当前登录用户的obj
+    # my_building = buildings_list(request, 'user')  # 这里选择获取当前登录用户的obj
     content = {
-        'buildings': my_building,
+        # 'buildings': my_building,
         'permissions': request.session['permissions'],
     }
     return render(request, "dashboard/declaration/buildings.html", content)
@@ -224,17 +226,18 @@ def page_skull(request):
     
     context = {
         'permissions': request.session['permissions'],
-        "skull":skull.skull_list(request)
+        # "skull":skull.skull_list(request)
     }
 
-    return render(request, "dashboard/skull.html", context)
+    return render(request, "dashboard/declaration/skull.html", context)
 
 @check_login
 def page_maps(request):
-    
+    # _list=declare.maps_list(request,"user")
     context = {
         'permissions': request.session['permissions'],
-        "list":declare.maps_list(request,"user")
+        # "list":_list,
+        # "page":common.page("maps",_list)
     }
 
     return render(request, "dashboard/declaration/maps.html", context)
@@ -262,13 +265,17 @@ def page_logs(request):
             page=1
     size=30
     # _list=system.logs_list(request,,page*size)
-    _list=Logs.objects.exclude(code="info").order_by("-time")[(page-1)*size:page*size]
-    _count=Logs.objects.annotate(count=Count("id")).exclude(code ="info").values("count")[0:1]
-    _count=_count[0]['count']/size +1
+    # _list=Logs.objects.exclude(code="info").order_by("-time")[(page-1)*size:page*size]
+    # _count=Logs.objects.annotate(count=Count("id")).exclude(code ="info").values("count")[0:1]
+    # _count=_count[0]['count']/size +1
+    _list=Logs.objects.all()
+    paginator = Paginator(_list, 25)
+    _list=paginator.get_page(page)
+
     context = {
         'permissions': request.session['permissions'],
         "list":_list,
-        "page":common.page("logs",_count,page)
+        "page":common.page("logs",_list)
     }
 
     return render(request, "dashboard/system/logs.html", context)

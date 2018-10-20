@@ -1,0 +1,40 @@
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <thead>
+    <tr>
+        <th class="uk-table-expand">牌照号</th>
+        <th class="uk-visible@s">隶属</th>
+        <th class="uk-visible@s uk-table-expand">特征</th>
+        <th class="uk-table-small">状态</th>
+        <th class="uk-visible@l">申请人</th>
+        <th class="uk-visible@l">申请时间</th>
+        <th class="uk-width-small uk-visible@s">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for a in my_animals %}
+        <tr>
+            <td class="uk-text-truncate">{{ a.license }}</td>
+            <td class="uk-visible@s">{{ a.binding }}</td>
+            <td class="uk-visible@s">{{ a.feature }}</td>
+            <td><span class="uk-text-truncate uk-label {{ a.status_label }}">{{ a.status_text }}</span></td>
+            <td class="uk-visible@l">{{ a.nickname }}</td>
+            <td class="uk-visible@l">{{ a.declare_time }}</td>
+            <td class="uk-visible@s">
+                <label>
+                    <select class="uk-select animal_options" _id="{{ a.id }}">
+                        <option value="0" {% if a.status == 0 %} selected {% endif %}>未知</option>
+                        <option value="1" {% if a.status == 1 %} selected {% endif %}>存活</option>
+                        <option value="2" {% if a.status == 2 %} selected {% endif %}>丢失</option>
+                        <option value="3" {% if a.status == 3 %} selected {% endif %}>死亡</option>
+                    </select>
+                </label>
+                <a  class="uk-margin-small-right uk-icon-link del" _id="{{ a.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+            </td>
+
+            <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->
+            <td></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% autoescape off %}{{ page }}{% endautoescape %}

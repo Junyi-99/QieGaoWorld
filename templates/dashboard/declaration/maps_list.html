@@ -1,0 +1,40 @@
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+        <caption></caption>
+        <thead>
+        <tr>
+            <th class="uk-width-medium">编号</th>
+            <th class="uk-width-medium">缩略图</th>
+            
+            <th class="uk-width-small">状态</th>
+                <th class="uk-width-small uk-visible@s">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for b in list %}
+            <tr>
+                <td class="nowrap uk-visible@m">
+                    {{ b.mapid }}
+                </td>
+                <td class="nowrap uk-visible@m">
+                    <img src="{{ b.img }}" alt="">
+                    
+                </td>
+                
+                <td>
+                                <span class="uk-label {{ b.status_label }}"
+                                      style="vertical-align: middle">{{ b.status_text }}</span>
+                </td>
+                <td class="uk-visible@s">
+                    {% if not b.status %}
+                      
+                    <a  class="uk-margin-small-right uk-icon-link del" _id="{{ b.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+                      
+                    {% endif %}
+                    
+    
+                    </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% autoescape off %}{{ page }}{% endautoescape %}

@@ -12,20 +12,26 @@ def filter(sql):
     row = cursor.fetchone()
     return row
 
-def page(url,count,index=1):
+def page(url,_list):
+    if _list.paginator.num_pages == 1:
+        return ""
+
     li=""
-    for i in range(1,int(count)+1):
+    for i in range(1,_list.paginator.num_pages+1):
         # if(i==1):
         #      _type="uk-pagination-previous"
         # if(i==1):
         #      _type="uk-pagination-previous"
-        if i == index :
+
+        
+
+        if i == _list.number :
             lc="disabled"
         else:
             lc=""
-        li+='<li ><a href="#%s?%d"><button %s class="uk-button uk-button-small uk-button-default" style="border-radius:5px" data-page="%d">%d</button></a></li>' % (url,i,lc,i,i)
+        li+='<li ><button %s class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d"  style="border-radius:5px" >%d</button></li>' % (lc,url,i,i)
         
-    return '<ul class="uk-pagination uk-flex-center" id="page" uk-margin>%s</ul><script>$("#page a").click(function(){window.location.reload()})</script>' % li
+    return '<ul class="uk-pagination uk-flex-center" id="page" uk-margin>%s</ul>' % li
 
 def imagetonbt(img,approximate1=True,optimized=True,lookupindex=10):
     img.convert("RGB")

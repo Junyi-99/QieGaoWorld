@@ -16,8 +16,8 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
-from QieGaoWorld.views.police import username_get_nickname
-from QieGaoWorld.models import DeclareAnimals, DeclareBuildings,Conf,Maps
+from QieGaoWorld.views.police import username_get_nickname,id_get_nickname
+from QieGaoWorld.models import DeclareAnimals, DeclareBuildings,Conf,Maps,SkullCustomize
 from QieGaoWorld import settings,common
 import time
 
@@ -219,16 +219,19 @@ def make_thumb(pic_, path_):
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
 @check_login
 @check_post
-def buildings_list(request, operation):
-    global buildings
+def buildings_list(request):
+    # global buildings
+    operation="all"
     if 'all' in operation:
-        buildings = DeclareBuildings.objects.all()
+        buildings = DeclareBuildings.objects.order_by("-declare_time").all()
     elif 'user' in operation:
-        buildings = DeclareBuildings.objects.filter(username=request.session.get('username', None))
+        buildings = DeclareBuildings.objects.order_by("-declare_time").filter(username=request.session.get('username', None))
 
     # 按照时间由新到旧排序
-    buildings = sorted(buildings, key=lambda b: b.declare_time, reverse=True)
-
+    # buildings = sorted(buildings, key=lambda b: b.declare_time, reverse=True)
+    page=request.POST.get("page",1)
+    paginator = Paginator(buildings, 25)
+    buildings=paginator.get_page(page)
     for i in range(0, len(buildings)):
         buildings[i].declare_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].declare_time))
         buildings[i].nickname = username_get_nickname(buildings[i].username)
@@ -270,21 +273,26 @@ def buildings_list(request, operation):
         elif buildings[i].status == 6:
             buildings[i].status_label = 'uk-label-danger'
             buildings[i].status_text = '弃坑'
-    return buildings
+    # return buildings
+    return render(request, 'dashboard/declaration/building_list.html', {'permissions': request.session['permissions'],'buildings': buildings,"page":common.page("declare/buildings_list",buildings)})
 
 
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
 @check_login
 @check_post
-def animals_list(request, operation):
+def animals_list(request):
     global animals
+    operation='all'
     if 'all' in operation:
-        animals = DeclareAnimals.objects.all()
+        animals = DeclareAnimals.objects.order_by("-declare_time").all()
     elif 'user' in operation:
-        animals = DeclareAnimals.objects.filter(username=request.session.get('username', None)) 
+        animals = DeclareAnimals.objects.order_by("-declare_time").filter(username=request.session.get('username', None)) 
 
     # 按照时间由新到旧排序
-    animals = sorted(animals, key=lambda a: a.declare_time, reverse=True)
+    # animals = sorted(animals, key=lambda a: a.declare_time, reverse=True)
+    page=request.POST.get("page",1)
+    paginator = Paginator(animals, 25)
+    animals=paginator.get_page(page)
     for i in range(0, len(animals)):
         animals[i].declare_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(animals[i].declare_time))
         animals[i].nickname = username_get_nickname(animals[i].username)
@@ -302,7 +310,8 @@ def animals_list(request, operation):
             animals[i].status_label = 'uk-label-danger'
             animals[i].status_text = '死亡'
 
-    return animals
+    return render(request, 'dashboard/declaration/animals_list.html', {'permissions': request.session['permissions'],'animals': animals,"page":common.page("declare/animals_list",animals)})
+    
 
 
 # 添加一个建筑申报
@@ -523,12 +532,13 @@ def maps_add(request):
 
 @check_login
 @check_post
-def maps_list(request, operation):
-    if 'all' in operation:
+def maps_list(request):
+    operation=request.POST.get("type","user");
+    if 'all' in operation and "%op%" in request.session.get("permissions",""):
         maps = Maps.objects.order_by("-id")
     elif 'user' in operation:
         maps = Maps.objects.filter(username=request.session.get('username', None)).order_by("-id")
-    page=request.POST.get("_get",1)
+    page=request.POST.get("page",1)
     paginator = Paginator(maps, 25)
     maps=paginator.get_page(page)
     # maps=sorted(maps, key=lambda a: a.declare_time, reverse=True)
@@ -542,7 +552,7 @@ def maps_list(request, operation):
             maps[i].status_label = ''
             maps[i].status_text = '未领取'
 
-    return maps
+    return render(request, 'dashboard/declaration/maps_list.html', {'permissions': request.session['permissions'],'list': maps,"page":common.page("declare/maps_list",maps)})
     
 def get_map_id(path,number):
     while os.path.exists(path+"map_%d.dat"%number):
@@ -578,3 +588,52 @@ def maps_del(request):
     except ObjectDoesNotExist:
         return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
 
+
+
+def skull_del(request):
+    id=request.POST.get('id',None)
+    menu=SkullCustomize.objects.get(id=id,user_id=request.session['id'])
+    
+    menu.delete()
+    return HttpResponse(dialog('ok', 'success', '删除成功!'))
+
+def skull_add(request):
+    try:
+        name=request.POST.get('name',None)
+        number=int(request.POST.get('number',None))
+        content=request.POST.get("content",None)
+    except ValueError:
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
+
+    info=re.search(r'Id:"[\d\w-]+',content)
+    if info==None or info.group()==None or len(info.group())<4 :
+        return HttpResponse(dialog('failed', 'danger', '头颅代码格式错误'))
+    id=info.group()[4:]
+    info=re.search(r'Value:"[\d\w]+',content)
+    if info==None or info.group()==None or len(info.group())<7 :
+        return HttpResponse(dialog('failed', 'danger', '头颅代码格式错误'))
+    value=info.group()[7:]
+
+    menu=SkullCustomize(name=name,user_id=int(request.session['id']),number=number,status=False,content=id+':'+value)
+    menu.save()
+    return HttpResponse(dialog('ok', 'success', '添加成功!'))
+
+def skull_list(request,_all=False):
+    if _all:
+        skull=SkullCustomize.objects.all()
+    else:
+        skull=SkullCustomize.objects.filter(user_id=request.session['id'])
+
+    page=request.POST.get("page",1)
+    paginator = Paginator(skull, 25)
+    skull=paginator.get_page(page)
+    for i in range(0,len(skull)) :
+        if skull[i].status:
+            skull[i].status_class="uk-label-success"
+            skull[i].status_text="已取货"
+        else:
+            skull[i].status_class=""
+            skull[i].status_text="未取货"
+        skull[i].nickname=id_get_nickname(skull[i].user_id)
+
+    return render(request, 'dashboard/declaration/skull_list.html', {'permissions': request.session['permissions'],'list': skull,"page":common.page("declare/skull_list",skull)})

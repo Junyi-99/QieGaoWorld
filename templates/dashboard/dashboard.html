@@ -71,9 +71,22 @@
             </div>
         </div>
         <div class="uk-width-4-5 uk-width-expand uk-margin-medium-left uk-margin-medium-right uk-margin-small-top"
-             id="main_content">
-            {{ default_html }}
+             >
+             <div id="main_content">
+
+                 {{ default_html }}
+             </div>
+             <div class="uk-margin-top uk-text-center" id="loading" aria-hidden="true" hidden>
+                    <span uk-spinner></span>
+                    加载中...
+                </div>
+             <div class="uk-margin-top uk-text-center" id="error" aria-hidden="true" hidden>
+                    <span uk-icon="warning" style="color:red"></span>
+                    加载失败！
+                </div>
+                
         </div>
+        
     </div>
 
     <div id="offcanvas-push" uk-offcanvas="mode: push; overlay: true">
@@ -195,5 +208,6 @@
             }
         });
     });
+    
 </script>
 </html>

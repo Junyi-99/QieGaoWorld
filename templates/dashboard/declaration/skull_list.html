@@ -1,0 +1,27 @@
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+        <thead>
+        <tr>
+              
+            <!-- <th class="uk-table-expand">申请人</th> -->
+              
+            
+            <th class="uk-visible@s">自定义名称</th>
+            <th class="uk-visible@s uk-table-expand">数量</th>
+            <th class="uk-table-small">状态</th>
+            <th class="uk-width-small uk-visible@s">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for a in skull %}
+            <tr>
+                <td class="uk-text-truncate">{{ a.name }}</td>
+                <td class="uk-visible@s">{{ a.number }}</td>
+                <td><span class="uk-text-truncate uk-label {{ a.status_class }}">{{ a.status_text }}</span></td>
+                <td class="uk-visible@s">
+                    <a class="uk-icon-link del" id="{{a.id}}" style="color:red" uk-icon="trash"></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% autoescape off %}{{ page }}{% endautoescape %}
