@@ -31,26 +31,7 @@
 
     $(document).ready(
         $(function () {
-            $(".building_options").change(function () {
-                $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
-                    "id": $(this).attr('_id'),
-                    "status": $(this).val()
-                }, function (obj) {
-                    if (obj.status === "ok") {
-                        UIkit.notification({
-                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
-                            status: 'success',
-                            timeout: 2000
-                        });
-                    } else {
-                        UIkit.notification({
-                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
-                            status: 'danger',
-                            timeout: 2000
-                        })
-                    }
-                }, "json")
-            });
+            
             $(".animal_options").change(function () {
                 $.post("declare/animals_change_status?_=" + Date.parse(new Date()), {
                     "id": $(this).attr('_id'),

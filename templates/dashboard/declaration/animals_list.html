@@ -21,7 +21,7 @@
             <td class="uk-visible@l">{{ a.declare_time }}</td>
             <td class="uk-visible@s">
                 <label>
-                    <select class="uk-select animal_options" _id="{{ a.id }}">
+                    <select class="uk-select options" _id="{{ a.id }}">
                         <option value="0" {% if a.status == 0 %} selected {% endif %}>未知</option>
                         <option value="1" {% if a.status == 1 %} selected {% endif %}>存活</option>
                         <option value="2" {% if a.status == 2 %} selected {% endif %}>丢失</option>
@@ -38,3 +38,47 @@
     </tbody>
 </table>
 {% autoescape off %}{{ page }}{% endautoescape %}
+<script>
+        $(".del").click(function() {
+            var _this = $(this);
+            $.post("declare/animals_del?_=" + Date.parse(new Date()), {
+                "id":_this.attr("_id")
+            }, function(obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                    _this.parents("tr").remove();
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            }, "json")
+        });
+        $(".options").change(function () {
+            $.post("declare/animals_change_status?_=" + Date.parse(new Date()), {
+                "id": $(this).attr('_id'),
+                "status": $(this).val()
+            }, function (obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                    UIkit.modal("#animal-box").hide();
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            }, "json")
+        });
+</script>

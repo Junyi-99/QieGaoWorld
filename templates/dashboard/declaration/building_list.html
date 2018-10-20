@@ -89,3 +89,56 @@
     </tbody>
 </table>
 {% autoescape off %}{{ page }}{% endautoescape %}
+<script>
+        $(".del").click(function() {
+            var _this = $(this);
+            $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
+                "id":_this.attr("_id")
+            }, function(obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                    _this.parents("tr").remove();
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            }, "json")
+        });
+
+        function buildingDetail(id_) {
+            var id = id_.substring(8);
+            console.log(id);
+            $.get("/buildings_detail", {
+                "id": id
+            }, function (data) {
+                UIkit.modal.dialog(data);
+            });
+        }
+        $(".building_options").change(function () {
+            $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
+                "id": $(this).attr('_id'),
+                "status": $(this).val()
+            }, function (obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            }, "json")
+        });
+</script>

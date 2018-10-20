@@ -173,15 +173,7 @@
 </div>
 
 <script>
-    function buildingDetail(id_) {
-        var id = id_.substring(8);
-        console.log(id);
-        $.get("/buildings_detail", {
-            "id": id
-        }, function (data) {
-            UIkit.modal.dialog(data);
-        });
-    }
+    
     function building_list(page=1){
         loading()
         $.post("declare/buildings_list",{page:page},function(data){
@@ -260,27 +252,7 @@
             });
         })
     );
-    $(".del").click(function() {
-        var _this = $(this);
-        $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
-            "id":_this.attr("_id")
-        }, function(obj) {
-            if (obj.status === "ok") {
-                UIkit.notification({
-                    message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
-                    status: 'success',
-                    timeout: 2000
-                });
-                _this.parents("tr").remove();
-            } else {
-                UIkit.notification({
-                    message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
-                    status: 'danger',
-                    timeout: 2000
-                })
-            }
-        }, "json")
-    });
+    
 
     var bar_concept = document.getElementById('progress_concept');
     var bar_perspective = document.getElementById('progress_perspective');
