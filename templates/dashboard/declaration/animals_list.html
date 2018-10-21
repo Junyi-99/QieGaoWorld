@@ -19,7 +19,9 @@
             <td><span class="uk-text-truncate uk-label {{ a.status_label }}">{{ a.status_text }}</span></td>
             <td class="uk-visible@l">{{ a.nickname }}</td>
             <td class="uk-visible@l">{{ a.declare_time }}</td>
+            
             <td class="uk-visible@s">
+                    {% if b.username == request.session.username  %}
                 <label>
                     <select class="uk-select options" _id="{{ a.id }}">
                         <option value="0" {% if a.status == 0 %} selected {% endif %}>未知</option>
@@ -29,6 +31,7 @@
                     </select>
                 </label>
                 <a  class="uk-margin-small-right uk-icon-link del" _id="{{ a.id }}" style="color:red" uk-icon="trash" title="删除"></a>
+                {% endif %}
             </td>
 
             <!-- <td><button class="uk-button uk-button-default uk-button-primary uk-align-right" uk-toggle="target: #edit-box">新增</button></td> -->

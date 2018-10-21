@@ -25,3 +25,29 @@
         </tbody>
     </table>
     {% autoescape off %}{{ page }}{% endautoescape %}
+    <script>
+            $(".del").click(function() {
+                var id = $(this).attr("id");
+                var _this = $(this);
+
+                $.post("declare/skull_del?_=" + Date.parse(new Date()), {
+                    "id": id,
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parents("tr").remove();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+    </script>
