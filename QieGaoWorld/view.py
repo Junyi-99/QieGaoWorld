@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-
+from django.db.models import Count
 
 from QieGaoWorld.views.announcement import announcement_list
 from .views.declare import animals_list, buildings_list
@@ -16,7 +16,7 @@ from .views.ops import whitelist
 from .views.wenjuan import problem_list
 from .views import system,society,skull,task,user,declare,signin
 from QieGaoWorld import parameter as Para 
-from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs
+from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs,Maps
 from QieGaoWorld import common
 
 from QieGaoWorld.views.police import username_get_nickname
@@ -109,16 +109,16 @@ def page_declaration_center(request):
     # buildings = buildings_list(request, 'all')
     if '%op%'  in request.session.get('permissions', ''):
         content = {
-            # 'animals': ,
-            # 'buildings': buildings,
-            # 'skull': skull.skull_list(request,True),
-            # 'maps': declare.maps_list(request,"all"),
+            'animals': DeclareAnimals.objects.count(),
+            'buildings': DeclareBuildings.objects.count(),
+            'skull': SkullCustomize.objects.count(),
+            'maps': Maps.objects.count(),
             'permissions': request.session['permissions'],
         }
     else:
         content = {
-            'animals': animals,
-            'buildings': buildings,
+            'animals': DeclareAnimals.objects.count(),
+            'buildings': DeclareBuildings.objects.count(),
             'permissions': request.session['permissions'],
         }
     return render(request, "dashboard/declaration/center.html", content)
