@@ -21,7 +21,7 @@
             <td class="uk-visible@l">{{ a.declare_time }}</td>
             
             <td class="uk-visible@s">
-                    {% if b.username == request.session.username  %}
+                    {% if a.username == request.session.username  %}
                 <label>
                     <select class="uk-select options" _id="{{ a.id }}">
                         <option value="0" {% if a.status == 0 %} selected {% endif %}>未知</option>
