@@ -1,6 +1,6 @@
 from QieGaoWorld.models import Logs
 from PIL import Image,ImageDraw,ImageFont
-import time
+import time,math
 def logs(text,code='info'):
     logs = Logs(text=text,code=code,time=time.time())
     logs.save()
@@ -13,28 +13,62 @@ def filter(sql):
     return row
 
 def page(url,_list,type=None):
-    if _list.paginator.num_pages == 1:
-        return ""
+    AllPage=_list.paginator.num_pages 
+    page = _list.number
+    if page <= 1 :
+        ps=1
+    else:
+        ps=page-1
+    if page>=AllPage:
+        px=AllPage
+    else:
+        px=page+1
+	#判断要显示的第一个页码
+    n=5
+    y = math.ceil(n/2)#尽量让当前页高亮居中，$y为居中时左右的页码数量
+    if(page <= y):#如果当前页小于需要显示的页码数量的一半，则从第一页开始显示
+        p = 1;
+    elif ((AllPage - page) <= y):#如果总页数减去当前页小于需要显示的页码数量的一半，则将最后几页显示出来
+        p = AllPage - n + 1
+    else:
+        p = page - y#如果当前页两边都有充足的页面，则居中显示
 
-    li=""
     other=""
     if type != None:
         other +=" data-type='%s' "%type
-    for i in range(1,_list.paginator.num_pages+1):
-        # if(i==1):
-        #      _type="uk-pagination-previous"
-        # if(i==1):
-        #      _type="uk-pagination-previous"
-
+    PageWord ='<li ><button  class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="1" %s  style="border-radius:5px" >第一页</button></li>'% (url,other)
+    PageWord +='<li ><button  class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >上一页</button></li>'% (url,ps,other)
+    for x in range(0,n):
+        z = p + x
+        if(z > 0 and z <= AllPage):#$z可能小于零或大于总页数
+            if(z == page):
+                c = " disabled "
+            else:
+                c = ""
+            
+            PageWord += '<li ><button %s class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >%d</button></li>' % (c,url,z,other,z)
+    PageWord +='<li ><button  class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >下一页</button></li>'% (url,px,other)
+    PageWord +='<li ><button  class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >尾页</button></li>'% (url,AllPage,other)
+    return '<ul class="uk-pagination uk-flex-center" id="page" uk-margin>%s<li>总%d页，当前%d页</li></ul>' % (PageWord,AllPage,page)
+    #TODO:分页下拉菜单
+    if(AllPage > 0):
+        x = 1
+        while(x <= AllPage):
+            if(page == x):
+                selected = " selected='selected' "
+            else:
+                selected = ""
+            
+            re += "<option value='{$url}{$b}page={$x}' {$selected}>第{$x}页</option>"
+            x+=1
         
+    else:
+        re += "<option>第1页</option>"
 
-        if i == _list.number :
-            lc="disabled"
-        else:
-            lc=""
-        li+='<li ><button %s class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >%d</button></li>' % (lc,url,i,other,i)
-        
-    return '<ul class="uk-pagination uk-flex-center" id="page" uk-margin>%s</ul>' % li
+        re+= "</select></div>"
+
+
+    
 
 def imagetonbt(img,approximate1=True,optimized=True,lookupindex=10):
     img.convert("RGB")
