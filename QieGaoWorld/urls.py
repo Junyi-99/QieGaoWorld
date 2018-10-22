@@ -49,6 +49,7 @@ urlpatterns = [
     url(r"^police_report$", police.report),
     url(r"^police_change_status$", police.change_status),
     url(r"^police_case_detail$", police.case_detail),
+    url(r"^police/police_list$", police.police_list),
     # url(r"^admin$", view.admin),
     # url(r"^admin_login_verify$", view.admin_login_verify),
     # url(r"^admin\/dashboard$", view.admin_dashboard),

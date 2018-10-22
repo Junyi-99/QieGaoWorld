@@ -10,7 +10,6 @@ from django.db.models import Count
 from QieGaoWorld.views.announcement import announcement_list
 from .views.declare import animals_list, buildings_list
 from .views.decorator import check_login, check_post
-from .views.police import page_police_hall
 from .views.settings import page_settings
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
@@ -163,10 +162,6 @@ def page_community(request):
 def page_project_plan(request):
     return render(request, "dashboard/papers/plans.html", {})
 
-
-@check_login
-def page_call_the_police(request):
-    return render(request, "dashboard/police/call_the_police.html", {})
 
 
 @check_login
@@ -323,6 +318,13 @@ def page_signin(request):
     }
 
     return render(request, "dashboard/signin/logs.html", context)
+def page_police_hall(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+    }
+
+    return render(request, "dashboard/police/police_hall.html", context)
 
 @ensure_csrf_cookie
 @check_login

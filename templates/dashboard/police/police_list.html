@@ -1,0 +1,202 @@
+<table class="uk-table uk-table-hover uk-table-small uk-table-divider">
+        <thead>
+        <tr>
+            <th class="uk-width-medium uk-visible@s">报案者</th>
+            <th class="uk-width-medium uk-visible@s">案发地点</th>
+            <th class="uk-table-expand">案件简述</th>
+            <th class="uk-width-small">状态</th>
+
+            {% if '%police_cases_modify%' in permissions %}
+                <th class="uk-width-small uk-visible@s">操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for c in cases %}
+            <tr>
+                <td class="uk-visible@s">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-auto uk-visible@m">
+                            <a><img class="uk-preserve-width uk-border-circle" src="{{ c.avatar }}" width="40"
+                                    alt="" id="summary-{{ c.id }}" onclick="openModal(this.id)"></a>
+                        </div>
+                        <div class="uk-width-expand">
+
+                            <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                   onclick="openModal(this.id)">{{ c.nickname }}</a>
+                            </h4>
+                            <p class="uk-text-meta uk-margin-remove-top uk-visible@m">{{ c.report_time }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="nowrap uk-visible@s">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-expand">
+                            <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                   onclick="openModal(this.id)">{{ c.position }}</a>
+                            </h4>
+                            <p class="uk-text-meta uk-margin-remove-top">{{ c.coordinate }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="nowrap">
+                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                        <div class="uk-width-expand">
+                            <h4 class="uk-margin-remove-bottom"><a id="summary-{{ c.id }}" class="uk-link-reset"
+                                                                   onclick="openModal(this.id)">{{ c.summary }}</a>
+                            </h4>
+                            <p class="uk-text-truncate uk-text-meta uk-margin-remove-top">{{ c.detail }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="uk-label {{ c.status_label }}"
+                          style="vertical-align: middle">{{ c.status_text }}</span>
+                </td>
+                {% if '%police_cases_modify%' in permissions %}
+                    <td class="uk-visible@s">
+                        <label>
+                            <select class="uk-select" id="options-{{ c.id }}" onchange="change(this.id)">
+                                <option value="-1">...</option>
+                                <option value="0">等待调查</option>
+                                <option value="1">正在调查</option>
+                                <option value="2">处理成功</option>
+                                <option value="3">处理失败</option>
+                            </select>
+                        </label>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button class=" add" style="display:none"
+            uk-toggle="target: #info-box" >
+    </button>
+<div id="info-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">处理结果</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info"  >
+                {% csrf_token %}
+                
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">处理结果</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <textarea name="text" id="" cols="30" rows="10" class="uk-textarea"></textarea>
+                        </div>
+                    </div>
+                
+                </div>
+                <input type="hidden" name="id" id="id">
+                <input type="hidden" name="new_status" id="status">
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    function openModal(id_) {
+        var id = id_.substring(8);
+        $.get("/police_case_detail", {
+            "id": id
+        }, function (data) {
+            UIkit.modal.dialog(data);
+        });
+    }
+
+    function changeMy(id_) {
+        var id = id_.substring(10);
+        var new_status = $("#" + id_).val();
+        
+        if(new_status==3 || new_status==2){
+            UIkit.toggle("#info-box").toggle()
+            return false;
+        }
+
+        if (id === "-1")
+            return;
+
+        $.post("/police_change_status", {
+            "id": id,
+            "new_status": new_status
+        }, function (obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+            } else {
+                UIkit.notification({
+                    message: obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+        }, "json")
+    }
+
+    function change(id_) {
+        var id = id_.substring(8);
+        var new_status = $("#" + id_).val();
+        if(new_status==3 || new_status==2){
+            
+            $("#id").val(id);
+            $("#status").val(new_status);
+            $(".add").click()
+            return false;
+        }
+        $.post("/police_change_status", {
+            "id": id,
+            "new_status": new_status
+        }, function (obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+            } else {
+                UIkit.notification({
+                    message: obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+        }, "json")
+
+
+    }
+    $("#save").click(function(){
+        $.post("/police_change_status", $("[name=info]").serialize(), function (obj) {
+            if (obj.status === "ok") {
+                UIkit.notification({
+                    message: obj.msg,
+                    status: 'success',
+                    timeout: 2000
+                });
+            } else {
+                UIkit.notification({
+                    message: obj.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+            UIkit.toggle("#info-box").toggle()
+        }, "json")
+    });
+
+</script>

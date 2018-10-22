@@ -1,11 +1,13 @@
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.models import Cases
 from QieGaoWorld.models import User
+from QieGaoWorld import common
 
 import time
 import logging
@@ -70,6 +72,9 @@ def change_status(request):
         obj = Cases.objects.get(id=id_)
         if 0 <= new_status <= 3:
             obj.status = new_status
+            if new_status == 2 or new_status == 3:
+                text=request.POST.get("text","未填写处理结果")
+                obj.text=text
             obj.save()
             return HttpResponse(dialog('ok', 'success', '更新案件信息成功，刷新页面后生效'))
         else:
@@ -167,10 +172,16 @@ def id_get_nickname(id):
         return 'Internal Error'
 
 
-def page_police_hall(request):
-    my_cases = []
-    cases = Cases.objects.all()
-    cases = sorted(cases, key=lambda c: c.report_time, reverse=True)
+def police_list(request):
+    type=request.POST.get("type","all")
+    if type in "all":
+        cases = Cases.objects.order_by("-report_time")
+    else:
+        cases = Cases.objects.order_by("-report_time").filter(username=request.session.get("username"))
+        
+    page=request.POST.get("page",1)
+    paginator = Paginator(cases, 25)
+    cases=paginator.get_page(page)
     for i in range(0, len(cases)):
 
         cases[i].avatar = username_get_avatar(cases[i].username)
@@ -194,13 +205,11 @@ def page_police_hall(request):
             cases[i].status_label = ''
             cases[i].status_text = '未知状态'
 
-        if cases[i].username == request.session.get('username', ''):
-            my_cases.append(cases[i])
 
     content = {
         'cases': cases,
-        'my_cases': my_cases,
-        'permissions': request.session.get('permissions', '')
+        'permissions': request.session.get('permissions', ''),
+        "page":common.page("police/police_list",cases,type)
     }
 
-    return render(request, "dashboard/police/police_hall.html", content)
+    return render(request, "dashboard/police/police_list.html", content)

@@ -36,6 +36,19 @@
                 <p>{{ case.detail }}</p>
             </div>
         </div>
+        {% if case.status == 2 or case.status == 3 %}
+        <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-small">
+                    <p class="uk-text-bold">处理结果：</p>
+                </div>
+                <div class="uk-width-expand">
+                    <p>{{ case.text }}</p>
+                </div>
+            </div>
+          
+        {% endif %}
+        
+        
     </article>
 </div>
 <div class="uk-modal-footer uk-text-right">

@@ -35,6 +35,7 @@ class Cases(models.Model):
     progress = models.CharField(max_length=100)  # 处理进度
     status = models.IntegerField(default=0)  # 案件结果（0:等待调查, 1:正在调查, 2:处理成功, 3:处理失败）
     picture = models.CharField(max_length=1024)  # 案发现场截图
+    text=models.CharField(max_length=200)
 
 
 # 建筑申报记录
