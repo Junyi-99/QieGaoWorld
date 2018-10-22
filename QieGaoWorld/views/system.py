@@ -107,7 +107,7 @@ def logs_list(request):
     context = {
         'permissions': request.session['permissions'],
         "list":_list,
-        "page":common.page("system/logs_list",_list)
+        "page":common.page("system/logs_list",_list,type)
     }
 
     return render(request, "dashboard/system/logs_list.html", context)
