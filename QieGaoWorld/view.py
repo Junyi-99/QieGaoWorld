@@ -255,27 +255,9 @@ def page_para(request):
 @check_login
 def page_logs(request):
     
-    _get=request.POST.get("_get",None)
-    if(_get == None):
-        page=1
-    else:
-        try:
-            page=int(_get)
-        except ValueError as e:
-            page=1
-    size=30
-    # _list=system.logs_list(request,,page*size)
-    # _list=Logs.objects.exclude(code="info").order_by("-time")[(page-1)*size:page*size]
-    # _count=Logs.objects.annotate(count=Count("id")).exclude(code ="info").values("count")[0:1]
-    # _count=_count[0]['count']/size +1
-    _list=Logs.objects.all()
-    paginator = Paginator(_list, 25)
-    _list=paginator.get_page(page)
 
     context = {
         'permissions': request.session['permissions'],
-        "list":_list,
-        "page":common.page("logs",_list)
     }
 
     return render(request, "dashboard/system/logs.html", context)

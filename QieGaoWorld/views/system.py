@@ -1,8 +1,10 @@
 
-import re
-
-from QieGaoWorld import parameter
+import re,time
 from django.http import HttpResponse
+from django.shortcuts import render
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
+from QieGaoWorld import parameter,common
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
@@ -86,3 +88,25 @@ def para_del(request):
     
     para.delete()
     return HttpResponse(dialog('ok', 'success', '删除成功!'))
+
+def logs_list(request):
+    
+    
+    # _list=system.logs_list(request,,page*size)
+    # _list=Logs.objects.exclude(code="info").order_by("-time")[(page-1)*size:page*size]
+    # _count=Logs.objects.annotate(count=Count("id")).exclude(code ="info").values("count")[0:1]
+    # _count=_count[0]['count']/size +1
+    _list=Logs.objects.exclude(code="info").order_by("-time")
+    page=request.POST.get("page",1)
+    paginator = Paginator(_list, 25)
+    _list=paginator.get_page(page)
+    for i in range(0,len(_list)):
+        _list[i].localtime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(_list[i].time))
+
+    context = {
+        'permissions': request.session['permissions'],
+        "list":_list,
+        "page":common.page("system/logs_list",_list)
+    }
+
+    return render(request, "dashboard/system/logs_list.html", context)

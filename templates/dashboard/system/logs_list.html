@@ -1,0 +1,29 @@
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+        <caption></caption>
+        <thead>
+            <tr>
+                <th class="uk-width-medium">模块</th>
+                <th class="uk-width-small uk-visible@s">内容</th>
+                <th class="uk-width-small uk-visible@s">时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in list %}
+            <tr>
+                <td>
+                    <span class="" style="vertical-align: middle">{{ b.code }}</span>
+                </td>
+                <td>
+                    <span class="" style="vertical-align: middle">{{ b.text }}</span>
+                </td>
+                <td>
+                    <span class="" style="vertical-align: middle">{{ b.localtime }}</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% autoescape off %}
+      
+    {{ page }}
+    {% endautoescape %}
