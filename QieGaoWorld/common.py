@@ -14,6 +14,8 @@ def filter(sql):
 
 def page(url,_list,type=None):
     AllPage=_list.paginator.num_pages 
+    if AllPage ==1:
+        return ""
     page = _list.number
     if page <= 1 :
         ps=1
@@ -49,7 +51,7 @@ def page(url,_list,type=None):
             PageWord += '<li ><button %s class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >%d</button></li>' % (c,url,z,other,z)
     PageWord +='<li ><button  class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >下一页</button></li>'% (url,px,other)
     PageWord +='<li ><button  class="uk-button uk-button-small uk-button-default qg-page" data-url="%s" data-page="%d" %s style="border-radius:5px" >尾页</button></li>'% (url,AllPage,other)
-    return '<ul class="uk-pagination uk-flex-center" id="page" uk-margin>%s<li>总%d页，当前%d页</li></ul>' % (PageWord,AllPage,page)
+    return '<ul class="uk-pagination uk-flex-center" id="page" uk-margin>%s<li>总%d页，当前第%d页</li></ul>' % (PageWord,AllPage,page)
     #TODO:分页下拉菜单
     if(AllPage > 0):
         x = 1
