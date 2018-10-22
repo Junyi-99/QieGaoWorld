@@ -8,11 +8,19 @@
     <a class="uk-alert-close" uk-close></a>
     <p></p>
 </div>
+<ul uk-tab id="tab">
+    <li class="uk-active" ><a href="#" >建筑申报</a></li>
+    <li><a href="#" >动物申报</a></li>
+    <li><a href="#" >地图画</a></li>
+</ul>
 <div id="list"></div>
     
       
 <script>
-            $(function() {
-               list("system/logs_list");
-            })
-    </script>
+    $(function() {
+        $("#tab a").click(function(){
+            list("system/logs_list",1,$(this).html())
+        });
+        $("#tab .uk-active a").click()
+    })
+</script>

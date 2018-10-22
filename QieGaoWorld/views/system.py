@@ -96,7 +96,8 @@ def logs_list(request):
     # _list=Logs.objects.exclude(code="info").order_by("-time")[(page-1)*size:page*size]
     # _count=Logs.objects.annotate(count=Count("id")).exclude(code ="info").values("count")[0:1]
     # _count=_count[0]['count']/size +1
-    _list=Logs.objects.exclude(code="info").order_by("-time")
+    type=request.POST.get("type","建筑申报")
+    _list=Logs.objects.filter(code__contains='%s'%type).order_by("-time")
     page=request.POST.get("page",1)
     paginator = Paginator(_list, 25)
     _list=paginator.get_page(page)
