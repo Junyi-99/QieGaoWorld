@@ -1,0 +1,49 @@
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <caption></caption>
+    <thead>
+        <tr>
+            <th class="uk-width-medium">用户</th>
+            <th class="uk-width-medium">日期</th>
+            <th class="uk-width-small uk-visible@s">连续签到次数</th>
+            <th class="uk-width-small uk-visible@s">补签次数</th>
+            <th class="uk-width-small uk-visible@s">月签到次数</th>
+            <th class="uk-width-small uk-visible@s">总签到次数</th>
+            <th class="uk-width-small uk-visible@s">签到奖励</th>
+            <th class="uk-width-small uk-visible@s">签到时间</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in list %}
+        <tr>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.nickname }}({{ b.username }})</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.year }}-{{b.month}}-{{b.day}}</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.continuous }}</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.supplement }}</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.month_total }}</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.total }}</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.reward }}</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.localtime }}</span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% autoescape off %}
+    
+{{ page }}
+{% endautoescape %}

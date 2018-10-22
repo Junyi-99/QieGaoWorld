@@ -316,6 +316,13 @@ def page_rawerd(request):
     }
 
     return render(request, "dashboard/signin/reward.html", context)
+def page_signin(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+    }
+
+    return render(request, "dashboard/signin/logs.html", context)
 
 @ensure_csrf_cookie
 @check_login
@@ -392,5 +399,7 @@ def dashboard_page(request):
         return page_group_list(request)
     if request.POST.get("page", None) == "reward":
         return page_rawerd(request)
+    if request.POST.get("page", None) == "signin":
+        return page_signin(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

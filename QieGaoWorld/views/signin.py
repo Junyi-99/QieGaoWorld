@@ -1,13 +1,16 @@
 import time,datetime
-
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
+from django.shortcuts import render
+
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
 
+from QieGaoWorld import parameter,common
 
-
-from QieGaoWorld.models import Reward,RewardMx
+from QieGaoWorld.views.police import username_get_nickname
+from QieGaoWorld.models import Reward,RewardMx,Signin
 
 @check_login
 @check_post
@@ -100,3 +103,21 @@ def reward_status(request):
         menu.status=True
     menu.save()
     return HttpResponse(dialog('ok', 'success', 'ok!'))
+
+def logs_list(request):
+    
+    _list=Signin.objects.order_by("-time")
+    page=request.POST.get("page",1)
+    paginator = Paginator(_list, 25)
+    _list=paginator.get_page(page)
+    for i in range(0,len(_list)):
+        _list[i].localtime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(_list[i].time))
+        _list[i].nickname=username_get_nickname(_list[i].username)
+
+    context = {
+        'permissions': request.session['permissions'],
+        "list":_list,
+        "page":common.page("signin/logs_list",_list)
+    }
+
+    return render(request, "dashboard/signin/logs_list.html", context)

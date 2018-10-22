@@ -1,0 +1,18 @@
+{% load static %}
+<h2>签到管理
+    <small style="color: #666666; font-size: medium">Menu Manage</small>
+</h2>
+<hr class="uk-margin" />
+<p class="uk-text-meta">签到记录 </p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<div id="list"></div>
+    
+      
+<script>
+            $(function() {
+                list("signin/logs_list",1)
+            })
+    </script>
