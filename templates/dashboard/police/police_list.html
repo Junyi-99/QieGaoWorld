@@ -70,6 +70,10 @@
         {% endfor %}
         </tbody>
     </table>
+    {% autoescape off %}
+      
+    {{ page }}
+    {% endautoescape %}
     <button class=" add" style="display:none"
             uk-toggle="target: #info-box" >
     </button>
