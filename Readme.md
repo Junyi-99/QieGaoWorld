@@ -28,3 +28,20 @@ UI设计：
 `python manage.py migrate`
 
 
+## Virtual Environments
+
+### 创建venv环境：
+`virtualenv --no-site-packages venv`
+
+.
+
+### 进入venv环境：
+
+Windows:
+`venv\Scripts\activate.bat`
+
+Linux: 
+`source venv/bin/activate`
+
+### 安装依赖
+`pip install -r requirements.txt`
