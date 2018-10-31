@@ -2,6 +2,7 @@ import time,datetime
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.db.models import Max,Count
 
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
@@ -121,3 +122,15 @@ def logs_list(request):
     }
 
     return render(request, "dashboard/signin/logs_list.html", context)
+def update_month(request):
+    _list=Signin.objects.values("username").annotate(id=Max("id"),count=Count('*'))
+    # _list=Signin.objects.all()
+    for i in range(0,len(_list)):
+        print((_list[i]))
+        # time=Signin.objects.filter(username=_list[i]['username']).aggregate(Max('time'))
+        # si=Signin.objects.filter(username=_list[i].username,time=_list[i].time_max)
+        si=Signin.objects.get(id=_list[i]['id'])
+        # si.month_total=Signin.objects.filter(username=s.username).count()
+        si.month_total=_list[i]['count']
+        si.total=si.month_total
+        si.save()
