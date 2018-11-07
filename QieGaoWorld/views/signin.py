@@ -68,12 +68,14 @@ def reward_add(request):
     release_time=request.POST.get("release_time","")
     _id=request.POST.get("id","")
     if _id == "":
-        reward=Reward(name=name,status=True,type="map",reward_id=reid,number=1,mode=mode,release_mode=release_mode,release_time=release_time)
+        reward=Reward(name=name,status=True,type="map",reward_id=reid,number=1,mode=mode,release_mode=release_mode,release_time=release_time,start_time=start,end_time=end)
     else:
         reward=Reward.objects.get(id=_id)
         reward.name=name
         reward.reward_id=reid 
-        reward.number=number 
+        reward.start_time=start
+        reward.end_time=end
+        # reward.number=number 
         reward.mode=mode 
         reward.release_mode=release_mode 
         reward.release_time=release_time 
