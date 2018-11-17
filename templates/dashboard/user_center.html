@@ -67,7 +67,7 @@
                     <div class="uk-card-body uk-inline">
                         <ul uk-accordion>
                             <li>
-                                <a class="uk-article-title uk-accordion-title" href="#" style="font-size: 2.625rem">{{ online_players_number }}</a>
+                                <a class="uk-article-title uk-accordion-title" href="#" style="font-size: 2.625rem">{{ online_players_number }}/<small class="uk-text-small uk-text-muted">(延迟{{ latency }}ms)</small></a>
                                 <div class="uk-accordion-content">
                                     {% for usr in online_players_list %}
                                     <p user_id="{{ usr.id }}" title="{{ usr.nickname }}">{{ usr.name }} </p>

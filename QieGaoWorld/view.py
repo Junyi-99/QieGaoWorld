@@ -80,15 +80,13 @@ def user_center(request):
             'number_animals': na,
             'number_cases': nc,
             'permissions': request.session['permissions'],
-            'announcements': announcements
+            'announcements': announcements,
+            "latency":status.latency
         }
-        logging.debug(context)
     except Exception as e:
         print(e)
         logging.error(e)
         context = {}
-    print(context)
-    logging.debug(context['permissions'])
     return render(request, "dashboard/user_center.html", context)
 
 
