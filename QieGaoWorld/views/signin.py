@@ -1,4 +1,5 @@
-import time,datetime
+import time
+from datetime import datetime
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -114,7 +115,7 @@ def logs_list(request):
     paginator = Paginator(_list, 25)
     _list=paginator.get_page(page)
     for i in range(0,len(_list)):
-        _list[i].localtime=datetime.fromtimestamp(_list[i].time)
+        _list[i].localtime=datetime.fromtimestamp(_list[i].time).strftime('%Y-%m-%d %H:%M:%S')
         _list[i].nickname=username_get_nickname(_list[i].username)
 
     context = {
@@ -136,4 +137,5 @@ def update_month(request):
         si.month_total=_list[i]['count']
         si.total=si.month_total
         si.save()
+
 
