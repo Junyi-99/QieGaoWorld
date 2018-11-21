@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime,timezone,timedelta
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -115,7 +115,8 @@ def logs_list(request):
     paginator = Paginator(_list, 25)
     _list=paginator.get_page(page)
     for i in range(0,len(_list)):
-        _list[i].localtime=datetime.utcfromtimestamp(_list[i].time).strftime('%Y-%m-%d %H:%M:%S')
+        # _list[i].localtime=datetime.utcfromtimestamp(_list[i].time).replace(tzinfo=timezone(timedelta(hours=8))).strftime('%Y-%m-%d %H:%M:%S')
+        _list[i].localtime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(_list[i].time))
         _list[i].nickname=username_get_nickname(_list[i].username)
 
     context = {
