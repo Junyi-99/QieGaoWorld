@@ -137,5 +137,3 @@ def update_month(request):
         si.total=si.month_total
         si.save()
 
-
-print(datetime.fromtimestamp(1542800807))
