@@ -114,7 +114,7 @@ def logs_list(request):
     paginator = Paginator(_list, 25)
     _list=paginator.get_page(page)
     for i in range(0,len(_list)):
-        _list[i].localtime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(_list[i].time))
+        _list[i].localtime=datetime.fromtimestamp(_list[i].time)
         _list[i].nickname=username_get_nickname(_list[i].username)
 
     context = {
@@ -136,3 +136,6 @@ def update_month(request):
         si.month_total=_list[i]['count']
         si.total=si.month_total
         si.save()
+
+
+print(datetime.fromtimestamp(1542800807))
