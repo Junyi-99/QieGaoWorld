@@ -1,0 +1,14 @@
+
+
+
+@font-face {
+    font-family: 'fzxs15regular';
+    src: 
+        url('https://qiegao-1252250917.cos.ap-guangzhou.myqcloud.com/Zpix.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+*{
+    font-family: 'fzxs15regular' !important;
+}
