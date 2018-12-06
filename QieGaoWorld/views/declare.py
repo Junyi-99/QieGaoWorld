@@ -19,6 +19,7 @@ from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld.views.police import username_get_nickname,id_get_nickname
 from QieGaoWorld.models import DeclareAnimals, DeclareBuildings,Conf,Maps,SkullCustomize
 from QieGaoWorld import settings,common
+from QieGaoWorld.views import user
 import time
 
 
@@ -222,8 +223,14 @@ def make_thumb(pic_, path_):
 def buildings_list(request):
     # global buildings
     operation=request.POST.get("type","user")
+    username=request.GET.get("username","")
+    
     if 'all' in operation:
-        buildings = DeclareBuildings.objects.order_by("-declare_time").all()
+        if(username ==""):
+            buildings = DeclareBuildings.objects.order_by("-declare_time").all()
+        else:
+            buildings = DeclareBuildings.objects.order_by("-declare_time").filter(username=username)
+
     elif 'user' in operation:
         buildings = DeclareBuildings.objects.order_by("-declare_time").filter(username=request.session.get('username', None))
 
@@ -274,7 +281,7 @@ def buildings_list(request):
             buildings[i].status_label = 'uk-label-danger'
             buildings[i].status_text = '弃坑'
     # return buildings
-    return render(request, 'dashboard/declaration/building_list.html', {'permissions': request.session['permissions'],'buildings': buildings,"page":common.page("declare/buildings_list",buildings,operation)})
+    return render(request, 'dashboard/declaration/building_list.html', {'permissions': request.session['permissions'],'buildings': buildings,"user":user.user_list(request),"default":username,"page":common.page("declare/buildings_list",buildings,operation)})
 
 
 # operation 参数用来选择，是获取所有用户的obj，还是获取当前登录用户的obj
@@ -642,3 +649,5 @@ def skull_list(request,_all=False):
         skull[i].nickname=id_get_nickname(skull[i].user_id)
 
     return render(request, 'dashboard/declaration/skull_list.html', {'permissions': request.session['permissions'],'list': skull,"page":common.page("declare/skull_list",skull,_type)})
+
+

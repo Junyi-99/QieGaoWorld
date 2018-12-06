@@ -1,3 +1,20 @@
+
+<div>
+<div class="uk-grid-small uk-width-large" uk-grid>
+    <div class="uk-width-auto ">
+        <div class="uk-text-bold uk-text-baseline uk-text-right uk-height-1-1" style="line-height: 40px;">申请人：</div>
+    </div>
+    <div class="uk-width-expand">
+            <select class="uk-select " id="select" >
+                <option value=""  ></option>
+                {% for u in user  %}
+                    <option value="{{ u.username }}"  {% if default == u.username %} selected  {% endif %}  >{% if u.nickname == "" %}{{u.username}}{% else %} {{u.nickname}}{% endif %}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div>
+    
+</div>
 <table class="uk-table uk-table-hover uk-table-small uk-table-divider">
     <thead>
     <tr>
@@ -152,4 +169,10 @@
                 }
             }, "json")
         });
+
+        $("#select").change(function () {
+            list("declare/buildings_list?username="+$(this).val(),1,"all");
+        })
+
+    
 </script>
