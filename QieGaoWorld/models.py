@@ -167,8 +167,13 @@ class Reward(models.Model):
 
 class RewardMx(models.Model):
     
-    
     number=models.IntegerField()
     
     reward_id=models.IntegerField(default=0)
+
+
+class OtherData(models.Model):
+    type=models.CharField(max_length=200) #数据类型
+    name=models.CharField(max_length=200) #数据标识
+    data=models.TextField() #数据
 
