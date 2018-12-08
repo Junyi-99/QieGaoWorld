@@ -13,7 +13,7 @@ from .views.decorator import check_login, check_post
 from .views.settings import page_settings
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
-from .views import system,society,skull,task,user,declare,signin
+from .views import system,society,skull,task,user,declare,signin,ops
 from QieGaoWorld import parameter as Para 
 from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs,Maps
 from QieGaoWorld import common
@@ -46,6 +46,7 @@ def handle_uploaded_file(f):
 def user_center(request):
     try:
         from mcstatus import MinecraftServer
+        Para.MC_SERVER="wtx.huafia.win:9566"
         server = MinecraftServer.lookup(Para.MC_SERVER)
         status = server.status()
 
@@ -323,6 +324,14 @@ def page_police_hall(request):
     }
 
     return render(request, "dashboard/police/police_hall.html", context)
+def page_message(request):
+    
+    context = {
+        "message":ops.message_list(request),
+        'permissions': request.session['permissions'],
+    }
+
+    return render(request, "dashboard/ops/message.html", context)
 
 @ensure_csrf_cookie
 @check_login
@@ -401,5 +410,7 @@ def dashboard_page(request):
         return page_rawerd(request)
     if request.POST.get("page", None) == "signin":
         return page_signin(request)
+    if request.POST.get("page", None) == "message":
+        return page_message(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

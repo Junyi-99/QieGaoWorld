@@ -1,0 +1,197 @@
+{% load static %}
+<h2>公告管理
+    <small style="color: #666666; font-size: medium">Message List</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top" id="edit" uk-toggle="target: #edit-box" >添加
+    </button>
+</h2>
+<hr class="uk-margin" />
+<p class="uk-text-meta">下面显示的是所有公告</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<table class="uk-table uk-table-divider uk-table-striped uk-table-hover">
+    <caption></caption>
+    <thead>
+        <tr>
+            <th class="uk-width-medium">公告id</th>
+            <th class="uk-width-medium">公告内容</th>
+            <th class="uk-width-medium">间隔时长</th>
+            {% if '%whitelist%' in permissions %}
+            <th class="uk-width-small uk-visible@s">操作</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for b in message %}
+        <tr data-id="{{ b.id }}">
+            <td>
+                <span class="" style="">{{ b.id }}</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.content|truncatechars:20 }}</span>
+            </td>
+            <td>
+                <span class="" style="vertical-align: middle">{{ b.num }}</span>
+            </td>
+            <td class="uk-visible@s">
+                <label>
+                <a  class="uk-margin-small-right uk-icon-link edit" uk-icon="file-edit"  data-content='{{ b.content }}' data-number="{{ b.num }}" title="编辑"></a>
+                <a class="uk-margin-small-right uk-icon-link star"  data-status="{{b.status}}" {% if b.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star"  ></a>
+                <a class="uk-icon-link del"  style="color:red" uk-icon="trash"></a>
+                    </label>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<div id="edit-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">编辑公告</h2>
+        </div>
+        <div class="uk-modal-body">
+        <h3>如何生成公告？</h3>
+            <p class="uk-text-meta"></p>
+            <p class="uk-text-meta">1. 在线生成网址 [ <a target="_blak" href="https://minecraftjson.com/">地址</a> ]</p>
+            <p class="uk-text-meta">在网站中配置好公告内容</p>
+            <p class="uk-text-meta">将指令复制到下方公告内容框种</p>
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">公告内容</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <textarea name="" id="content" class="uk-textarea" cols="30" rows="10" placeholder="粘贴你生成的代码"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">间隔时间/秒</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="number" type="text" value="300">
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="id">
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(
+        $(function() {
+            $(".edit").click(function(){
+                _patent=$(this).parents("tr");
+                $("#id").val(_patent.data("id"));
+                $("#content").val($(this).data("content"));
+                $("#number").val($(this).data("number"));
+                $("#edit").click();
+                return false;
+            });
+
+
+            $("#save").click(function() {
+                var content = $("#content").val();
+                var num = $("#number").val();
+                var id = $("#id").val();
+
+                $.post("ops/message_edit?_=" + Date.parse(new Date()), {
+                    "num": num,
+                    "content":content,
+                    "id":id
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#edit-box").hide();
+                        window.location.reload()
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".del").click(function() {
+                var id = $(this).parents("tr").data("id");
+                var _this = $(this);
+
+                $.post("ops/message_del?_=" + Date.parse(new Date()), {
+                    "id": id,
+
+                }, function(obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        _this.parents("tr").remove();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $(".star").click(function() {
+                    var status = $(this).data("status");
+                    var _this = $(this);
+                    var id=_this.parents("tr").data('id');
+                    var title=_this.attr("title");
+                    $.post("ops/message_star?_=" + Date.parse(new Date()), {
+                        "status": status,
+                        "id":id
+                    }, function(obj) {
+                        if (obj.status === "ok") {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: check\'></span> ' + title+"成功！",
+                                status: 'success',
+                                timeout: 2000
+                            });
+                            if(status=="True"){
+                                _this.css("color","");
+                                _this.parents("tr").css("color","darkgrey");
+                                _this.data("status","False");
+                                _this.attr("title","启用")
+                            }else{
+                                _this.css("color","royalblue");
+                                _this.parents("tr").css("color","");
+                                _this.data("status","True");
+                                _this.attr("title","停用")
+                            }
+                        } else {
+                            UIkit.notification({
+                                message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                                status: 'danger',
+                                timeout: 2000
+                            })
+                        }
+                    }, "json")
+                });
+        })
+    );
+</script>

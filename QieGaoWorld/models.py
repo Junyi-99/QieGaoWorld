@@ -177,3 +177,8 @@ class OtherData(models.Model):
     name=models.CharField(max_length=200) #数据标识
     data=models.TextField() #数据
 
+#公告
+class Message(models.Model):
+    content=models.TextField()
+    num=models.IntegerField(default=300,max_length=10)
+    status=models.BooleanField(default=True)
