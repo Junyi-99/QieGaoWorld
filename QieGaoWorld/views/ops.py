@@ -89,8 +89,12 @@ def message_edit(request):
         num=int(request.POST.get('num',None))
     except ValueError:
         return HttpResponse(dialog('failed', 'danger', '时间必须为数字'))
-    info=re.search(r'\[.+',content)
-    content=info.group().replace('"',"'")
+    info=re.search(r"\[.+",content)
+    conte=info.group().replace('"',"'")
+    if '[切糕新闻]' in conte:
+        content=conte
+    else:
+        content="[{'text':'[切糕新闻]','color':'gold'}"+conte[3:]
     if(_id==""):
         menu=Message(content=content,num=num,status=True)
     else:
