@@ -66,14 +66,14 @@ def upload_building_picture(request, upload_type):
     if flag:
         try:
             u = str(uuid.uuid1())
-            save_path = "buildings/%s/%s" % (upload_type, u + ".png")
-            thumb_path = "buildings/%s/%s_thumb" % (upload_type, u )+ ".png"
+            save_path = "buildings/%s/%s" % (upload_type, u + ".jpg")
+            # thumb_path = "buildings/%s/%s_thumb" % (upload_type, u )+ ".jpg"
 
             path = default_storage.save(save_path, ContentFile(file_obj.read()))
-            path_thu = default_storage.save(thumb_path, ContentFile(file_obj.read()))
+            # path_thu = default_storage.save(thumb_path, ContentFile(file_obj.read()))
 
             tmp_file = os.path.join(settings.MEDIA_ROOT, path)
-            thu_file = os.path.join(settings.MEDIA_ROOT, path_thu)
+            # thu_file = os.path.join(settings.MEDIA_ROOT, path_thu)
 
             im = Image.open(tmp_file)
             width, height = im.size
