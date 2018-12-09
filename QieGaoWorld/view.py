@@ -46,7 +46,6 @@ def handle_uploaded_file(f):
 def user_center(request):
     try:
         from mcstatus import MinecraftServer
-        Para.MC_SERVER="wtx.huafia.win:9566"
         server = MinecraftServer.lookup(Para.MC_SERVER)
         status = server.status()
 
