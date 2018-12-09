@@ -82,7 +82,7 @@ def upload_building_picture(request, upload_type):
             out = im.resize((width - 1, height - 1), Image.ANTIALIAS)
             out.save(tmp_file)
 
-            make_thumb(tmp_file, thu_file)
+            # make_thumb(tmp_file, thu_file)
             # if width < height:
             #     print("resize")
             #     out = im.resize((width, width), Image.ANTIALIAS)
