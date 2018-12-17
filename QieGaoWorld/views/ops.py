@@ -107,7 +107,7 @@ def message_edit(request):
     return HttpResponse(dialog('ok', 'success', '编辑成功!'))
 def log_list(request):
 
-    dirs = os.listdir( parameter.SPIGOT_PATH + "logs" )
+    dirs = os.listdir( parameter.SPIGOT_PATH + "/logs" )
     html=""
     # 输出所有文件和文件夹
     for file in dirs:
@@ -119,7 +119,7 @@ def log_info(request):
     html=""
     if name == None:
         return log_list;
-    f=gzip.open(parameter.SPIGOT_PATH + "logs/"+name+".log.gz", "rb")
+    f=gzip.open(parameter.SPIGOT_PATH + "/logs/"+name+".log.gz", "rb")
     # with gzip.open(parameter.SPIGOT_PATH + "logs/"+name+".log.gz", "r") as f:
         # 读取一行
     while True:
