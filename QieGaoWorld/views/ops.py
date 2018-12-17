@@ -108,11 +108,15 @@ def message_edit(request):
 def log_list(request):
 
     dirs = os.listdir( parameter.SPIGOT_PATH + "/logs" )
+    dirs.sort()
     html=""
+    
     # 输出所有文件和文件夹
     for file in dirs:
+        if len(file)<15:
+            continue
         html+="<a href='/ops/log_info?name="+file[:-7]+"'>"+file[:-7]+"</a><br>"
-    return HttpResponse(json.dumps(html))
+    return HttpResponse((html))
 
 def log_info(request):
     name=request.GET.get("name",None)
