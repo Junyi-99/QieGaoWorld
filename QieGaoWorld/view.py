@@ -331,6 +331,13 @@ def page_message(request):
     }
 
     return render(request, "dashboard/ops/message.html", context)
+def page_ops_log(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+    }
+
+    return render(request, "dashboard/ops/log.html", context)
 
 @ensure_csrf_cookie
 @check_login
@@ -411,5 +418,7 @@ def dashboard_page(request):
         return page_signin(request)
     if request.POST.get("page", None) == "message":
         return page_message(request)
+    if request.POST.get("page", None) == "ops_log":
+        return page_ops_log(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

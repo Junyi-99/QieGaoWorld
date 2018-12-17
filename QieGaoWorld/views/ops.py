@@ -1,4 +1,4 @@
-import re
+import re,gzip,os,json
 
 from QieGaoWorld import parameter
 from django.http import HttpResponse
@@ -105,5 +105,71 @@ def message_edit(request):
 
     menu.save()
     return HttpResponse(dialog('ok', 'success', '编辑成功!'))
+def log_list(request):
+
+    dirs = os.listdir( parameter.SPIGOT_PATH + "logs" )
+    html=""
+    # 输出所有文件和文件夹
+    for file in dirs:
+        html+="<a href='/ops/log_info?name="+file[:-7]+"'>"+file[:-7]+"</a><br>"
+    return HttpResponse(json.dumps(html))
+
+def log_info(request):
+    name=request.GET.get("name",None)
+    html=""
+    if name == None:
+        return log_list;
+    f=gzip.open(parameter.SPIGOT_PATH + "logs/"+name+".log.gz", "rb")
+    # with gzip.open(parameter.SPIGOT_PATH + "logs/"+name+".log.gz", "r") as f:
+        # 读取一行
+    while True:
+        try:
+            line=str(f.readline(), encoding = "utf-8")
+            if  line == None or len(line)==0:
+                break
+            if "[Server thread/INFO]" in line:
+                continue
+            if "[User Authenticator" in line:
+                continue
+            if " GroupManager - INFO" in line:
+                continue
+            if "[QQ]" in line:
+                continue
+            if "[切糕报时]" in line:
+                continue
+            if "[切糕公告]" in line:
+                continue
+            if "[Spigot Watchdog Thread" in line:
+                continue
+            if "Server thread/WARN" in line:
+                continue
+            if "[Server thread/ERROR]" in line:
+                continue
+            if "[Craft Scheduler Thread" in line:
+                continue
+            if "[main/WARN]" in line:
+                continue
+            if "[main/INFO]" in line:
+                continue
+            if "[Dynmap Render" in line:
+                continue
+            if "/WARN]" in line:
+                continue
+            print(line)
+            info=re.search(r'\[[\d]{2}:[\d]{2}:[\d]{2}\]',line)
+            if(info != None):
+                html =html+ ("<span style='color:#017EBC;'>"+info.group()+"</span>")
+            info=re.search(u"[\u4e00-\u9fa5]+",line)
+            if(info != None):
+                html=html+("<span style='color:green;'>"+info.group()+"</span>")
+            info=re.search(r'<.+',line)
+            if(info != None):
+                html=html+("<span style=''>"+info.group()+"</span><br>")
+        except UnicodeDecodeError : 
+            pass
+        
+
+    return HttpResponse("<a href='/ops/log_list' style='color:#000'>返回上一页</a></br>"+(html))
 
 
+  
