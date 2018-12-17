@@ -155,7 +155,6 @@ def log_info(request):
                 continue
             if "/WARN]" in line:
                 continue
-            print(line)
             info=re.search(r'\[[\d]{2}:[\d]{2}:[\d]{2}\]',line)
             if(info != None):
                 html =html+ ("<span style='color:#017EBC;'>"+info.group()+"</span>")
