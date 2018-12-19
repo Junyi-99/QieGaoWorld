@@ -19,7 +19,7 @@ from django.urls import path
 from . import view
 from .views import login, logout
 from .views import avatar, police
-from .views import declare, register,ops,system,wenjuan,skull,society,task,user,signin
+from .views import declare, register,ops,system,wenjuan,skull,society,task,user,signin,cms
 from .views import announcement
 
 urlpatterns = [
@@ -74,4 +74,5 @@ urlpatterns = [
     path("task/<str:s>", task.url),
     path("user/<str:s>", user.url),
     path("signin/<str:s>", signin.url),
+    path("cms/<str:s>", cms.url),
 ]

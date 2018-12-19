@@ -1,0 +1,131 @@
+
+<div>
+{% comment %} <div class="uk-grid-small uk-width-large" uk-grid>
+    <div class="uk-width-auto ">
+        <div class="uk-text-bold uk-text-baseline uk-text-right uk-height-1-1" style="line-height: 40px;">申请人：</div>
+    </div>
+    <div class="uk-width-expand">
+            <select class="uk-select " id="select" >
+                <option value=""  ></option>
+                {% for u in user  %}
+                    <option value="{{ u.username }}"  {% if default == u.username %} selected  {% endif %}  >{% if u.nickname == "" %}{{u.username}}{% else %} {{u.nickname}}{% endif %}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div> {% endcomment %}
+    
+</div>
+<table class="uk-table uk-table-hover uk-table-small uk-table-divider">
+    <thead>
+    <tr>
+        <th class="uk-width-medium">章节名称</th>
+        <th class="uk-width-medium uk-visible@s">发布时间</th>
+        {% comment %} <th class="uk-width-small">状态</th> {% endcomment %}
+        <th class="uk-width-small uk-visible@s">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for b in list %}
+        <tr>
+            <td>
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-auto">
+                        <a >
+                            {{b.title}}
+                        </a>
+                    </div>
+                </div>
+            </td>
+            <td class="nowrap uk-visible@s">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
+                    <input type="text" class="uk-input change" style="" data-id='{{b.id}}' value='{{ b.show_time }}' >
+                            
+                    </div>
+                </div>
+            </td>
+            <td class="uk-visible@s">
+            {% if '%op%' in permissions %}
+                <a href="" class="uk-margin-small-right uk-icon-link edit" data-id="{{b.id}}" uk-icon="file-edit" title="编辑"></a>
+                            {% comment %} <a class="uk-margin-small-right uk-icon-link star" data-status="{{n.status}}" {% if n.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a> {% endcomment %}
+
+                            <a href="" class="uk-margin-small-right uk-icon-link del" style="color:red" uk-icon="trash" title="删除"></a>
+                            
+                
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% autoescape off %}{{ page }}{% endautoescape %}
+<script>
+        $(".del").click(function() {
+            var _this = $(this);
+            $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
+                "id":_this.attr("_id")
+            }, function(obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                    _this.parents("tr").remove();
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            }, "json")
+        });
+
+        function buildingDetail(id_) {
+            var id = id_.substring(8);
+            console.log(id);
+            $.get("/buildings_detail", {
+                "id": id
+            }, function (data) {
+                UIkit.modal.dialog(data);
+            });
+        }
+        $(".building_options").change(function () {
+            $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
+                "id": $(this).attr('_id'),
+                "status": $(this).val()
+            }, function (obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+            }, "json")
+        });
+
+        $("#select").change(function () {
+            list("declare/buildings_list?username="+$(this).val(),1,"all");
+        })
+
+        $("#list").on("change",".change",function(){
+            _this=$(this);
+            $.post("/cms/chapter_change_show_time",{id:$(this).data("id"),time:$(this).val()},function(data){
+                if(data.status!="ok"){
+                    _this.css("border","red 1px solid")
+                }else{
+                    _this.css("border","")
+                }
+            },'json')
+        })
+    
+</script>

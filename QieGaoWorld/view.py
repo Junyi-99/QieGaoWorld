@@ -13,7 +13,7 @@ from .views.decorator import check_login, check_post
 from .views.settings import page_settings
 from .views.ops import whitelist
 from .views.wenjuan import problem_list
-from .views import system,society,skull,task,user,declare,signin,ops
+from .views import system,society,skull,task,user,declare,signin,ops,cms
 from QieGaoWorld import parameter as Para 
 from QieGaoWorld.models import DeclareBuildings, DeclareAnimals, Cases,Menu,Conf,SkullCustomize,Logs,Maps
 from QieGaoWorld import common
@@ -338,6 +338,13 @@ def page_ops_log(request):
     }
 
     return render(request, "dashboard/ops/log.html", context)
+def cms_book_ist(request):
+    
+    context = {
+        'permissions': request.session['permissions'],
+    }
+
+    return render(request, "dashboard/cms/book.html", context)
 
 @ensure_csrf_cookie
 @check_login
@@ -420,5 +427,9 @@ def dashboard_page(request):
         return page_message(request)
     if request.POST.get("page", None) == "ops_log":
         return page_ops_log(request)
+    if request.POST.get("page", None) == "cms_book_list":
+        return cms_book_ist(request)
+    if request.POST.get("page", None) == "cms_chapter_list":
+        return cms.chapter(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

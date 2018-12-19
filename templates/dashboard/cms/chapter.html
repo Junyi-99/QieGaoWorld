@@ -1,0 +1,184 @@
+{% load static %}
+<h2>{{book.title}}
+    <small style="color: #666666; font-size: medium">CMS Manage <a href="javascript:window.location.href='#cms_book_list';window.location.reload()">返回连载列表</a></small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top" id="edit"
+            uk-toggle="target: #building-box">新章节
+    </button>
+</h2>
+<hr class="uk-margin"/>
+<p class="uk-text-meta">下面显示的是你发布的所有章节</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<div id="list">
+
+</div>
+<script type="text/javascript" src="{% static "assets/js/wangEditor.min.js"%}"></script>
+
+
+<div id="building-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical  uk-width-1-1@m uk-width-2-3@l uk-width-1-2@xl"  >
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">章节管理</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">名称</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="name" type="text" placeholder="如 初入切糕">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">章节内容</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                        <div id="summary"></div>
+                        </div>
+                    </div>
+                </div>
+                {% comment %} <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑类型</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input type="radio" class="uk-radio" name='type' checked value="0">立即发布
+                            <input type="radio" class="uk-radio" name='type' value="1">定时发布
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+                <input type="hidden" id="id" >
+                <input type="hidden" name="type" value="1" >
+                <input type="hidden" id="book_id" value="{{book.id}}" >
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var book_id={{book.id}};
+    function chapter_list(page=1){
+        loading()
+        $.post("cms/chapter_list",{page:page,id:book_id},function(data){
+            $("#list").html(data);
+            loading()
+        })
+    }
+    var editor
+    $(function (){
+        var E = window.wangEditor
+        editor = new E('#summary')
+        editor.customConfig.uploadImgShowBase64 = true
+        editor.create()
+    });
+
+    $(document).ready(
+        $(function () {
+
+            
+            chapter_list()
+            
+            $(".building_options").change(function () {
+                $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
+                    "id": $(this).attr('_id'),
+                    "status": $(this).val()
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $("#save").click(function () {
+                var name = $("#name").val();
+                var summary = editor.txt.html()
+                var type = $("[name=type]").val();
+                var id=$("#id").val()
+                var book_id=$("#book_id").val()
+
+                $.post("/cms/chapter_add?_=" + Date.parse(new Date()), {
+                    "name": name,
+                    "summary": summary,
+                    "type": type,
+                    "id":id,
+                    "book_id":book_id
+
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+
+            $("[name=type]").change(function(){
+                if($(this).val()==1){
+                    $(".time").removeClass("uk-hidden");
+                }else{
+                    $(".time").addClass("uk-hidden");
+                }
+            });
+        })
+    );
+    $("#list").on("click",".edit",function(){
+        $.post("/cms/chapter_info",{id:$(this).data("id")},function(data){
+            if (data.id !=undefined) {
+                $("#edit").click();
+                editor.txt.html(data.summary)
+                $("#name").val(data.name);
+                $("#id").val(data.id)
+            } else {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: close\'></span> ' + data.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+            
+        },"json")
+        return false;
+    });
+    $("#edit").click(function(){
+         editor.txt.html("")
+        $("#name").val("");
+        $("#id").val("")
+    });
+
+
+    
+</script>

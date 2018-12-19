@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)http://www.jq22.com/demo/jquerymobanyd201810292235/blog.html -->
+<html lang="zxx">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% load static %}
+
+        <link href="{% static "favicon.ico" %}" rel="shortcut icon">
+        <link rel="stylesheet" href="{% static "assets/css/uikit.css" %}"/>
+        <link rel="stylesheet" href="{% static "assets/css/qiegao.css" %}"/>
+        <link rel="stylesheet" href="{% static "assets/css/index/materialize.css" %}"/>
+        <link rel="stylesheet" href="{% static "assets/css/index/loaders.css" %}"/>
+        <link rel="stylesheet" href="{% static "assets/css/index/lightbox.css" %}"/>
+        <link rel="stylesheet" href="{% static "assets/css/index/owl.carousel.min.css" %}"/>
+        <link rel="stylesheet" href="{% static "assets/css/index/owl.theme.default.min.css" %}"/>
+        <link rel="stylesheet" href="{% static "assets/css/index/style.css" %}"/>
+        <script src="{% static "assets/js/jquery-3.2.1.js" %}"></script>
+        <script src="{% static "assets/js/csrf.js" %}"></script>
+        <script src="{% static "assets/js/uikit.js" %}"></script>
+        <script src="{% static "assets/js/uikit-icons.min.js" %}"></script>
+        <title>{{book.title}} - 连载</title>
+    </head>
+    <body style="">
+
+        <div class="navbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col s9">
+                        <div class="content-left">
+                        <a href=""><h1>切糕世界</h1></a>
+                        </div>
+                    </div>
+                    <div class="col s3">
+                        <div class="content-right">
+                        <a href="#slide-out" data-activates="slide-out" class="sidebar"><i uk-icon="menu"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="sidebar-panel">
+<ul id="slide-out" class="collapsible side-nav right-aligned" style="transform: translateX(100%);">
+    <li>
+        <div class="user-view">
+            <div class="background">
+                <img src="https://qiegaoworld.github.io/qiegaomap/img/qiegao.jpg" alt="">
+            </div>
+            <img class="circle responsive-img" src="{{request.session.avatar }}" alt="{{request.session.username }}">
+            <span class="white-text name">{{request.session.username }}</span>
+        </div>
+    </li>
+<li><a href="/cms/index"><span uk-icon="home" style="margin-right:10px"></span>首页</a></li>
+{% if request.session.username  %}
+<li><a href="/dashboard#user_center"><span uk-icon="user" style="margin-right:10px"></span>个人中心</a></li>
+<li><a href="/dashboard#declaration_center"><span uk-icon="tag" style="margin-right:10px"></span>申报中心</a></li>
+<li><a href="/dashboard#task_list"><span uk-icon="bookmark" style="margin-right:10px"></span>任务中心</a></li>
+<li><a href="/dashboard#police_hall"><span uk-icon="receiver" style="margin-right:10px"></span>警署</a></li>
+<li><a href="http://map.qiegaoshijie.club"><span uk-icon="world" style="margin-right:10px"></span>在线地图</a></li>
+<li><a href="javascript:;" id="logout"><span uk-icon="sign-out" style="margin-right:10px"></span>退出</a></li>
+{% else %}
+<li><a href="/login?t=index" ><span uk-icon="sign-in" style="margin-right:10px"></span>登录</a></li>
+
+{% endif %}
+</ul>
+</div>
+
+
+<div class="segments-page">
+<div class="container">
+<div class="about">
+<div class="">
+<a href="/cms/list?id={{book.book_id}}"><span uk-icon="chevron-left"></span> 返回目录</a>
+<hr>
+</div>
+<div class="content">
+    <div id="controls"> <a href="#" id="small">A</a> <a href="#" id="medium" class="selected">A</a> <a href="#" id="large">A</a> </div>
+    <div id="wrapper">
+    <h1>{{book.title}}</h1>
+    <hr>
+    <p id="content">
+    {% autoescape off %}{{book.content}} {% endautoescape %}</p>
+    </div>
+
+
+</div>
+</div>
+</div>
+</div>
+
+<script src="{% static "assets/js/index/materialize.js" %}"></script>
+<script src="{% static "assets/js/index/owl.carousel.min.js" %}"></script>
+<script src="{% static "assets/js/index/main.js" %}"></script>
+
+<script>
+    $("#logout").click(
+            function () {
+                $.post("/logout", {}, function (ret) {
+                    var obj = JSON.parse(ret);
+                    if (obj.status === "ok") {
+                        window.location.reload()
+                        UIkit.notification({message: obj.msg, status: 'success'});
+                    }
+                    else {
+                        UIkit.notification({message: obj.msg, status: 'danger'});
+                    }
+                })
+            }
+        );
+
+    $(document).ready(function() {
+    $("#small").click(function(event) {
+        event.preventDefault();
+        $("p").animate({
+            "font-size": "12px",
+            "line-height": "16px"
+        });
+    });
+    $("#medium").click(function(event) {
+        event.preventDefault();
+        $("p").animate({
+            "font-size": "14px",
+            "line-height": "20px"
+        });
+    });
+    $("#large").click(function(event) {
+        event.preventDefault();
+        $("p").animate({
+            "font-size": "16px",
+            "line-height": "20px"
+        });
+    });
+    $("a").click(function() {
+        $("a").removeClass("selected");
+        $(this).addClass("selected");
+    });
+});
+
+</script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial,Helvetica,sans-serif;
+    text-decoration: none
+}
+
+body {
+    background: #e7e7e7
+}
+
+#wrapper {
+    margin: 0 auto;
+    padding: 40px;
+    background: #fff;
+    box-shadow: 0 0 50px 0 rgba(0,0,0,.25)
+}
+
+#controls {
+    padding: 2px;
+    width: 30px;
+    background: #333;
+    position: fixed;
+    margin: 0 0 0 -10px;
+    text-align: center;
+    transition: .25s ease-out
+}
+
+#controls a {
+    font-size: 24px;
+    color: #aaa;
+    display: block;
+    font-weight: 700;
+    padding: 5px
+}
+
+#controls a:hover {
+    color: #fff;
+    background: #000;
+    transition: .25s ease-out
+}
+
+a.selected {
+    background: #000;
+    color: #fff!important
+}
+
+#small {
+    font-size: 10px!important
+}
+
+#medium {
+    font-size: 14px!important
+}
+
+#large {
+    font-size: 18px!important
+}
+
+.small {
+    font-size: 75%
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: 700
+}
+
+h2 {
+    font-size: 24px;
+    margin: 10px 0
+}
+
+p {
+    font-size: 14px;
+    line-height: 20px
+}
+
+</style>

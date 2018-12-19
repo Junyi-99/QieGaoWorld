@@ -1,0 +1,262 @@
+{% load static %}
+<h2>文章连载系统
+    <small style="color: #666666; font-size: medium">CMS Manage</small>
+    <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top " id="edit" uk-toggle="target: #building-box">新连载
+    </button>
+</h2>
+<hr class="uk-margin"/>
+<p class="uk-text-meta">下面显示的是你发布的所有连载</p>
+<div class="uk-alert-primary" uk-alert id="tips" style="display:none">
+    <a class="uk-alert-close" uk-close></a>
+    <p></p>
+</div>
+<div id="list">
+
+</div>
+
+
+
+<div id="building-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">连载管理</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="info">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">名称</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input class="uk-input" id="name" type="text" placeholder="如 切糕录">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">连载摘要</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <textarea name="" id="summary" cols="30" class="uk-textarea" rows="5" placeholder="摘要"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">图片</label>
+                        </div>
+                        <div class="uk-width-4-5@s upload_concept" >
+                            <div class="js-upload uk-placeholder uk-text-center" id="bg" style="background-size: auto 100%;background-position: center;background-repeat: no-repeat;">
+                                <span uk-icon="icon: cloud-upload"></span>
+                                <span class="uk-text-middle">上传封面图</span>
+                                <br>
+                                <div uk-form-custom>
+                                    <input type="file" name="file" accept="image/*">
+                                    <span class="uk-link">选择图片</span>
+                                </div>
+                                <br>
+                                <span>建议长宽比为4:3</span>
+                            </div>
+                        </div>
+                        
+                        <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
+                    </div>
+                </div>
+                {% comment %} <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">建筑类型</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <input type="radio" class="uk-radio" name='type' checked value="0">立即发布
+                            <input type="radio" class="uk-radio" name='type' value="1">定时发布
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+                {% comment %} <div class="uk-margin uk-hidden time">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">发布时间</label>
+                        </div>
+                        <div class="uk-width-4-5@s" uk-grid>
+                            <div class="uk-width-auto">
+                            <input class="uk-input " id="date" type="date">
+                            </div><div class="uk-width-expand">
+                            <input class="uk-input " id="time" type="time"></div>
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+                <input type="hidden" id="id" >
+                <input type="hidden" name="type" value="0" >
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="save">确认</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    function book_list(page=1){
+        loading()
+        $.post("cms/book_list",{page:page},function(data){
+            $("#list").html(data);
+            loading()
+        })
+    }
+    $(document).ready(
+        $(function () {
+            book_list()
+            $(".building_options").change(function () {
+                $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
+                    "id": $(this).attr('_id'),
+                    "status": $(this).val()
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                        
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+            $("#save").click(function () {
+                var name = $("#name").val();
+                var summary = $("#summary").val();
+                var type = $("[name=type]").val();
+                var img = $("#progress_concept").attr('url');
+                var id=$("#id").val()
+
+                $.post("/cms/book_add?_=" + Date.parse(new Date()), {
+                    "name": name,
+                    "summary": summary,
+                    "type": type,
+                    "img": img,
+                    "id":id
+
+                }, function (obj) {
+                    if (obj.status === "ok") {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                            status: 'success',
+                            timeout: 2000
+                        });
+                        UIkit.modal("#building-box").hide();
+                        window.location.reload()
+                    } else {
+                        UIkit.notification({
+                            message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                            status: 'danger',
+                            timeout: 2000
+                        })
+                    }
+                }, "json")
+            });
+
+            $("[name=type]").change(function(){
+                if($(this).val()==1){
+                    $(".time").removeClass("uk-hidden");
+                }else{
+                    $(".time").addClass("uk-hidden");
+                }
+            });
+        })
+    );
+    $("#list").on("click",".edit",function(){
+        $.post("/cms/book_info",{id:$(this).data("id")},function(data){
+            if (data.id !=undefined) {
+                $("#edit").click();
+                $("#summary").val(data.summary);
+                $("#name").val(data.name);
+                bar_concept.setAttribute("url",data.img);
+                $("#bg").css("background-image",'url('+data.img+')')
+                $("#id").val(data.id)
+            } else {
+                UIkit.notification({
+                    message: '<span uk-icon=\'icon: close\'></span> ' + data.msg,
+                    status: 'danger',
+                    timeout: 2000
+                })
+            }
+            
+        },"json")
+        return false;
+    });
+    $("#edit").click(function(){
+        $("#summary").val("");
+        $("#name").val("");
+        $("#bg").css("background-image",'')
+        $("#id").val("")
+        $("#progress_concept").val("")
+    });
+
+    var bar_concept = document.getElementById('progress_concept');
+    UIkit.upload('.upload_concept', {
+        url: 'cms/upload_img',
+        multiple: false,
+        allow: '*.(jpg|jpeg|gif|png)',
+        beforeSend: function (env) {
+            console.log(this);
+            env.headers = {"X-CSRFToken": getCookie("csrftoken")};
+
+            console.log('beforeSend', arguments);
+        },
+        loadStart: function (e) {
+            bar_concept.removeAttribute('hidden');
+            bar_concept.removeAttribute('url');
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        progress: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+        },
+
+        loadEnd: function (e) {
+            bar_concept.max = e.total;
+            bar_concept.value = e.loaded;
+            
+        },
+        completeAll: function (xhr) {
+            completeAll(xhr.responseText, bar_concept);
+            
+        }
+    });
+
+    function completeAll(responseText, progressBar) {
+        obj = JSON.parse(responseText);
+
+        if (obj.status === "ok") {
+            progressBar.setAttribute('url', obj.url)
+            $("#bg").css("background-image",'url("'+obj.url+'")')
+        }
+        else {
+            $("#msg").text("上传失败");
+            UIkit.notification({message: obj.msg, status: 'danger'});
+        }
+
+        setTimeout(function () {
+            progressBar.setAttribute('hidden', 'hidden');
+        }, 5000);
+    }
+
+    
+</script>

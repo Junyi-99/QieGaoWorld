@@ -94,7 +94,11 @@
                                 status: 'success'
                             });
                             //setTimeout("window.location.href = \"/dashboard\"", "1000")
+                            {% if  type == 'index' %}
+                            window.location.href = "/cms/index";
+                            {% else %}
                             window.location.href = "/dashboard";
+                            {% endif %}
                         } else {
                             $("#username").addClass("uk-form-danger");
                             $("#password").addClass("uk-form-danger");

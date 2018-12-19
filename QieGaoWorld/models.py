@@ -182,3 +182,27 @@ class Message(models.Model):
     content=models.TextField()
     num=models.IntegerField(default=300,max_length=10)
     status=models.BooleanField(default=True)
+
+
+
+
+# #cms系统相关数据表
+# class CmsCategory(models.Model):
+#     title=models.CharField(max_length=100)
+
+class CmsBook(models.Model):
+    title = models.CharField(max_length=100)
+    summary=models.CharField(max_length=200)
+    author=models.CharField(max_length=100)
+    img=models.CharField(max_length=250)
+    show_time=models.IntegerField()
+    status=models.BooleanField(default=True) #1已发布 0草稿箱 -1已删除 2已下架
+    time=models.IntegerField()
+
+class CmsChapter(models.Model):
+    title=models.CharField(max_length=100)
+    book_id=models.IntegerField(default=0)
+    content=models.TextField()
+    show_time=models.IntegerField()
+    status=models.BooleanField(default=True) #1已发布 0草稿箱 -1已删除 2已下架
+    time=models.IntegerField()

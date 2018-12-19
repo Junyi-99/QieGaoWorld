@@ -19,7 +19,8 @@ from QieGaoWorld import common
 def login(request):
     if request.session.get("is_login", False):
         return redirect("/dashboard")
-    return render(request, "login.html", {})
+    
+    return render(request, "login.html", {"type":request.GET.get("t",'')})
 
 
 def test(request):
@@ -99,6 +100,7 @@ def login_verify(request):
                 s += b['name'] + "%"
             if username in s:
                 request.session['permissions'] = settings.OP_PERMISSIONS
+                # request.session['permissions'] = user.get_all_permissions()
             else:
                 if username == "Junyi99":  # 硬核编码（hhh
                     request.session['permissions'] = settings.OP_PERMISSIONS
