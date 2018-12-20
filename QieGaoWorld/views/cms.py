@@ -261,8 +261,7 @@ def chapter_change_show_time(request):
         book=CmsChapter.objects.get(id=_id)
         if book==None:
             return HttpResponse(dialog('failed', 'danger', '章节不存在！'))
-        book.show_time=time.mktime(time.strptime(_time, "%Y-%m-%d %H:%M:%S"))
-        print(time.strptime(_time, "%Y-%m-%d %H:%M:%S"))
+        book.show_time=time.mktime(time.strptime(_time, "%Y-%m-%d %H:%M:%S"))-28800
         book.save()
         return HttpResponse(dialog('ok', 'success', '编辑成功'))
     except Exception as e:
