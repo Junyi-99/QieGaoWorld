@@ -152,6 +152,9 @@ def book_del(request):
         # 1、检查是否是当前用户的状态为“审核不通过”的建筑
         if  not (obj.author == username or ('%op%' in request.session.get('permissions', '%default%') ) ) :
             return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
+        chapter=CmsChapter.objects.filter(book_id=obj.id)
+        if len(chapter)>0:
+            return HttpResponse(dialog('failed', 'danger', '当前连载下还有未删除的章节'))
         imgpath=os.path.join(os.getcwd(),obj.img)
         if  os.path.exists(imgpath) and not os.path.isdir(imgpath) :
             os.unlink(imgpath)
