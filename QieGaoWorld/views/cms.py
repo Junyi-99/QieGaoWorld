@@ -195,7 +195,7 @@ def chapter_list(request):
         else:
             chapter[i].show_time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    return render(request, 'dashboard/cms/chapter_list.html', {'permissions': request.session['permissions'],'list': chapter,"page":common.page("cms/chapter_list",chapter)})
+    return render(request, 'dashboard/cms/chapter_list.html', {'permissions': request.session.get("permissions","default"),'list': chapter,"page":common.page("cms/chapter_list",chapter)})
 def chapter(request):
     _id=int(request.POST.get("_get",0)[3:])
     if _id==0:
@@ -203,7 +203,7 @@ def chapter(request):
     
     book=CmsBook.objects.get(id=_id)
 
-    return render(request, 'dashboard/cms/chapter.html', {'permissions': request.session['permissions'],'book': book})
+    return render(request, 'dashboard/cms/chapter.html', {'permissions': request.session.get("permissions","default"),'book': book})
 
 
 def chapter_add(request):
@@ -288,7 +288,6 @@ def chapter_del(request):
         return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
     except ObjectDoesNotExist:
         return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
-
 def index(request):
 
     book=CmsBook.objects.all()
@@ -298,7 +297,7 @@ def index(request):
     for i in range(0,len(book)):
         book[i].show_time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(book[i].show_time))
 
-    return render(request, 'index/cms/book.html', {'permissions': request.session['permissions'],'book': book,"page":common.page("cms/index",book)})
+    return render(request, 'index/cms/book.html', {'permissions': request.session.get("permissions","default"),'book': book,"page":common.page("cms/index",book)})
 def list(request):
     _id=request.GET.get('id',None)
     if _id==None or len(_id)<=0:
@@ -315,7 +314,7 @@ def list(request):
     for i in range(0,len(chapter)):
         chapter[i].show_time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(chapter[i].show_time))
 
-    return render(request, 'index/cms/list.html', {'permissions': request.session['permissions'],'book': book,"list":chapter})
+    return render(request, 'index/cms/list.html', {'permissions': request.session.get("permissions","default"),'book': book,"list":chapter})
 def info(request):
     _id=request.GET.get('id',None)
     if _id==None or len(_id)<=0:
@@ -333,4 +332,4 @@ def info(request):
     for i in range(0,len(chapter)):
         chapter[i].show_time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(chapter[i].show_time))
 
-    return render(request, 'index/cms/info.html', {'permissions': request.session['permissions'],'book': info,"list":chapter})
+    return render(request, 'index/cms/info.html', {'permissions': request.session.get("permissions","default"),'book': info,"list":chapter})
