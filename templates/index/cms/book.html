@@ -147,7 +147,7 @@
 <div class="container">
     {% for b in book %}
     <div class="contents">
-        <img src="/{{b.img}}" alt="" class="uk-width-medium">
+        <img src="{{b.img}}" alt="" class="uk-width-medium">
         <div class="text">
             <a href="/cms/list?id={{b.id}}"><h4>{{b.title}}</h4></a>
             <p class="date"><i uk-icon="calendar"></i>{{ b.show_time }}</p>
@@ -181,4 +181,5 @@
             }
         );
 </script>
-<div class="hiddendiv common"></div><div class="drag-target" data-sidenav="slide-out" style="right: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div></body></html>
+<div class="hiddendiv common"></div><div class="drag-target" data-sidenav="slide-out" style="right: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+</body></html>

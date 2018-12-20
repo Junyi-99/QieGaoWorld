@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0060)http://www.jq22.com/demo/jquerymobanyd201810292235/blog.html -->
 <html lang="zxx">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -41,67 +40,66 @@
             </div>
         </div>
 
-<div class="sidebar-panel">
-<ul id="slide-out" class="collapsible side-nav right-aligned" style="transform: translateX(100%);">
-    <li>
-        <div class="user-view">
-            <div class="background">
-                <img src="https://qiegaoworld.github.io/qiegaomap/img/qiegao.jpg" alt="">
+        <div class="sidebar-panel">
+            <ul id="slide-out" class="collapsible side-nav right-aligned" style="transform: translateX(100%);">
+                <li>
+                    <div class="user-view">
+                        <div class="background">
+                            <img src="https://qiegaoworld.github.io/qiegaomap/img/qiegao.jpg" alt="">
+                        </div>
+                        <img class="circle responsive-img" src="/{{request.session.avatar }}" alt="{{request.session.username }}">
+                        <span class="white-text name">{{request.session.username }}</span>
+                    </div>
+                </li>
+                <li><a href="/cms/index"><span uk-icon="home" style="margin-right:10px"></span>首页</a></li>
+                {% if request.session.username  %}
+                <li><a href="/dashboard#user_center"><span uk-icon="user" style="margin-right:10px"></span>个人中心</a></li>
+                <li><a href="/dashboard#declaration_center"><span uk-icon="tag" style="margin-right:10px"></span>申报中心</a></li>
+                <li><a href="/dashboard#task_list"><span uk-icon="bookmark" style="margin-right:10px"></span>任务中心</a></li>
+                <li><a href="/dashboard#police_hall"><span uk-icon="receiver" style="margin-right:10px"></span>警署</a></li>
+                <li><a href="http://map.qiegaoshijie.club"><span uk-icon="world" style="margin-right:10px"></span>在线地图</a></li>
+                <li><a href="javascript:;" id="logout"><span uk-icon="sign-out" style="margin-right:10px"></span>退出</a></li>
+                {% else %}
+                <li><a href="/login?t=index" ><span uk-icon="sign-in" style="margin-right:10px"></span>登录</a></li>
+
+                {% endif %}
+            </ul>
+        </div>
+
+
+        <div class="segments-page">
+            <div class="container">
+                <div class="about">
+                    <div class="">
+                        <a href="/cms/index"><span uk-icon="chevron-left"></span> 返回首页</a>
+                        <hr>
+                    </div>
+                    <div class="content">
+                        <div>
+
+                            <div class="uk-inline" style="width:100%;max-height: 500px;">
+                                <img src="{{book.img}}" style="max-height: 500px;" alt="{{book.title}}">
+                                <div class="uk-overlay uk-overlay-primary uk-position-bottom">
+                                    <h4>{{book.title}}</h4>
+                                    <p class="date"><i uk-icon="calendar"></i>{{ book.show_time }}</p>
+                                    <p>{{book.summary}}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                        <p>章节列表</p>
+                        <hr>
+                        <ul>
+                        {% for l in list %}
+                        <li><a href="/cms/info?id={{l.id}}">{{l.title}}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <img class="circle responsive-img" src="/{{request.session.avatar }}" alt="{{request.session.username }}">
-            <span class="white-text name">{{request.session.username }}</span>
         </div>
-    </li>
-<li><a href="/cms/index"><span uk-icon="home" style="margin-right:10px"></span>首页</a></li>
-{% if request.session.username  %}
-<li><a href="/dashboard#user_center"><span uk-icon="user" style="margin-right:10px"></span>个人中心</a></li>
-<li><a href="/dashboard#declaration_center"><span uk-icon="tag" style="margin-right:10px"></span>申报中心</a></li>
-<li><a href="/dashboard#task_list"><span uk-icon="bookmark" style="margin-right:10px"></span>任务中心</a></li>
-<li><a href="/dashboard#police_hall"><span uk-icon="receiver" style="margin-right:10px"></span>警署</a></li>
-<li><a href="http://map.qiegaoshijie.club"><span uk-icon="world" style="margin-right:10px"></span>在线地图</a></li>
-<li><a href="javascript:;" id="logout"><span uk-icon="sign-out" style="margin-right:10px"></span>退出</a></li>
-{% else %}
-<li><a href="/login?t=index" ><span uk-icon="sign-in" style="margin-right:10px"></span>登录</a></li>
-
-{% endif %}
-</ul>
-</div>
-
-
-<div class="segments-page">
-<div class="container">
-<div class="about">
-<div class="">
-<a href="/cms/index"><span uk-icon="chevron-left"></span> 返回首页</a>
-<hr>
-</div>
-<div class="content">
-<div>
-
-    <div class="uk-inline" style="width:100%;max-height: 500px;">
-        <img src="{{book.img}}" style="max-height: 500px;" alt="{{book.title}}">
-        <div class="uk-overlay uk-overlay-primary uk-position-bottom">
-            <h4>{{book.title}}</h4>
-            <p class="date"><i uk-icon="calendar"></i>{{ book.show_time }}</p>
-            <p>{{book.summary}}</p>
-        </div>
-    </div>
-
-</div>
-<p>章节列表</p>
-<hr>
-<ul>
-{% for l in list %}
-<li><a href="/cms/info?id={{l.id}}">{{l.title}}</a></li>
-{% endfor %}
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-<script src="{% static "assets/js/index/materialize.js" %}"></script>
 <script src="{% static "assets/js/index/owl.carousel.min.js" %}"></script>
+<script src="{% static "assets/js/index/materialize.js" %}"></script>
 <script src="{% static "assets/js/index/main.js" %}"></script>
 
 <script>
@@ -120,4 +118,6 @@
             }
         );
 </script>
-<div class="hiddendiv common"></div><div class="drag-target" data-sidenav="slide-out" style="right: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div></body></html>
+<div class="hiddendiv common"></div><div class="drag-target" data-sidenav="slide-out" style="right: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+<body>
+</html>
