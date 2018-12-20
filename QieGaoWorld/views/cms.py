@@ -14,8 +14,6 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
-from qcloud_cos import CosConfig
-from qcloud_cos import CosS3Client
 def url(request, s):
     return eval(s)(request)
 
