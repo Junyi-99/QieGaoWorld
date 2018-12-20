@@ -305,7 +305,7 @@ def list(request):
     if book == None:
         return index(request)
     book.show_time=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(book.show_time))
-    chapter=CmsChapter.objects.filter(book_id=_id)
+    chapter=CmsChapter.objects.filter(book_id=_id,show_time__lte=int(time.time()),show_time__gt=0)
     # page=request.POST.get("page",1)
     # paginator = Paginator(chapter, 25)
     # chapter=paginator.get_page(page)
