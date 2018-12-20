@@ -102,7 +102,7 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript" src="{% static "assets/js/cos-js-sdk-v5.min.js"%}"></script>
 <script>
     
     function book_list(page=1){
@@ -208,7 +208,8 @@
     });
 
     var bar_concept = document.getElementById('progress_concept');
-    UIkit.upload('.upload_concept', {
+
+    {% comment %} UIkit.upload('.upload_concept', {
         url: 'cms/upload_img',
         multiple: false,
         allow: '*.(jpg|jpeg|gif|png)',
@@ -239,14 +240,53 @@
             completeAll(xhr.responseText, bar_concept);
             
         }
+    }); {% endcomment %}
+    $("[name=file]").change(function(){
+        var file = this.files[0];
+            if (!file) return;
+            _filename=file.name.split('.');
+            // 分片上传文件
+            cos.sliceUploadFile({
+                Bucket: Bucket,
+                Region: "ap-guangzhou",
+                Key: 'hall.qiegaoshijie.club/book/' + guid() +"."+_filename[_filename.length-1],
+                Body: file,
+            }, function (err, data) {
+                {% comment %} insert("http://"+data.Location)
+                 {% endcomment %}
+                 if (data!=undefined && data.Location !=undefined) {
+                    bar_concept.setAttribute('url',"http://"+data.Location)
+                    $("#bg").css("background-image",'url(http://'+data.Location+')')
+                }
+                else {
+                    $("#msg").text("上传失败");
+                    UIkit.notification({message: "上传失败！", status: 'danger'});
+                }
+
+                setTimeout(function () {
+                    bar_concept.setAttribute('hidden', 'hidden');
+                }, 5000);
+            });
+    })
+    function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
     });
+}
+        // 初始化腾讯cos上传
+var Bucket = 'qiegao-1252250917';
+var cos = new COS({
+    SecretId: 'AKIDyd6GhzJ2s3Yq6BdHG9vPo7pV3QRxuPjx',
+    SecretKey: 'DFC1gBVjmePDvUwDOVWPvMdkgU9cy66y',
+});
 
     function completeAll(responseText, progressBar) {
         obj = JSON.parse(responseText);
 
         if (obj.status === "ok") {
-            progressBar.setAttribute('url', obj.url)
-            $("#bg").css("background-image",'url("'+obj.url+'")')
+            progressBar.setAttribute('url',"http://"+data.Location)
+            $("#bg").css("background-image",'url(http://'+data.Location+'")')
         }
         else {
             $("#msg").text("上传失败");
