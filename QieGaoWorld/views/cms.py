@@ -6,7 +6,6 @@ from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld.models import CmsBook,CmsChapter
 from QieGaoWorld import settings,common
-from QieGaoWorld.tools import cos
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import os,traceback,uuid,logging,time,json,sys,requests
