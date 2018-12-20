@@ -50,7 +50,7 @@
                 <a href="" class="uk-margin-small-right uk-icon-link edit" data-id="{{b.id}}" uk-icon="file-edit" title="编辑"></a>
                             {% comment %} <a class="uk-margin-small-right uk-icon-link star" data-status="{{n.status}}" {% if n.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a> {% endcomment %}
 
-                            <a href="" class="uk-margin-small-right uk-icon-link del" style="color:red" uk-icon="trash" title="删除"></a>
+                            <a href="" class="uk-margin-small-right uk-icon-link del" style="color:red" _id="{{b.id}}" uk-icon="trash" title="删除"></a>
                             
                 
                 {% endif %}
@@ -63,7 +63,7 @@
 <script>
         $(".del").click(function() {
             var _this = $(this);
-            $.post("declare/buildings_del?_=" + Date.parse(new Date()), {
+            $.post("cms/chapter_del?_=" + Date.parse(new Date()), {
                 "id":_this.attr("_id")
             }, function(obj) {
                 if (obj.status === "ok") {
@@ -83,35 +83,6 @@
             }, "json")
         });
 
-        function buildingDetail(id_) {
-            var id = id_.substring(8);
-            console.log(id);
-            $.get("/buildings_detail", {
-                "id": id
-            }, function (data) {
-                UIkit.modal.dialog(data);
-            });
-        }
-        $(".building_options").change(function () {
-            $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
-                "id": $(this).attr('_id'),
-                "status": $(this).val()
-            }, function (obj) {
-                if (obj.status === "ok") {
-                    UIkit.notification({
-                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
-                        status: 'success',
-                        timeout: 2000
-                    });
-                } else {
-                    UIkit.notification({
-                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
-                        status: 'danger',
-                        timeout: 2000
-                    })
-                }
-            }, "json")
-        });
 
         $("#select").change(function () {
             list("declare/buildings_list?username="+$(this).val(),1,"all");

@@ -331,8 +331,6 @@ def buildings_add(request):
                     'predict_end_time', 'type', 'pic_concept', 'pic_plan'}
 
         lis = {key: str(request.POST.get(key, '')).strip() for key in arg_list}
-        print(lis)
-        print(lis['type'])
         lis['declare_time'] = int(time.time())
         lis['username'] = request.session.get('username', None)
 

@@ -6,14 +6,17 @@ from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld.models import CmsBook,CmsChapter
 from QieGaoWorld import settings,common
+from QieGaoWorld.tools import cos
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-import os,traceback,uuid,logging,time,json
+import os,traceback,uuid,logging,time,json,sys,requests
 from PIL import Image
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
+from qcloud_cos import CosConfig
+from qcloud_cos import CosS3Client
 def url(request, s):
     return eval(s)(request)
 
@@ -260,6 +263,30 @@ def chapter_change_show_time(request):
         return HttpResponse(dialog('ok', 'success', '编辑成功'))
     except Exception as e:
         return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
+
+@check_login
+def chapter_del(request):
+    try:
+        id_ = int(request.POST.get('id', None))
+    except ValueError:
+        return HttpResponse(dialog('failed', 'danger', '参数错误'))
+
+    try:
+        obj =  CmsChapter.objects.get(id=id_)
+        book=CmsBook.objects.get(id=obj.book_id)
+        # 1、检查是否是当前用户的状态为“审核不通过”的建筑
+        if  not (book.author == username or ('%op%' in request.session.get('permissions', '%default%') ) ) :
+            return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
+        imgpath=os.path.join(os.getcwd(),obj.img)
+        if  os.path.exists(imgpath) and not os.path.isdir(imgpath) :
+            os.unlink(imgpath)
+        obj.delete()
+        return HttpResponse(dialog('ok', 'success', '删除章节成功'))
+    except MultipleObjectsReturned as e:
+        logging.error(e)
+        return HttpResponse(dialog('failed', 'danger', '内部错误，请联系管理员'))
+    except ObjectDoesNotExist:
+        return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
 
 def index(request):
 

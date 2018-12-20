@@ -1,0 +1,111 @@
+{% load static %}
+<button class="uk-modal-close-default" type="button" uk-close></button>
+
+<div class="uk-modal-header">
+    <h2 class="uk-modal-title">建筑详情</h2>
+</div>
+
+<div class="uk-modal-body" uk-overflow-auto>
+    <article class="uk-article">
+        <h1 class="uk-article-title">{{ building.name }}
+            <span class="uk-margin-left uk-label {{ building.status_label }}" style="vertical-align: middle">
+                {{ building.status_text }}
+            </span>
+        </h1>
+        <p class="uk-article-meta">{{ building.english_name }}</p>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">申请人：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ building.nickname }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">建筑类型：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ building.type }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">精确坐标 (xyz)：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ building.coordinate }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">占地面积：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ building.area }} M<sup>2</sup></p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">简介：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ building.summary }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">详细介绍：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ building.detail }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">预计开始时间：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ building.predict_start_time }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">预计结束时间：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p>{{ building.predict_end_time }}</p>
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">概念图：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p class="uk-text-meta">如果比例不对，请在新标签页中打开图片</p>
+                <img src="{{ building.concept }}" />
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">平面图：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p class="uk-text-meta">如果比例不对，请在新标签页中打开图片</p>
+                <img src="{{ building.plan }}" />
+            </div>
+        </div>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">透视图：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p class="uk-text-meta">如果比例不对，请在新标签页中打开图片</p>
+                <img src="{{ building.perspective }}" />
+            </div>
+        </div>
+    </article>
+</div>
+<div class="uk-modal-footer uk-text-right">
+    <button class="uk-button uk-button-primary uk-modal-close" type="button">关闭</button>
+</div>
