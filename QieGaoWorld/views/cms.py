@@ -18,7 +18,10 @@ def url(request, s):
     return eval(s)(request)
 
 def book_list(request):
-    book=CmsBook.objects.filter(author=request.session['username'])
+    if '%op%' in request.session.get('permissions', '%default%'):
+        book=CmsBook.objects.all()
+    else:
+        book=CmsBook.objects.filter(author=request.session['username'])
 
     page=request.POST.get("page",1)
     paginator = Paginator(book, 25)
