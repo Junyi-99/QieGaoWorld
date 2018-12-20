@@ -50,7 +50,7 @@
                 <a href="" class="uk-margin-small-right uk-icon-link edit" data-id="{{b.id}}" uk-icon="file-edit" title="编辑"></a>
                             {% comment %} <a class="uk-margin-small-right uk-icon-link star" data-status="{{n.status}}" {% if n.status != 0 %} style="color:royalblue" title="停用"{% else %} title="启用"  {% endif %} uk-icon="star" ></a> {% endcomment %}
 
-                            <a href="" class="uk-margin-small-right uk-icon-link del" style="color:red" _id="{{b.id}}" uk-icon="trash" title="删除"></a>
+                <a href="" class="uk-margin-small-right uk-icon-link del" style="color:red" _id="{{b.id}}" uk-icon="trash" title="删除"></a>
                             
                 
                 {% endif %}
@@ -81,6 +81,7 @@
                     })
                 }
             }, "json")
+            return false;
         });
 
 

@@ -268,6 +268,7 @@ def chapter_change_show_time(request):
 def chapter_del(request):
     try:
         id_ = int(request.POST.get('id', None))
+        username = request.session.get('username', None)
     except ValueError:
         return HttpResponse(dialog('failed', 'danger', '参数错误'))
 
@@ -277,9 +278,6 @@ def chapter_del(request):
         # 1、检查是否是当前用户的状态为“审核不通过”的建筑
         if  not (book.author == username or ('%op%' in request.session.get('permissions', '%default%') ) ) :
             return HttpResponse(dialog('failed', 'danger', '可能这条记录不属于你！'))
-        imgpath=os.path.join(os.getcwd(),obj.img)
-        if  os.path.exists(imgpath) and not os.path.isdir(imgpath) :
-            os.unlink(imgpath)
         obj.delete()
         return HttpResponse(dialog('ok', 'success', '删除章节成功'))
     except MultipleObjectsReturned as e:
