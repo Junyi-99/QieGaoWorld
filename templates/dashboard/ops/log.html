@@ -1,19 +1,33 @@
 {% load static %}
-<h2>日志
-    <small style="color: #666666; font-size: medium">Log list</small>
+<h2>服务器日志查看系统
+    <small style="color: #666666; font-size: medium">logs Manage</small>
+    </button>
 </h2>
-<hr class="uk-margin" />
+<hr class="uk-margin"/>
+<p class="uk-text-meta">下面显示的是所有日志列表</p>
 <div class="uk-alert-primary" uk-alert id="tips" style="display:none">
     <a class="uk-alert-close" uk-close></a>
     <p></p>
 </div>
-<a href="/ops/log_list" target="_blank">新标签页打开</a>
-<iframe id="frame" src="/ops/log_list" frameborder="0" width="100%" height="100%"></iframe>
+<div id="list">
+
+</div>
 
 <script>
-    $(function(){
-        document.getElementById("frame").height=window.innerHeight-243;
-    });
-
+    function log_list(){
+        loading()
+        $.post("ops/log_list",function(data){
+            $("#list").html(data);
+            loading()
+        })
+    }
+    log_list()
+    $("#list").on('click',".list",function(){
+            loading()
+            $("#list").html("")
+            $.post("/ops/log_info",{name:$(this).data("id")},function(data){
+                $("#list").html(data)
+                loading()
+            })
+        })
 </script>
-

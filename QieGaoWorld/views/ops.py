@@ -6,6 +6,7 @@ from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld.models import Message
+from django.shortcuts import render
 
 def url(request, s):
     return eval(s)(request)
@@ -108,19 +109,20 @@ def message_edit(request):
 def log_list(request):
 
     dirs = os.listdir( parameter.SPIGOT_PATH + "/logs" )
-    dirs.sort()
-    html=""
+    dirs.sort(reverse=True)
+    html=[]
     
     # 输出所有文件和文件夹
     for file in dirs:
         if len(file)<15:
             continue
-        html+="<a href='/ops/log_info?name="+file[:-7]+"'>"+file[:-7]+"</a><br>"
-    return HttpResponse((html))
+        html.append(file[:-7])
+    return render(request, 'dashboard/ops/log_list.html', {'permissions': request.session.get("permissions","default"),'list': html})
 
 def log_info(request):
-    name=request.GET.get("name",None)
-    html=""
+    name=request.POST.get("name",None)
+    html=[]
+    _group=[]
     if name == None:
         return log_list;
     f=gzip.open(parameter.SPIGOT_PATH + "/logs/"+name+".log.gz", "rb")
@@ -131,48 +133,44 @@ def log_info(request):
             line=str(f.readline(), encoding = "utf-8")
             if  line == None or len(line)==0:
                 break
-            if "[Server thread/INFO]" in line:
+            if "/" == line[0:1] or "login" in line.lower() :
                 continue
-            if "[User Authenticator" in line:
-                continue
-            if " GroupManager - INFO" in line:
-                continue
-            if "[QQ]" in line:
-                continue
-            if "[切糕报时]" in line:
-                continue
-            if "[切糕公告]" in line:
-                continue
-            if "[Spigot Watchdog Thread" in line:
-                continue
-            if "Server thread/WARN" in line:
-                continue
-            if "[Server thread/ERROR]" in line:
-                continue
-            if "[Craft Scheduler Thread" in line:
-                continue
-            if "[main/WARN]" in line:
-                continue
-            if "[main/INFO]" in line:
-                continue
-            if "[Dynmap Render" in line:
-                continue
-            if "/WARN]" in line:
-                continue
+            ht={}
+            time=""
+            _type=""
+            area=""
+            user=""
+            content=""
             info=re.search(r'\[[\d]{2}:[\d]{2}:[\d]{2}\]',line)
             if(info != None):
-                html =html+ ("<span style='color:#017EBC;'>"+info.group()+"</span>")
-            info=re.search(u"[\u4e00-\u9fa5]+",line)
+                time=info.group()
+            info=re.search('\[[a-zA-z /\-0-9#]+\]',line)
             if(info != None):
-                html=html+("<span style='color:green;'>"+info.group()+"</span>")
-            info=re.search(r'<.+',line)
+                _type=info.group()
+                if _type not in _group:
+                    _group.append(_type)
+            content=line[line.find(']:')+2:]
+            info=re.search(u"\[[Q\u4e00-\u9fa5]+\]",line)
             if(info != None):
-                html=html+("<span style=''>"+info.group()+"</span><br>")
+                area=info.group()
+                content=content[len(area)+1:]
+                # if '[QQ]' in area:
+                #     area="<span style='color:#%s'>%s</span>" %('FF5555',area)
+            info=re.search(u"<.*>",content)
+            if(info != None):
+                user=info.group()
+                content=content[len(user):]
+                # user="<span style='color:#%s'>%s</span>" %('00AA00',user)
+            
+            html.append({'time':time,"type":_type,"area":area,"content":content,"area":area,"user":user})
+            # info=re.search(r'<.+',line)
+            # if(info != None):
+                # html=html+("<span style=''>"+info.group()+"</span><br>")
         except UnicodeDecodeError : 
             pass
-        
+    
 
-    return HttpResponse("<a href='/ops/log_list' style='color:#000'>返回上一页</a></br>"+(html))
+    return render(request, 'dashboard/ops/log_info.html', {'permissions': request.session.get("permissions","default"),'list': html,"title":name,"group":_group})
 
 
   

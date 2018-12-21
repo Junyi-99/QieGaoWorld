@@ -1,0 +1,53 @@
+
+<div>
+{% comment %} <div class="uk-grid-small uk-width-large" uk-grid>
+    <div class="uk-width-auto ">
+        <div class="uk-text-bold uk-text-baseline uk-text-right uk-height-1-1" style="line-height: 40px;">申请人：</div>
+    </div>
+    <div class="uk-width-expand">
+            <select class="uk-select " id="select" >
+                <option value=""  ></option>
+                {% for u in user  %}
+                    <option value="{{ u.username }}"  {% if default == u.username %} selected  {% endif %}  >{% if u.nickname == "" %}{{u.username}}{% else %} {{u.nickname}}{% endif %}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div> {% endcomment %}
+</div>
+<table class="uk-table uk-table-hover uk-table-small uk-table-divider">
+    <thead>
+    <tr>
+        <th class="uk-width-medium">日志名称</th>
+        <th class="uk-width-medium ">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for b in list %}
+        <tr>
+            <td>
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-auto">
+                        <a class="list" data-id="{{b}}">
+                            {{b}}
+                        </a>
+                    </div>
+                </div>
+            </td>
+            </td>
+            <td class="uk-visible@s">
+
+                <a href="javascript:;"  class="uk-margin-small-right uk-icon-link list" data-id="{{b}}"  title="查看日志">查看日志</a>
+            
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+        
+
+
+
+        
+</script>

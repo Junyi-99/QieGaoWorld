@@ -431,5 +431,7 @@ def dashboard_page(request):
         return cms_book_ist(request)
     if request.POST.get("page", None) == "cms_chapter_list":
         return cms.chapter(request)
+    if request.POST.get("page", None) == "ops_log_list":
+        return ops.log_info(request)
 
     return HttpResponse("Response: " + request.POST.get("page", None))

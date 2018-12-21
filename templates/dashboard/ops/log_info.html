@@ -1,0 +1,84 @@
+
+<div>
+{% comment %} <div class="uk-grid-small uk-width-large" uk-grid>
+    <div class="uk-width-auto ">
+        <div class="uk-text-bold uk-text-baseline uk-text-right uk-height-1-1" style="line-height: 40px;">申请人：</div>
+    </div>
+    <div class="uk-width-expand">
+            <select class="uk-select " id="select" >
+                <option value=""  ></option>
+                {% for u in user  %}
+                    <option value="{{ u.username }}"  {% if default == u.username %} selected  {% endif %}  >{% if u.nickname == "" %}{{u.username}}{% else %} {{u.nickname}}{% endif %}</option>
+                {% endfor %}
+            </select>
+    </div>
+</div> {% endcomment %}
+<h1>{{title}}</h1>
+<a href="javascript:;" onclick="log_list()">返回目录</a>
+
+</div>
+<div style="max-height:125px;overflow:auto">
+<style>
+    #log li{
+        float:left;
+        padding:5px;
+    }
+</style>
+<ul id="log" class="" style="padding: 0;list-style: none;">
+    {% for g in group %}
+    <li>
+        <label class="uk-padding-small uk-padding-remove-left" ><input  type="checkbox" checked class="uk-checkbox select"  value="{{g}}" />{{g}}</label>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<table class="uk-table uk-table-hover uk-table-small uk-table-divider">
+    <thead>
+    <tr>
+        <th class="uk-width-medium" style="width:200px">类型</th>
+        <th class="uk-width-medium ">内容</th>
+        <th class="uk-width-medium ">时间</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for b in list %}
+        <tr  content="{{b.type}}">
+            <td>
+                        {{b.type}}
+            </td>
+            <td class="nowrap uk-visible@s">
+                       {% comment %} {% autoescape off %} {{b.content}}   {% endautoescape  %} {% endcomment %}
+                        {% if '[QQ]' == b.area %}
+                       <span style='color:#FF5555'>{{b.area}}</span>
+                       {% elif '[末地]' == b.area %}
+                       <span style='color:YELLOW'>{{b.area}}</span>
+                       {% elif '[主世界]' == b.area %}
+                       <span style='color:GREEN'>{{b.area}}</span>
+                       {% elif '[地狱]' == b.area %}
+                       <span style='color:RED'>{{b.area}}</span>
+                        {% endif %}
+
+
+                       <span style='color:#00AA00'>{{b.user}}</span>
+                       {{b.content}}
+            </td>
+            <td class="uk-visible@s">
+                {{b.time}}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+    $(".select").change(function(){
+        console.log($("[content='"+$(this).val()+"']"))
+        if($(this)[0].checked==true){
+            $("[content='"+$(this).val()+"']").removeClass("uk-hidden")
+
+        }else{
+            $("[content='"+$(this).val()+"']").addClass("uk-hidden")
+        }
+    })
+    
+</script>
