@@ -44,6 +44,11 @@ def handle_uploaded_file(f):
 
 @check_login
 def user_center(request):
+    announcements = announcement_list(request)
+
+    na = len(DeclareAnimals.objects.all())
+    nb = len(DeclareBuildings.objects.all())
+    nc = len(Cases.objects.all())
     try:
         from mcstatus import MinecraftServer
         server = MinecraftServer.lookup(Para.MC_SERVER)
@@ -65,11 +70,7 @@ def user_center(request):
                 user.append({'name': e.name, 'id': e.id,"nickname":username_get_nickname(e.name)})
 
 
-        announcements = announcement_list(request)
-
-        na = len(DeclareAnimals.objects.all())
-        nb = len(DeclareBuildings.objects.all())
-        nc = len(Cases.objects.all())
+        
 
         context = {
             'favicon': fav,
@@ -84,9 +85,18 @@ def user_center(request):
             "latency":status.latency
         }
     except Exception as e:
-        print(e)
-        logging.error(e)
-        context = {}
+        context = {
+            'favicon': '',
+            'server_address': Para.MC_SERVER,
+            'online_players_list': [],
+            'online_players_number': '超时',
+            'number_buildings': nb,
+            'number_animals': na,
+            'number_cases': nc,
+            'permissions': request.session['permissions'],
+            'announcements': announcements,
+            "latency":-1
+        }
     return render(request, "dashboard/user_center.html", context)
 
 
