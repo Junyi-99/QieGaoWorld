@@ -54,8 +54,10 @@ class DeclareBuildings(models.Model):
     predict_start_time = models.IntegerField(default=0)  # 预计开始时间
     predict_end_time = models.IntegerField(default=0)  # 预计结束时间
     actually_end_time = models.IntegerField(default=0)  # 实际结束时间
+
     status = models.IntegerField(default=0)  # 申报状态（0:挂起, 1:正在审核, 2:审核不通过, 3:审核通过, 4: 正在建设, 5:完工）
     type = models.IntegerField(default=0)  # 建筑类型（0:公共建筑, 1:私有建筑）
+    text=models.CharField(max_length=200) #拒绝原因
 
 
 # 动物申报记录

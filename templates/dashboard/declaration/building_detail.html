@@ -104,6 +104,16 @@
                 <img src="{{ building.perspective }}" />
             </div>
         </div>
+        {% if building.status == 2 %}
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-small">
+                <p class="uk-text-bold">拒绝理由：</p>
+            </div>
+            <div class="uk-width-expand">
+                <p class="uk-text-meta">{{ building.text }}</p>
+            </div>
+        </div>
+        {% endif %}
     </article>
 </div>
 <div class="uk-modal-footer uk-text-right">

@@ -117,6 +117,44 @@
     </tbody>
 </table>
 {% autoescape off %}{{ page }}{% endautoescape %}
+
+<button class=" add" style="display:none"
+            uk-toggle="target: #info-box" >
+    </button>
+<div id="info-box" class="uk-flex-top" bg-close="false" esc-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div class="uk-modal-header">
+            <h2 class="uk-modal-title">拒绝原因</h2>
+        </div>
+        <div class="uk-modal-body">
+            <form class="uk-form-horizontal" name="_info"  >
+                {% csrf_token %}
+                
+                <div class="uk-margin">
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-1-5@s">
+                            <label class="uk-form-label" for="form-horizontal-text">拒绝原因</label>
+                        </div>
+                        <div class="uk-width-4-5@s">
+                            <textarea name="text" id="" cols="30" rows="10" class="uk-textarea"></textarea>
+                        </div>
+                    </div>
+                
+                </div>
+                <input type="hidden" name="id" id="id">
+                <input type="hidden" name="status" id="status">
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-text-right  ">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">取消</button>
+            <button class="uk-button uk-button-primary" type="button" id="_save">确认</button>
+        </div>
+        
+    </div>
+</div>
+
 <script>
         $(".del").click(function() {
             var _this = $(this);
@@ -150,6 +188,15 @@
             });
         }
         $(".building_options").change(function () {
+            var new_status=$(this).val();
+            var id=$(this).attr('_id');
+            if( new_status==2){
+            
+                $("#id").val(id);
+                $("#status").val(new_status);
+                $(".add").click()
+                return false;
+            }
             $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), {
                 "id": $(this).attr('_id'),
                 "status": $(this).val()
@@ -173,6 +220,27 @@
         $("#select").change(function () {
             list("declare/buildings_list?username="+$(this).val(),1,"all");
         })
+
+        $("#_save").click(function(){
+            $.post("declare/buildings_change_status?_=" + Date.parse(new Date()), $("[name=_info]").serialize(), function (obj) {
+                if (obj.status === "ok") {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: check\'></span> ' + obj.msg,
+                        status: 'success',
+                        timeout: 2000
+                    });
+                    UIkit.toggle("#info-box").toggle()
+                    window.location.reload()
+                } else {
+                    UIkit.notification({
+                        message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,
+                        status: 'danger',
+                        timeout: 2000
+                    })
+                }
+
+            }, "json")
+    });
 
     
 </script>

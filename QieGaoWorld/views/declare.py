@@ -105,6 +105,7 @@ def buildings_change_status(request):
         id_ = int(request.POST.get('id', None))
         new_status = int(request.POST.get('status', None))
         username = request.session.get('username', None)
+        text=str(request.POST.get('text', None))
     except ValueError:
         return HttpResponse(dialog('failed', 'danger', '参数错误'))
 
@@ -117,6 +118,7 @@ def buildings_change_status(request):
         if 0 <= new_status <= 6:
             old_status=obj.status
             obj.status = new_status
+            obj.text=text
             obj.save()
             common.logs("用户:%s(%d) 将建筑申请：%s(id:%s,user:%s)状态由%s更改为%s" % (request.session['username'],request.session['id'],obj.name,obj.id,obj.username,old_status,str(new_status)),"建筑申报管理")
             return HttpResponse(dialog('ok', 'success', '更新建筑申报信息成功！刷新页面生效！'))
