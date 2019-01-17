@@ -61,7 +61,7 @@ def avatar_upload(request):
         out = im.resize((128, 128), Image.ANTIALIAS)
         out.save(tmp_file)
 
-        avatar_update(request, 'static\\media\\' + str(path))
+        avatar_update(request, 'static/media/' + str(path))
         return HttpResponse(dialog('ok', 'success', '修改成功，刷新页面后生效'))
     else:
         return HttpResponse(dialog('failed', 'danger', '文件类型错误'))
