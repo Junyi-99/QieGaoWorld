@@ -1,12 +1,13 @@
 from QieGaoWorld import parameter
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.decorator import check_login
 from QieGaoWorld.views.dialog import dialog
-from QieGaoWorld.models import CmsBook,CmsChapter
+from QieGaoWorld.views.login import get_nickname_from_uuid,get_uuid_from_name
+from QieGaoWorld.models import CmsBook,CmsChapter,User
 from QieGaoWorld import settings,common
-
+from django.core import serializers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 import os,traceback,uuid,logging,time,json,sys,requests
 from PIL import Image
@@ -59,20 +60,16 @@ def login(request):
     user.save()
 
     # 登录成功后
-    request.session["is_login"] = True
-    request.session['username'] = user.username
-    request.session['password'] = user.password
-    request.session['nickname'] = user.nickname
-    request.session['qqnumber'] = user.qqnumber
-    request.session['usrgroup'] = user.usrgroup
-    request.session['id'] = user.id
-    request.session['register_time'] = user.register_time
-    request.session['avatar'] = user.avatar
-    request.session.set_expiry(3600)  # 1小时有效期
-
-    data.status=0
-    data.data=user
-    return HttpResponse(r_json(0,"用户信息",data))
+    data={}
+    data["is_login"] = True
+    data['username'] = user.username
+    data['password'] = user.password
+    data['nickname'] = user.nickname
+    data['qqnumber'] = user.qqnumber
+    data['id'] = user.id
+    data['avatar'] = user.avatar
+    
+    return JsonResponse(r_json(0,"用户信息",data))
 
 
 def r_json(status,msg='',data=''):
@@ -80,6 +77,4 @@ def r_json(status,msg='',data=''):
     result['status']=status
     result['msg']=msg
     result['data']=data
-
-    return json.dumps(result)
-    
+    return (result)
