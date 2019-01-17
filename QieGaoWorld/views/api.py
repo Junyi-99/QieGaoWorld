@@ -18,8 +18,8 @@ def url(request, s):
     return eval(s)(request)
 
 def login(request):
-    username = str(request.POST.get("username", None))
-    password = str(request.POST.get("password", None))
+    username = str(request.GET.get("username", None))
+    password = str(request.GET.get("password", None))
     
 
     with open(parameter.SPIGOT_PATH + "/plugins/WhiteList/config.yml", "r") as f:
