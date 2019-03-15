@@ -13,6 +13,8 @@ class User(AbstractUser):
     qqnumber = models.IntegerField(default=0)  # QQ号
     usrgroup = models.IntegerField(default=0)  # 用户组
     register_time = models.IntegerField(default=0)  # 注册时间
+    token = models.CharField(default="",max_length=32)  # 自动登录
+    token_expired_time = models.IntegerField(default=0)  # 自动登录
     avatar = models.CharField(max_length=1024, default='static\\media\\face\\default.jpg')  # 头像
     permissions = models.CharField(max_length=2048,
                                    default=settings.DEFAULT_PERMISSIONS)  # 权限
