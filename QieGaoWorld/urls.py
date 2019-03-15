@@ -22,11 +22,13 @@ from .views import avatar, police
 from .views import declare, register,ops,system,wenjuan,skull,society,task,user,signin,cms,api
 from .views import announcement
 
+
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^$', login.login),
 
     url(r"^login$", login.login),
+    url(r"^autologin$", login.auto_login),
     url(r"^logout$", logout.logout),
     url(r"^login_verify$", login.login_verify),
 

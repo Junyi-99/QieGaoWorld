@@ -12,7 +12,7 @@ from QieGaoWorld import settings
 from QieGaoWorld.models import User
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.dialog import dialog
-from QieGaoWorld import common
+from QieGaoWorld import common,parameter
 
 # ajax (ensure csrf cookie)
 @ensure_csrf_cookie
@@ -20,7 +20,7 @@ def login(request):
     if request.session.get("is_login", False):
         return redirect("/dashboard")
     
-    return render(request, "login.html", {"type":request.GET.get("t",'')})
+    return render(request, "login.html", {"type":request.GET.get("t",''),"oauth_callback":request.GET.get("oauth_callback",'')})
 
 
 def test(request):
@@ -78,6 +78,10 @@ def login_verify(request):
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
         else:
             user = user[0]
+    user.token_expired_time=int(time.time())
+    user.token=hashlib.md5().hexdigest()
+
+    user.save()
 
     # 登录成功后
     request.session["is_login"] = True
@@ -109,7 +113,7 @@ def login_verify(request):
     else:
         request.session['permissions'] = user.permissions
 
-    return HttpResponse(dialog('ok', 'success', '登录成功'))
+    return HttpResponse(dialog('ok', 'success', '登录成功',{"token":user.token}))
 
 
 def get_uuid_from_name(name):
@@ -125,8 +129,9 @@ def get_uuid_from_name(name):
 
 
 def get_nickname_from_uuid(uuid):
+    
     try:
-        with open("../plugins/Essentials/userdata/%s.yml" % uuid) as f:
+        with open(parameter.SPIGOT_PATH+("/plugins/Essentials/userdata/%s.yml" % uuid)) as f:
             lines = f.readlines()
             for l in lines:
                 if "nickname: " in l:
@@ -134,3 +139,30 @@ def get_nickname_from_uuid(uuid):
             return ""
     except IOError:
         return ""
+
+def auto_login(request):
+    url = "./"
+
+    token = str(request.POST.get("token", None))
+
+    user = User.objects.exclude(token_expired_time__gte=int(time.time()), token=token)
+    if len(user) == 0:
+        return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
+    else:
+        user = user[0]
+
+    # 登录成功后
+    data={}
+    data["is_login"] = True
+    data['username'] = user.username
+    data['password'] = user.password
+    data['nickname'] = user.nickname
+    data['qqnumber'] = user.qqnumber
+    data['usrgroup'] = user.usrgroup
+    data['id'] = user.id
+    data['register_time'] = user.register_time
+    data['avatar'] = user.avatar
+    # data.set_expiry(3600)  # 1小时有效期
+
+
+    return HttpResponse(dialog('ok', 'success', '登录成功',data))

@@ -35,7 +35,7 @@
                         <div class="uk-inline uk-width-large\@l">
                             <span class="uk-form-icon" uk-icon="icon: lock"></span>
                             <input name="password" id="password" class="uk-input" type="password" placeholder="密码"
-                                   onkeydown="EnterPress(event)">
+                                   onkeydown="EnterPress(this)">
                         </div>
                     </div>
                     <div>
@@ -72,7 +72,6 @@
             document.getElementById("submit").click();
         }
     }
-
     $(document).ready(
         function () {
             $("#submit").click(
@@ -93,12 +92,10 @@
                                 message: obj.msg,
                                 status: 'success'
                             });
-                            //setTimeout("window.location.href = \"/dashboard\"", "1000")
-                            {% if  type == 'index' %}
-                            window.location.href = "/cms/index";
-                            {% else %}
-                            window.location.href = "/dashboard";
-                            {% endif %}
+                            auto(obj.token)
+
+                            setTimeout("jump()", "1000")
+                            
                         } else {
                             $("#username").addClass("uk-form-danger");
                             $("#password").addClass("uk-form-danger");
@@ -112,5 +109,24 @@
             )
         }
     );
+    
+    function auto(token){
+        var url=[
+            "http://map.qiegao.com/test.php?type=autologin",
+        ];
+        for(i in url){
+            $("body").append("<iframe style='display:none' src='"+url[i]+"&token="+token+"'></iframe>")
+        }
+    }
+    function jump(){
+        {% if  type == 'index' %}
+            window.location.href = "/cms/index";
+        {% elif oauth_callback != '' %}
+            window.location.href = "{{ oauth_callback }}";
+        {% else %}
+        
+            window.location.href = "/dashboard";
+        {% endif %}
+    }
 </script>
 </html>
