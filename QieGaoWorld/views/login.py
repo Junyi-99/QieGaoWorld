@@ -155,7 +155,6 @@ def auto_login(request):
     data={}
     data["is_login"] = True
     data['username'] = user.username
-    data['password'] = user.password
     data['nickname'] = user.nickname
     data['qqnumber'] = user.qqnumber
     data['usrgroup'] = user.usrgroup
