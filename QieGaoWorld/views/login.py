@@ -80,7 +80,7 @@ def login_verify(request):
             user = user[0]
     user.token_expired_time=int(time.time())
     m2 = hashlib.md5()   
-    m2.update(time.time()+user.username)   
+    m2.update(str(time.time())+user.username)   
     user.token=m2.hexdigest()
 
     user.save()
