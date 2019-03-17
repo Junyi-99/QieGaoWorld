@@ -144,11 +144,13 @@ def get_nickname_from_uuid(uuid):
         return ""
 
 def auto_login(request):
-    url = "./"
+    
 
     token = str(request.GET.get("token", None))
+    
 
-    user = User.objects.exclude(token_expired_time__gte=int(time.time()), token=token)
+    user = User.objects.filter(token_expired_time__gte=int(time.time()), token=token)
+    print(user)
     if len(user) == 0:
         return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
     else:
