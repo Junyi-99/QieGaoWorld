@@ -79,8 +79,9 @@ def login_verify(request):
         else:
             user = user[0]
     user.token_expired_time=int(time.time())
+    str=str(time.time())+user.username
     m2 = hashlib.md5()   
-    m2.update(str(time.time())+user.username)   
+    m2.update(str.encode('utf-8'))   
     user.token=m2.hexdigest()
 
     user.save()
@@ -167,3 +168,4 @@ def auto_login(request):
 
 
     return HttpResponse(dialog('ok', 'success', '登录成功',data))
+
