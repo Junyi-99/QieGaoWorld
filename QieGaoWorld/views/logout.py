@@ -4,7 +4,6 @@ from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.dialog import dialog
 
 
-@check_post
 def logout(request):
     request.session['is_login'] = False
     request.session['username'] = ''

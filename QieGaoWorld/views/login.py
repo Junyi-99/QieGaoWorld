@@ -143,7 +143,7 @@ def get_nickname_from_uuid(uuid):
 def auto_login(request):
     url = "./"
 
-    token = str(request.POST.get("token", None))
+    token = str(request.GET.get("token", None))
 
     user = User.objects.exclude(token_expired_time__gte=int(time.time()), token=token)
     if len(user) == 0:
