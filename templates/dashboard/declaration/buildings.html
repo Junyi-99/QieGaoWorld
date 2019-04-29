@@ -1,12 +1,12 @@
 {% load static %}
-<h2>建筑申报
+<h2>建筑登记
     <small style="color: #666666; font-size: medium">Construction Declaration</small>
     <button class="uk-button uk-button-default uk-button-primary uk-align-right uk-margin-small-top"
-            uk-toggle="target: #building-box">新申报
+            uk-toggle="target: #building-box">新登记
     </button>
 </h2>
 <hr class="uk-margin"/>
-<p class="uk-text-meta">下面显示的是你申报的所有建筑</p>
+<p class="uk-text-meta">下面显示的是你登记的所有建筑</p>
 <div class="uk-alert-primary" uk-alert id="tips" style="display:none">
     <a class="uk-alert-close" uk-close></a>
     <p></p>
@@ -22,9 +22,15 @@
 
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <div class="uk-modal-header">
-            <h2 class="uk-modal-title">建筑申报</h2>
+            <h2 class="uk-modal-title">建筑登记</h2>
         </div>
         <div class="uk-modal-body">
+           <h3>登记规则</h3>
+            <p class="uk-text-meta"></p>
+            <p class="uk-text-meta">1. 大河区域开放建筑，仅需自行登记。大河范围如下图 <img src="/static/assets/images/dahe.jpg" title="大河范围示意图"></p>
+            <p class="uk-text-meta">2. 大河以外区域请联系区域负责人。沙漠村（NovaTang），文明镇、对岸镇（不能忍），雪山镇（万老师）</p>
+            <p class="uk-text-meta">3. 切糕村停止建设，贸易村、水镇不对外开放建设</p>
+            <p class="uk-text-meta">4. 未尽事项以群公告为准</p>
             <form class="uk-form-horizontal" name="info">
                 {% csrf_token %}
                 <div class="uk-margin">
@@ -40,30 +46,10 @@
                 <div class="uk-margin">
                     <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-1-5@s">
-                            <label class="uk-form-label" for="form-horizontal-text">英文名</label>
-                        </div>
-                        <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="english_name" type="text" placeholder="如 Private House">
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-margin">
-                    <div class="uk-grid-small" uk-grid>
-                        <div class="uk-width-1-5@s">
                             <label class="uk-form-label" for="form-horizontal-text">建筑简介</label>
                         </div>
                         <div class="uk-width-4-5@s">
                             <input class="uk-input" id="summary" type="text" placeholder="如 市中心第一豪华别墅">
-                        </div>
-                    </div>
-                </div>
-                <div class="uk-margin">
-                    <div class="uk-grid-small" uk-grid>
-                        <div class="uk-width-1-5@s">
-                            <label class="uk-form-label" for="form-horizontal-text">建筑详细介绍</label>
-                        </div>
-                        <div class="uk-width-4-5@s">
-                            <input class="uk-input" id="detail" type="text" placeholder="">
                         </div>
                     </div>
                 </div>
@@ -110,20 +96,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="uk-margin">
-                    <div class="uk-grid-small" uk-grid>
-                        <div class="uk-width-1-5@s">
-                            <label class="uk-form-label" for="form-horizontal-text">示范图</label>
-                        </div>
-                        <div class="uk-width-4-5@s upload_concept" uk-form-custom>
-                            {% csrf_token %}
-                            <input type="file" multiple>
-                            <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
-                            <p>文件格式：jpg jpeg gif png 建议为正方形图像</p>
-                        </div>
-                        <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
-                    </div>
-                </div>
+                
                 <div class="uk-margin">
                     <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-1-5@s">
@@ -140,14 +113,15 @@
                 <div class="uk-margin">
                     <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-1-5@s">
-                            <label class="uk-form-label" for="form-horizontal-text">透视图(选填)</label>
+                            <label class="uk-form-label" for="form-horizontal-text">示范图(选填)</label>
                         </div>
-                        <div class="uk-width-4-5@s upload_perspective" uk-form-custom>
+                        <div class="uk-width-4-5@s upload_concept" uk-form-custom>
                             {% csrf_token %}
                             <input type="file" multiple>
                             <button class="uk-button uk-button-default" type="button" tabindex="-1">选择文件</button>
+                            <p>文件格式：jpg jpeg gif png 建议为正方形图像</p>
                         </div>
-                        <progress id="progress_perspective" class="uk-progress" value="0" max="100" hidden></progress>
+                        <progress id="progress_concept" class="uk-progress" value="0" max="100" hidden></progress>
                     </div>
                 </div>
                 <div class="uk-margin">
@@ -157,8 +131,8 @@
                         </div>
                         <div class="uk-width-4-5@s">
                             <select class="uk-select" id="type">
-                                <option value="0">公共建筑</option>
                                 <option value="1">私有建筑</option>
+                                <option value="0">公共建筑</option>
                             </select>
                         </div>
                     </div>

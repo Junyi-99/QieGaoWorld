@@ -249,17 +249,17 @@ def buildings_list(request):
         buildings[i].predict_end_time = time.strftime("%Y-%m-%d", time.localtime(buildings[i].predict_end_time))
 
         # 设置logo为缩略图的路径
-        logo = buildings[i].concept
+        # logo = buildings[i].concept
         
-        pos = logo.rfind(".")
-        if pos == -1:
-            return []
-        buildings[i].logo = logo[:pos] + '_thumb' + logo[pos:]
+        # pos = logo.rfind(".")
+        # if pos == -1:
+        #     return []
+        # buildings[i].logo = logo[:pos] + '_thumb' + logo[pos:]
 
-        # 如果缩略图不存在，我们创建
+        # # 如果缩略图不存在，我们创建
         
-        if not os.path.exists(buildings[i].logo):
-            make_thumb(buildings[i].concept, buildings[i].logo)
+        # if not os.path.exists(buildings[i].logo):
+        #     make_thumb(buildings[i].concept, buildings[i].logo)
 
         if buildings[i].status == 0:
             buildings[i].status_label = 'uk-label-warning'
@@ -329,8 +329,8 @@ def animals_list(request):
 @check_post
 def buildings_add(request):
     try:
-        arg_list = {'name', 'english_name', 'summary', 'detail', 'coordinate', 'area', 'predict_start_time',
-                    'predict_end_time', 'type', 'pic_concept', 'pic_plan'}
+        arg_list = {'name', 'summary', 'coordinate', 'area', 'predict_start_time',
+                    'predict_end_time', 'type', 'pic_plan'}
 
         lis = {key: str(request.POST.get(key, '')).strip() for key in arg_list}
         lis['declare_time'] = int(time.time())
@@ -345,17 +345,19 @@ def buildings_add(request):
             username=lis['username'],
             coordinate=lis['coordinate'],
             area=lis['area'],
-            concept=lis['pic_concept'],
+            # concept=lis['pic_concept'],
+            concept='',
             plan=lis['pic_plan'],
             name=lis['name'],
-            english_name=lis['english_name'],
+            # english_name=lis['english_name'],
+            english_name='',
             summary=lis['summary'],
-            detail=lis['detail'],
+            detail='',
             perspective=lis['pic_perspective'],
             predict_start_time=time.mktime(time.strptime(lis['predict_start_time'], "%Y-%m-%d")),
             predict_end_time=time.mktime(time.strptime(lis['predict_end_time'], "%Y-%m-%d")),
             actually_end_time=0,
-            status=1,
+            status=3,
             type=int(str(lis['type'])),
         )
         obj.save()
