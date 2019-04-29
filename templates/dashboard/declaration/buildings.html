@@ -170,6 +170,7 @@
                             timeout: 2000
                         });
                         UIkit.modal("#building-box").hide();
+                        window.location.reload()
                     } else {
                         UIkit.notification({
                             message: '<span uk-icon=\'icon: close\'></span> ' + obj.msg,

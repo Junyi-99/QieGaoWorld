@@ -361,7 +361,7 @@ def buildings_add(request):
             type=int(str(lis['type'])),
         )
         obj.save()
-        return HttpResponse(dialog('ok', 'success', '申报成功！请等待管理员审核！'))
+        return HttpResponse(dialog('ok', 'success', '登记成功！请开始你的表演吧！'))
     except ValueError as e:
         print(e)
         return HttpResponse(dialog('failed', 'danger', '数值错误'))
