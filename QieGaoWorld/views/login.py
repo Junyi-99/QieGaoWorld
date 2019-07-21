@@ -14,8 +14,14 @@ from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld import common,parameter
 
+
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 # ajax (ensure csrf cookie)
-@ensure_csrf_cookie
+# @ensure_csrf_cookie
 def login(request):
     if request.session.get("is_login", False):
         return redirect("/dashboard")
@@ -27,20 +33,20 @@ def test(request):
     return render(request, "dialog.html", {})
 
 
-@check_post
+@api_view(['POST'])
 def login_verify(request):
     url = "./"
     ON_SERVER = True
-
     username = str(request.POST.get("username", None))
     password = str(request.POST.get("password", None))
-
-    logging.debug("Login Verify: [%s] [%s]" % (username, password))
+    password_md5 = hashlib.md5()   
+    password_md5.update(password.encode('utf-8'))   
     if ON_SERVER:
         with open(parameter.SPIGOT_PATH + "/plugins/WhiteList/config.yml", "r") as f:
             plays = f.read()
             if "- " + username.lower() not in plays:
                 return HttpResponse(dialog('failed', 'danger', '您不在白名单'))
+                # return Response(dialog('failed', 'danger', '您不在白名单'))
         with open(parameter.SPIGOT_PATH + "/banned-players.json", "rb") as f:
             plays = json.loads(f.read())
             s = "%"
@@ -58,7 +64,7 @@ def login_verify(request):
         except IOError:
             return HttpResponse(dialog('failed', 'danger', '该账号不存在'))
 
-        if "playername=" + username != user or "password=" + password != passwd:
+        if "playername=" + username != user or ("password=" + password != passwd or "password=" + password_md5.hexdigest() != passwd ):
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
 
         user = User.objects.filter(username=username)
@@ -70,6 +76,7 @@ def login_verify(request):
         uuid_ = get_uuid_from_name(username)  # 这里uuid_防止与uuid库名字冲突
         nickname = get_nickname_from_uuid(uuid_)
         user.uuid = uuid_
+        hashlib.md5()
         user.nickname = nickname
         user.save()
     else:
@@ -115,9 +122,8 @@ def login_verify(request):
                     request.session['permissions'] = user.permissions
     else:
         request.session['permissions'] = user.permissions
-
+    print(1111)
     return HttpResponse(dialog('ok', 'success', '登录成功',{"token":user.token}))
-
 
 def get_uuid_from_name(name):
     player_name = "OfflinePlayer:%s" % name
@@ -150,7 +156,6 @@ def auto_login(request):
     
 
     user = User.objects.filter(token_expired_time__gte=int(time.time()), token=token)
-    print(user)
     if len(user) == 0:
         return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
     else:
