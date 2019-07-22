@@ -17,8 +17,8 @@ from QieGaoWorld import common,parameter
 
 
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+# from rest_framework.decorators import api_view
+# from rest_framework.response import Response
 
 # ajax (ensure csrf cookie)
 # @ensure_csrf_cookie
@@ -33,7 +33,7 @@ def test(request):
     return render(request, "dialog.html", {})
 
 
-@api_view(['POST'])
+# @api_view(['POST'])
 def login_verify(request):
     url = "./"
     ON_SERVER = True
