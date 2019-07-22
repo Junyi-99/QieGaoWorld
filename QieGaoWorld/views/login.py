@@ -64,7 +64,7 @@ def login_verify(request):
         except IOError:
             return HttpResponse(dialog('failed', 'danger', '该账号不存在'))
 
-        if "playername=" + username != user or ("password=" + password != passwd or "password=" + password_md5.hexdigest() != passwd ):
+        if "playername=" + username != user or ("password=" + password != passwd and "password=" + password_md5.hexdigest() != passwd ):
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
 
         user = User.objects.filter(username=username)
