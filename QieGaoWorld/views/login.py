@@ -1,3 +1,10 @@
+'''
+@Description: In User Settings Edit
+@Author: your name
+@Date: 2018-09-14 23:31:44
+@LastEditTime: 2019-08-19 18:11:58
+@LastEditors: Please set LastEditors
+'''
 import json
 import logging
 import os
@@ -13,7 +20,6 @@ from QieGaoWorld.models import User
 from QieGaoWorld.views.decorator import check_post
 from QieGaoWorld.views.dialog import dialog
 from QieGaoWorld import common,parameter
-
 
 
 
@@ -41,6 +47,8 @@ def login_verify(request):
     password = str(request.POST.get("password", None))
     password_md5 = hashlib.md5()   
     password_md5.update(password.encode('utf-8'))   
+
+
     if ON_SERVER:
         with open(parameter.SPIGOT_PATH + "/plugins/WhiteList/config.yml", "r") as f:
             plays = f.read()
@@ -60,11 +68,19 @@ def login_verify(request):
             with open(url + username.lower() + ".gd", "r") as f:
                 user = f.readline().strip()
                 passwd = f.readline().strip()
+
+                if passwd =='@Version=6':
+                    f.readline().strip()
+                    user = f.readline().strip()
+                    passwd = f.readline().strip()
+                    _username=username.lower()
+                else:
+                    _username=username
             # user = User.objects.filter(username=username, password=password)
         except IOError:
             return HttpResponse(dialog('failed', 'danger', '该账号不存在'))
 
-        if "playername=" + username != user or ("password=" + password != passwd and "password=" + password_md5.hexdigest() != passwd ):
+        if "playername=" + _username != user or ("password=" + password != passwd and "password=" + password_md5.hexdigest() != passwd ):
             return HttpResponse(dialog('failed', 'danger', '用户名或密码错误'))
 
         user = User.objects.filter(username=username)
