@@ -42,7 +42,8 @@
                         <div class="uk-margin uk-grid-small uk-child-width-auto" uk-grid>
                             <label class="uk-text-muted"><input class="uk-checkbox" type="checkbox" checked>
                                 自动登录</label>
-                            <a href="/wenjuan/index" class="uk-link-text">注册账号</a>
+                            {% comment %} <a href="/wenjuan/index" class="uk-link-text">注册账号</a> {% endcomment %}
+                            <span onclick="register" class="uk-link-text">注册账号</span>
                             <!-- <a href="/forgotten" class="uk-link-text">忘记密码</a> -->
                         </div>
                         <label>进入切糕世界即表明同意<a href="agreement">用户协议</a></label>
@@ -94,7 +95,7 @@
                             });
                             auto(obj.token)
 
-                            setTimeout("jump()", "1000")
+                             setTimeout("jump()", "1000") 
                             
                         } else {
                             $("#username").addClass("uk-form-danger");
@@ -112,7 +113,8 @@
     
     function auto(token){
         var url=[
-            "//map.qiegaoshijie.club/test.php?type=autologin",
+            {% comment %} "//map.qiegaoshijie.club/test.php?type=autologin", {% endcomment %}
+            "//map.qiegao.com/test.php?type=autologin",
         ];
         for(i in url){
             $("body").append("<iframe style='display:none' src='"+url[i]+"&token="+token+"'></iframe>")
@@ -127,6 +129,12 @@
         
             window.location.href = "/dashboard";
         {% endif %}
+    }
+    function  register(){
+        UIkit.notification({
+            message: "请进入游戏注册账号!",
+            status: 'danger'
+        });
     }
 </script>
 </html>
