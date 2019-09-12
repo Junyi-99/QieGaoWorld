@@ -20,7 +20,7 @@
         <div class="uk-card uk-card-default" style="background-image:url({% static "assets/images/bkg3.png" %});">
             <div class="uk-card-header">
                 <h1>登录切糕世界</h1>
-                <!-- <p> ∑(っ °Д °;)っ 什么？你还没登录？</p> -->
+                <p>使用服务器账号密码登录</p> 
             </div>
             <div class="uk-card-body">
                 <form id="login_form" role="form" method="post">
@@ -43,7 +43,7 @@
                             <label class="uk-text-muted"><input class="uk-checkbox" type="checkbox" checked>
                                 自动登录</label>
                             {% comment %} <a href="/wenjuan/index" class="uk-link-text">注册账号</a> {% endcomment %}
-                            <span onclick="register()" class="uk-link-text">注册账号</span>
+                            {% comment %} <span onclick="register()" class="uk-link-text">注册账号</span> {% endcomment %}
                             <!-- <a href="/forgotten" class="uk-link-text">忘记密码</a> -->
                         </div>
                         <label>进入切糕世界即表明同意<a href="agreement">用户协议</a></label>
@@ -132,7 +132,7 @@
     }
     function  register(){
         UIkit.notification({
-            message: "请进入游戏注册账号!",
+            message: "请直接使用游戏账号登录!",
             status: 'danger'
         });
     }
