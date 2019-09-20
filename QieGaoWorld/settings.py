@@ -185,4 +185,4 @@ BUILDING_CONCEPT_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/concept')
 BUILDING_PLAN_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/plan')
 BUILDING_PERSPECTIVE_ROOT = os.path.join(BASE_DIR, 'static/media/buildings/perspective')
 
-PROJECT_VERSION = '2.0 Beta (180725)'
+PROJECT_VERSION = '2.019 RC (190920)'
