@@ -4,6 +4,8 @@
 
 针对1.13版本优化，有特定的插件要求。
 
+点击这里进入切糕世界：[https://hall.qiegaoshijie.club/](https://hall.qiegaoshijie.club/)
+
 前端框架：
 [UIKit](https://getuikit.com/docs/introduction)
 
