@@ -11,5 +11,5 @@ Pillow==5.2.0
 pytz==2018.5
 requests==2.19.1
 six==1.11.0
-urllib3==1.23
+urllib3==1.26.5
 nbt==1.5.0
