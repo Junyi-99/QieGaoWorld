@@ -4,7 +4,7 @@ click==6.7
 Django>=2.0.8
 dnspython==1.15.0
 dnspython3==1.15.0
-idna==2.7
+idna==3.7
 image==1.5.24
 mcstatus==2.2
 Pillow==9.3.0
