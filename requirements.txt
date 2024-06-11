@@ -9,7 +9,7 @@ image==1.5.24
 mcstatus==2.2
 Pillow==9.3.0
 pytz==2018.5
-requests==2.19.1
+requests==2.32.2
 six==1.11.0
 urllib3==1.26.5
 nbt==1.5.0
